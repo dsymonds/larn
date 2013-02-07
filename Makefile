@@ -24,8 +24,6 @@
 # NOVARARGS
 #	Define for systems that don't have varargs (a default varargs will
 #	be used).
-# MACRORND
-#	Define to use macro version of rnd() and rund() (fast and big)
 #  VT100
 #	Compile for using vt100 family of terminals.  Omission of this
 #	define will cause larn to use termcap, but it will be MUCH slower

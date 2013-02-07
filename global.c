@@ -839,7 +839,6 @@ packweight(void)
 	return (k);
 }
 
-#ifndef MACRORND
 /* macros to generate random numbers   1<=rnd(N)<=N   0<=rund(N)<=N-1 */
 int
 rnd(int x)
@@ -852,4 +851,3 @@ rund(int x)
 {
 	return ((((randx = randx * 1103515245 + 12345) >> 7) % (x)));
 }
-#endif	/* MACRORND */
