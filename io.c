@@ -102,9 +102,7 @@ static char     saveeof, saveeol;
 
 #else	/* not TERMIO or TERMIOS */
 
-#ifndef BSD
 #define CBREAK RAW		/* V7 has no CBREAK */
-#endif
 
 #define doraw(_a) (_a.sg_flags |= CBREAK,_a.sg_flags &= ~ECHO)
 #define unraw(_a) (_a.sg_flags &= ~CBREAK,_a.sg_flags |= ECHO)

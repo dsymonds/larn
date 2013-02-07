@@ -5,11 +5,6 @@
 #	Use sysv termio
 # TERMIOS
 #	Use posix termios
-# BSD
-#	Use BSD specific features (mostly timer and signal stuff)
-# BSD4.1
-#	Use BSD4.1 to avoid some 4.2 dependencies (must be used with
-#	BSD above; do not mix with SYSV)
 # HIDEBYLINK
 #	If defined, the program attempts to hide from ps
 # DOCHECKPOINTS
@@ -56,7 +51,7 @@
 
 PROG=	larn
 MAN=	larn.6
-CPPFLAGS+=-DBSD -DVER=12 -DSUBVER=0 -DNONAP -DUIDSCORE -DTERMIOS
+CPPFLAGS+=-DVER=12 -DSUBVER=0 -DNONAP -DUIDSCORE -DTERMIOS
 SRCS=	main.c object.c create.c tok.c display.c global.c data.c io.c \
 	monster.c store.c diag.c help.c config.c nap.c bill.c scores.c \
 	signal.c action.c moreobj.c movem.c regen.c fortune.c savelev.c
