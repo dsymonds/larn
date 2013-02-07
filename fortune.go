@@ -1,10 +1,12 @@
-/* fortune.c		 Larn is copyrighted 1986 by Noah Morgan. */
+package main
+
+import "math/rand"
 
 /*
  * function to return a random fortune from the fortune file
  */
 
-static const char *flines[] = {
+var flines = [...]string{
 	"gem value = gem * 2 ^ perfection",
 	"sitting down can have unexpected results",
 	"don't pry into the affairs of others",
@@ -38,13 +40,9 @@ static const char *flines[] = {
 	"the greatest weapon in the game has not the highest Weapon Class",
 	"you can't buy the most powerful scroll",
 	"identify things before you use them",
-	"there's more than one way through a wall"
-};
+	"there's more than one way through a wall",
+}
 
-#define NFORTUNES	34
-
-const char *
-fortune(void)
-{
-	return (flines[random() % NFORTUNES]);
+func fortune() string {
+	return flines[rand.Intn(len(flines))]
 }
