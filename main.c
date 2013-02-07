@@ -229,11 +229,7 @@ main(int argc, char **argv)
 	readopts();		/* read the options file if there is one */
 
 
-#ifdef UIDSCORE
 	userid = geteuid();	/* obtain the user's effective id number */
-#else	/* UIDSCORE */
-	userid = getplid(logname);	/* obtain the players id number */
-#endif	/* UIDSCORE */
 	if (userid < 0) {
 		write(2, "Can't obtain playerid\n", 22);
 		exit(1);

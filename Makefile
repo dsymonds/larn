@@ -26,11 +26,6 @@
 #	be used).
 # MACRORND
 #	Define to use macro version of rnd() and rund() (fast and big)
-# UIDSCORE
-#	Define to use user id's to manage scoreboard.  Leaving this out will
-#	cause player id's from the file ".playerids" to be used instead.
-#	(.playerids is created upon demand).  Only one entry per id # is
-#	allowed in each scoreboard (winning & non-winning).
 #  VT100
 #	Compile for using vt100 family of terminals.  Omission of this
 #	define will cause larn to use termcap, but it will be MUCH slower
@@ -39,11 +34,6 @@
 #	And only in VT100 mode is the scrolling region of the terminal used
 #	(much nicer than insert/delete line sequences to simulate it, if
 #	VT100 is omitted).
-# NONAP
-#	This causes napms() to return immediately instead of delaying n
-#	milliseconds.  This define may be needed on some systems if the nap
-#	stuff does not work correctly (possible hang).  nap() is primarilly
-#	used to delay for effect when casting missile type spells.
 # NOLOG
 #	Turn off logging.
 
@@ -51,7 +41,7 @@
 
 PROG=	larn
 MAN=	larn.6
-CPPFLAGS+=-DVER=12 -DSUBVER=0 -DNONAP -DUIDSCORE -DTERMIOS
+CPPFLAGS+=-DVER=12 -DSUBVER=0 -DTERMIOS
 SRCS=	main.c object.c create.c tok.c display.c global.c data.c io.c \
 	monster.c store.c diag.c help.c config.c nap.c bill.c scores.c \
 	signal.c action.c moreobj.c movem.c regen.c fortune.c savelev.c
