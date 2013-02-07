@@ -1,10 +1,4 @@
-/*	$NetBSD: regen.c,v 1.6 2012/06/19 05:30:44 dholland Exp $	*/
-
 /* regen.c 			Larn is copyrighted 1986 by Noah Morgan. */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: regen.c,v 1.6 2012/06/19 05:30:44 dholland Exp $");
-#endif				/* not lint */
 
 #include "header.h"
 #include "extern.h"

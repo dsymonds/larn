@@ -1,10 +1,4 @@
-/*	$NetBSD: help.c,v 1.9 2012/06/19 05:30:43 dholland Exp $	*/
-
 /* help.c		Larn is copyrighted 1986 by Noah Morgan. */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: help.c,v 1.9 2012/06/19 05:30:43 dholland Exp $");
-#endif /* not lint */
 
 #include <unistd.h>
 

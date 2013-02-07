@@ -1,5 +1,3 @@
-/*	$NetBSD: config.c,v 1.6 2008/01/28 05:38:53 dholland Exp $	 */
-
 /*
  * config.c --	This defines the installation dependent variables.
  *              Some strings are modified later.  ANSI C would
@@ -8,10 +6,6 @@
  *
  *		Larn is copyrighted 1986 by Noah Morgan.
  */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: config.c,v 1.6 2008/01/28 05:38:53 dholland Exp $");
-#endif /* not lint */
 
 #include "header.h"
 #include "pathnames.h"

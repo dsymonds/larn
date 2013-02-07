@@ -1,5 +1,3 @@
-/*	$NetBSD: monster.c,v 1.18 2012/06/19 05:30:43 dholland Exp $	*/
-
 /*
  * monster.c	Larn is copyrighted 1986 by Noah Morgan.
  *
@@ -98,10 +96,6 @@
  * genmonst()		Function to ask for monster and genocide from game
  *
  */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: monster.c,v 1.18 2012/06/19 05:30:43 dholland Exp $");
-#endif				/* not lint */
 
 #include <string.h>
 #include <stdlib.h>

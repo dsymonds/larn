@@ -1,10 +1,4 @@
-/*	$NetBSD: main.c,v 1.25 2012/06/19 05:30:43 dholland Exp $	*/
-
 /* main.c		 */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: main.c,v 1.25 2012/06/19 05:30:43 dholland Exp $");
-#endif				/* not lint */
 
 #include <sys/types.h>
 #include <stdio.h>

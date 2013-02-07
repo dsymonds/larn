@@ -1,5 +1,3 @@
-/*	$NetBSD: movem.c,v 1.9 2012/06/19 05:30:43 dholland Exp $	*/
-
 /*
  * movem.c (move monster)		Larn is copyrighted 1986 by Noah Morgan.
  *
@@ -10,10 +8,6 @@
  * mmove(x,y,xd,yd)	Function to actually perform the monster movement
  * movsphere() 		Function to look for and move spheres of annihilation
  */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: movem.c,v 1.9 2012/06/19 05:30:43 dholland Exp $");
-#endif				/* not lint */
 
 #include "header.h"
 #include "extern.h"

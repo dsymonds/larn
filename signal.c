@@ -1,11 +1,4 @@
-/*	$NetBSD: signal.c,v 1.9 2012/06/19 05:30:44 dholland Exp $	*/
-
 /* "Larn is copyrighted 1986 by Noah Morgan.\n" */
-
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: signal.c,v 1.9 2012/06/19 05:30:44 dholland Exp $");
-#endif	/* not lint */
 
 #include <signal.h>
 #include <stdio.h>

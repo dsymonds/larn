@@ -1,10 +1,4 @@
-/*	$NetBSD: savelev.c,v 1.7 2012/06/19 05:30:44 dholland Exp $	*/
-
 /* savelev.c		 Larn is copyrighted 1986 by Noah Morgan. */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: savelev.c,v 1.7 2012/06/19 05:30:44 dholland Exp $");
-#endif				/* not lint */
 #include "header.h"
 #include "extern.h"
 

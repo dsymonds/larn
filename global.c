@@ -1,5 +1,3 @@
-/*	$NetBSD: global.c,v 1.14 2012/06/19 05:30:43 dholland Exp $	*/
-
 /*
  * global.c 		Larn is copyrighted 1986 by Noah Morgan.
  * 
@@ -19,10 +17,6 @@
  * recalc()		function to recalculate the armor class of the player
  * quit()		subroutine to ask if the player really wants to quit
  */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: global.c,v 1.14 2012/06/19 05:30:43 dholland Exp $");
-#endif /* not lint */
 
 #include <string.h>
 #include <unistd.h>

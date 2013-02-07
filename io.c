@@ -1,5 +1,3 @@
-/*	$NetBSD: io.c,v 1.27 2012/06/19 05:30:43 dholland Exp $	*/
-
 /*
  * io.c			 Larn is copyrighted 1986 by Noah Morgan.
  * 
@@ -60,10 +58,6 @@
  * 
  * Note: ** entries are available only in termcap mode.
  */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: io.c,v 1.27 2012/06/19 05:30:43 dholland Exp $");
-#endif /* not lint */
 
 #include "header.h"
 #include "extern.h"

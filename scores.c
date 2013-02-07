@@ -1,5 +1,3 @@
-/*	$NetBSD: scores.c,v 1.21 2012/06/19 05:30:44 dholland Exp $	*/
-
 /*
  * scores.c			 Larn is copyrighted 1986 by Noah Morgan.
  * 
@@ -24,10 +22,6 @@
  * on to get players id # from id file
  * 
  */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: scores.c,v 1.21 2012/06/19 05:30:44 dholland Exp $");
-#endif				/* not lint */
 #include <sys/types.h>
 #include <sys/times.h>
 #include <sys/stat.h>

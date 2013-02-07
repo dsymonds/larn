@@ -1,5 +1,3 @@
-/*	$NetBSD: action.c,v 1.1 2008/02/19 06:05:26 dholland Exp $	*/
-
 /*
  * action.c 		Larn is copyrighted 1986 by Noah Morgan.
  * 
@@ -8,9 +6,6 @@
  * ...
  */
 #include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: action.c,v 1.1 2008/02/19 06:05:26 dholland Exp $");
-#endif				/* not lint */
 #include <stdlib.h>
 #include <unistd.h>
 #include "header.h"

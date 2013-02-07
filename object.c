@@ -1,11 +1,5 @@
-/*	$NetBSD: object.c,v 1.16 2012/06/19 05:30:43 dholland Exp $	*/
-
 /* object.c		Larn is copyrighted 1986 by Noah Morgan. */
 
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: object.c,v 1.16 2012/06/19 05:30:43 dholland Exp $");
-#endif				/* not lint */
 #include "header.h"
 #include "extern.h"
 

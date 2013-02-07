@@ -1,5 +1,3 @@
-/* $NetBSD: header.h,v 1.22 2008/08/29 00:37:38 gmcgarry Exp $	 */
-
 /* header.h		Larn is copyrighted 1986 by Noah Morgan. */
 
 #include <sys/types.h>

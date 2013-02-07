@@ -1,10 +1,4 @@
-/*	$NetBSD: tok.c,v 1.11 2012/06/19 05:30:44 dholland Exp $	*/
-
 /* tok.c		Larn is copyrighted 1986 by Noah Morgan. */
-#include <sys/cdefs.h>
-#ifndef lint
-__RCSID("$NetBSD: tok.c,v 1.11 2012/06/19 05:30:44 dholland Exp $");
-#endif				/* not lint */
 
 #include <sys/types.h>
 #include <string.h>
