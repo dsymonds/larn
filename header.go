@@ -356,7 +356,10 @@ extern gid_t    gid, egid;
 extern long     outstanding_taxes, skill[], gltime, c[], cbak[];
 extern time_t	initialtime;
 extern unsigned long randx;
-extern struct cel *cell;
+*/
+var cell = make([]cel, (MAXLEVEL+MAXVLEVEL)*MAXX*MAXY)
+
+/*
 extern struct monst monster[];
 extern struct sphere *spheres;
 extern struct _itm itm[];
