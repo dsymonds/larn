@@ -89,9 +89,9 @@ short           ivenarg[26];	/* inventory for player			 */
 char            lastmonst[40];	/* this has the name of the current monster	 */
 u_char          beenhere[MAXLEVEL + MAXVLEVEL] = {0};	/* 1 if have been on
 							 * this level */
-char            VERSION = VER;	/* this is the present version # of the
+char            VERSION = 12;	/* this is the present version # of the
 				 * program	 */
-char            SUBVERSION = SUBVER;
+char            SUBVERSION = 0;
 u_char          nosignal = 0;	/* set to 1 to disable the signals from doing
 				 * anything */
 u_char          predostuff = 0;	/* 2 means that the trap handling routines

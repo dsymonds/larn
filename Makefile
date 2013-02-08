@@ -15,10 +15,6 @@
 #	checkpoints (again if enabled in the .larnopts file).  This usually
 #	avoids pauses in larn while the checkpointing is being done (on
 #	large machines).
-# VER
-#	This is the version of the software, example:  12
-# SUBVER
-#	This is the revision of the software, example:  1
 # FLUSHNO=#
 #	Set the input queue excess flushing threshold (default 5)
 # NOVARARGS
@@ -39,7 +35,7 @@
 
 PROG=	larn
 MAN=	larn.6
-CPPFLAGS+=-DVER=12 -DSUBVER=0 -DTERMIOS
+CPPFLAGS+=-DTERMIOS
 SRCS=	main.c object.c create.c tok.c display.c global.c data.c io.c \
 	monster.c store.c diag.c help.c config.c nap.c bill.c scores.c \
 	signal.c action.c moreobj.c movem.c regen.c fortune.c savelev.c
