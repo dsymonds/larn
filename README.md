@@ -3,7 +3,7 @@ This is a Go port of Larn, by David Symonds (dsymonds@golang.org).
 
 Progress
 --------
-I am transliterating one file at a time. There's about 11k lines left.
+I am transliterating one file at a time. There's about 4k lines left.
 I'm doing the minimal changes required to get it to be valid Go source
 code as far as gofmt is concerned. Some chunks are being stubbed out
 instead of ported (e.g. loading/saving).
