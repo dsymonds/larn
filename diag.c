@@ -225,7 +225,7 @@ savegame(char *fname)
 	else
 		lprint((long) statbuf.st_ino);	/* inode # */
 	lwclose();
-	lastmonst[0] = 0;
+	lastmonst = ""
 #ifndef VT100
 	setscroll();
 #endif	/* VT100 */

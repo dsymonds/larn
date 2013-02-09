@@ -81,7 +81,7 @@ var moved [MAXX][MAXY]byte              /* monster movement flags  */
 var stealth [MAXX][MAXY]byte            /* 0=sleeping 1=awake monst */
 var iven [26]byte                       /* inventory for player			 */
 var ivenarg [26]int16                   /* inventory for player			 */
-var lastmonst [40]int8                  /* this has the name of the current monster	 */
+var lastmonst string                    /* this has the name of the current monster	 */
 var beenhere [MAXLEVEL + MAXVLEVEL]byte /* 1 if have been on this level */
 
 const VERSION = 12 /* this is the present version # of the program	 */

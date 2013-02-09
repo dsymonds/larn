@@ -370,7 +370,7 @@ quit(void)
 {
 	int    i;
 	cursors();
-	strcpy(lastmonst, "");
+	lastmonst = ""
 	lprcat("\n\nDo you really want to quit?");
 	while (1) {
 		i = ttgetch();
