@@ -7,16 +7,6 @@
 #	Use posix termios
 # HIDEBYLINK
 #	If defined, the program attempts to hide from ps
-# DOCHECKPOINTS
-#	If not defined, checkpoint files are periodically written by the
-#	larn process (no forking) if enabled in the .larnopts description
-#	file.  Checkpointing is handy on an unreliable system, but takes
-#	CPU. Inclusion of DOCHECKPOINTS will cause fork()ing to perform the
-#	checkpoints (again if enabled in the .larnopts file).  This usually
-#	avoids pauses in larn while the checkpointing is being done (on
-#	large machines).
-# FLUSHNO=#
-#	Set the input queue excess flushing threshold (default 5)
 # NOVARARGS
 #	Define for systems that don't have varargs (a default varargs will
 #	be used).
