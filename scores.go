@@ -759,7 +759,7 @@ func diedlog() {
 				p[17] = 0
 			}
 			lprintf("Score: %d, Diff: %d,  %s %s on %d at %s", (logg.score), (logg.diff), logg.who, logg.what, (logg.cavelev), p + 4)
-	#ifdef EXTRA
+
 			if logg.moves <= 0 {
 				logg.moves = 1
 			}
@@ -767,7 +767,6 @@ func diedlog() {
 			lprintf("  CPU time used: %d seconds,  Machine usage: %d.%02d%%\n", (logg.cputime), (logg.usage / 100), (logg.usage % 100))
 			lprintf("  BYTES in: %d, out: %d, moves: %d, deaths: %d, spells cast: %d\n", (logg.bytin), (logg.bytout), (logg.moves), (logg.killed), (logg.spused))
 			lprintf("  out bytes per move: %d,  time per move: %d ms\n", (logg.bytout / logg.moves), ((logg.cputime * 1000) / logg.moves))
-	#endif
 		}
 		lflush()
 		lrclose()

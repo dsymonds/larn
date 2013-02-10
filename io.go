@@ -810,9 +810,8 @@ lflush()
 {
 	int    lpoint;
 	if ((lpoint = lpnt - lpbuf) > 0) {
-#ifdef EXTRA
 		c[BYTESOUT] += lpoint;
-#endif
+
 		if (write(io_outfd, lpbuf, lpoint) != lpoint)
 			write(2, "error writing to output file\n", 29);
 	}

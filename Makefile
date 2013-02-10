@@ -1,15 +1,7 @@
-# EXTRA
-#	Incorporates code to gather additional performance statistics
-#
 # TERMIO
 #	Use sysv termio
 # TERMIOS
 #	Use posix termios
-# HIDEBYLINK
-#	If defined, the program attempts to hide from ps
-# NOVARARGS
-#	Define for systems that don't have varargs (a default varargs will
-#	be used).
 #  VT100
 #	Compile for using vt100 family of terminals.  Omission of this
 #	define will cause larn to use termcap, but it will be MUCH slower

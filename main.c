@@ -233,23 +233,6 @@ main(int argc, char **argv)
 		write(2, "Can't obtain playerid\n", 22);
 		exit(1);
 	}
-#ifdef HIDEBYLINK
-	/*
-	 *	this section of code causes the program to look like something else to ps
-	 */
-	if (strcmp(psname, argv[0])) {	/* if a different process name only */
-		if ((i = access(psname, 1)) < 0) {	/* link not there */
-			if (link(argv[0], psname) >= 0) {
-				argv[0] = psname;
-				execv(psname, argv);
-			}
-		} else
-			unlink(psname);
-	}
-	for (i = 1; i < argc; i++) {
-		szero(argv[i]);	/* zero the argument to avoid ps snooping */
-	}
-#endif	/* HIDEBYLINK */
 
 	if (access(savefilename, 0) == 0) {	/* restore game if need to */
 		clear();
@@ -939,7 +922,6 @@ parse(void)
 			return;	/* look		 */
 
 #if WIZID
-#ifdef EXTRA
 		case 'A':
 			yrepcount = 0;
 			nomove = 1;
@@ -948,7 +930,6 @@ parse(void)
 				return;
 			}	/* create diagnostic file */
 			return;
-#endif
 #endif
 		case 'P':
 			cursors();
@@ -1309,16 +1290,3 @@ readnum(long mx)
 	scbr();
 	return (amt);
 }
-
-#ifdef HIDEBYLINK
-/*
- *	routine to zero every byte in a string
- */
-void
-szero(str)
-	char  *str;
-{
-	while (*str)
-		*str++ = 0;
-}
-#endif	/* HIDEBYLINK */
