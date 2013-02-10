@@ -18,8 +18,6 @@
 #	And only in VT100 mode is the scrolling region of the terminal used
 #	(much nicer than insert/delete line sequences to simulate it, if
 #	VT100 is omitted).
-# NOLOG
-#	Turn off logging.
 
 .include <bsd.own.mk>
 
