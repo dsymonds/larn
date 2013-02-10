@@ -3,14 +3,14 @@ This is a Go port of Larn, by David Symonds (dsymonds@golang.org).
 
 Progress
 --------
-I am transliterating one file at a time. There's about 4k lines left.
-I'm doing the minimal changes required to get it to be valid Go source
-code as far as gofmt is concerned. Some chunks are being stubbed out
+I have transliterated each original C source file.
+I have done the minimal changes required to get it to be valid Go source
+code as far as gofmt is concerned. Some chunks have been stubbed out
 instead of ported (e.g. loading/saving).
 
 Roadmap
 -------
-After that I will be making sufficient changes to get it to build,
+Next I will be making sufficient changes to get it to build,
 linking against github.com/jabb/gocurse/curses, which is the only
 Go ncurses library I could get to build and work.
 
