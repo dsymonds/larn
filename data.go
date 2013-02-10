@@ -69,7 +69,7 @@ var skill = [...]int{
 	250 * 1e6, 260 * 1e6, 270 * 1e6, 280 * 1e6, 290 * 1e6, 300 * 1e6, /* 96-101 */
 }
 
-var lpbuf, lpnt, inbuffer, lpend *byte /* input/output pointers to the buffers */
+var lpbuf, lpnt, lpend *byte /* input/output pointers to the buffers */
 
 var cell *cel                           /* pointer to the dungeon storage	 */
 var hitp [MAXX][MAXY]int16              /* monster hp on level		 */

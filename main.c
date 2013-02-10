@@ -124,8 +124,7 @@ main(int argc, char **argv)
 	//if (cell == 0)
 	//	died(-285);	/* malloc failure */
 	lpbuf = malloc((5 * BUFBIG) >> 2);	/* output buffer */
-	inbuffer = malloc((5 * MAXIBUF) >> 2);	/* output buffer */
-	if ((lpbuf == 0) || (inbuffer == 0))
+	if (lpbuf == 0)
 		died(-285);	/* malloc() failure */
 
 	lcreat((char *) 0);

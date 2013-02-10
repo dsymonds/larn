@@ -326,7 +326,6 @@ extern u_char   course[];
 extern char     diagfile[], helpfile[], ckpfile[], larnlevels[],
 		playerids[], optsfile[1024], psname[], savefilename[],
 		scorefile[];
-extern u_char  *inbuffer;
 extern u_char   item[MAXX][MAXY], iven[], know[MAXX][MAXY];
 extern const char *levelname[];
 extern char     logfile[], loginname[], logname[], lastmonst[];
@@ -350,8 +349,7 @@ extern short    diroffx[], diroffy[], hitflag, hit2flag, hit3flag, hitp[MAXX][MA
 extern short    iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
                 lastpy;
 extern short    nobeep, oldx, oldy, playerx, playery, level;
-extern int      enable_scroll, srcount, yrepcount, userid, wisid,
-		io_outfd, io_infd;
+extern int      enable_scroll, srcount, yrepcount, userid, wisid;
 extern gid_t    gid, egid;
 extern long     outstanding_taxes, skill[], gltime, c[], cbak[];
 extern time_t	initialtime;
