@@ -203,7 +203,7 @@ func hashewon() int {
  * Enter with the amount (in gp) to pay on the taxes.
  * Returns amount actually paid.
  */
-func paytaxes(int32 x) int32 {
+func paytaxes(x int32) int32 {
 	if x < 0 {
 		return 0
 	}
@@ -270,7 +270,7 @@ func winshou() int {
  * Enter with 0 to list the scores, enter with 1 to list inventories too
  * Returns the number of players on scoreboard that were shown
  */
-func shou(int x) int {
+func shou(x int) int {
 	j, count := 0, 0
 	for i := 0; i < SCORESIZE; i++ { /* is the scoreboard empty? */
 		if sco[i].score != 0 {

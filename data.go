@@ -71,7 +71,8 @@ var skill = [...]int{
 
 var lpbuf, lpnt, lpend *byte /* input/output pointers to the buffers */
 
-var cell *cel                           /* pointer to the dungeon storage	 */
+var cell = make([]cel, (MAXLEVEL+MAXVLEVEL)*MAXX*MAXY) /* pointer to the dungeon storage	 */
+
 var hitp [MAXX][MAXY]int16              /* monster hp on level		 */
 var iarg [MAXX][MAXY]int16              /* arg for the item array	 */
 var item [MAXX][MAXY]byte               /* objects in maze if any	 */

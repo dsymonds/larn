@@ -1,5 +1,9 @@
 package main
 
+import (
+	"time"
+)
+
 /*
  * act_remove_gems
  *
@@ -61,7 +65,7 @@ func act_drink_fountain() {
 		lprcat("\nOops!  You seem to have caught the dreadful sleep!")
 		beep()
 		lflush()
-		sleep(3)
+		time.Sleep(3 * time.Second)
 		died(280)
 		return
 	}

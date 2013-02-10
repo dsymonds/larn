@@ -1,7 +1,5 @@
 package main
 
-import "time"
-
 /*
 	***************************
 	DIAG -- dungeon diagnostics

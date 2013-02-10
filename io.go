@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -370,12 +369,12 @@ func lgetw() string {
 	lgp := ""
 	for {
 		cc = lgetc()
-		if cc > 32 && cc <= '\0' {
+		if cc > 32 || cc == 0 {
 			break
 		}
 	} /* eat whitespace */
 	for {
-		if cc == '\0' && lgp == "" {
+		if cc == 0 && lgp == "" {
 			return "" /* EOF */
 		}
 		if (n <= 1) || (cc <= 32 && quote == 0) {
@@ -401,10 +400,10 @@ func lgetl() string {
 	str := ""
 	for {
 		ch := lgetc()
-		if ch != '\0' {
+		if ch != 0 {
 			str += string(ch)
 		}
-		if ch == '\0' {
+		if ch == 0 {
 			if str == "" {
 				return "" /* EOF */
 			}
@@ -826,7 +825,7 @@ var vindex = 0
 /*
  * ttputch(ch)		Print one character in decoded output buffer.
  */
-func ttputch(int ch) int {
+func ttputch(ch int) int {
 	// TODO
 	/*
 		outbuf[vindex++] = ch;

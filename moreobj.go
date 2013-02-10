@@ -48,7 +48,7 @@ func oaltar() {
 /*
 	subroutine to process a throne object
 */
-func othrone(int arg) {
+func othrone(arg int) {
 
 	lprcat("\nDo you (p) pry off jewels, (s) sit down")
 	iopts()

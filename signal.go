@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"os/signal"
+	//"os/signal"
 	"syscall"
 )
 
@@ -49,7 +49,7 @@ func sgam(_ int) {
 }
 
 // tstop handles ^Y.
-func tstop(int n) {
+func tstop(n int) {
 	if nosignal {
 		return /* nothing if inhibited */
 	}

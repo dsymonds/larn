@@ -5,7 +5,7 @@ func makecode(a, b, c int) int {
 }
 
 var minx, maxx, miny, maxy, k, m int
-var bot1f, bot2f, bot3f int8 = 0, 0
+var bot1f, bot2f, bot3f int8 = 0, 0, 0
 var always int8 = 0
 
 /*
@@ -470,7 +470,7 @@ func showplayer() {
 var diroffx = []int16{0, 0, 1, 0, -1, 1, -1, 1, -1}
 var diroffy = []int16{0, 1, 0, -1, 0, -1, -1, 1, 1}
 
-func moveplayer(int dir) int {
+func moveplayer(dir int) int {
 	/* from = present room #  direction =
 	 * [1-north] [2-east] [3-south] [4-west]
 	 * [5-northeast] [6-northwest] [7-southeast]

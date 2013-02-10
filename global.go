@@ -177,7 +177,7 @@ func losemspells(x int) {
 	function to return monster number for a randomly selected monster
 		for the given cave level
 */
-func makemonst(int lev) int {
+func makemonst(lev int) int {
 	if lev < 1 {
 		lev = 1
 	}

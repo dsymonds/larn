@@ -1160,7 +1160,7 @@ func whatitem(str string) int {
 	cursors()
 	lprintf("\nWhat do you want to %s [* for all] ? ", str)
 	i := 0
-	for i > 'z' || (i < 'a' && i != '*' && i != '\33' && i != '.') {
+	for i > 'z' || (i < 'a' && i != '*' && i != '\033' && i != '.') {
 		i = ttgetch()
 	}
 	if i == '\033' {

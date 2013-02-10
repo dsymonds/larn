@@ -355,7 +355,6 @@ extern long     outstanding_taxes, skill[], gltime, c[], cbak[];
 extern time_t	initialtime;
 extern unsigned long randx;
 */
-var cell = make([]cel, (MAXLEVEL+MAXVLEVEL)*MAXX*MAXY)
 
 /*
 extern struct monst monster[];
