@@ -1,5 +1,9 @@
 package main
 
+import (
+	"time"
+)
+
 /*
  *	help function to display the help info
  *
@@ -68,7 +72,8 @@ func retcont() {
 	lprcat("Press ")
 	standout("return")
 	lprcat(" to continue: ")
-	while(ttgetch() != '\n')
+	for ttgetch() != '\n' {
+	}
 	setscroll()
 }
 
@@ -79,7 +84,7 @@ func openhelp() int {
 	if lopen(helpfile) < 0 {
 		lprintf("Can't open help file \"%s\" ", helpfile)
 		lflush()
-		sleep(4)
+		time.Sleep(4 * time.Second)
 		drawscreen()
 		setscroll()
 		return -1

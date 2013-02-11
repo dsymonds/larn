@@ -80,8 +80,8 @@ var know [MAXX][MAXY]bool               /* whether here before	 */
 var mitem [MAXX][MAXY]int               /* monster item array 		 */
 var moved [MAXX][MAXY]byte              /* monster movement flags  */
 var stealth [MAXX][MAXY]byte            /* 0=sleeping 1=awake monst */
-var iven [26]byte                       /* inventory for player			 */
-var ivenarg [26]int16                   /* inventory for player			 */
+var iven [26]int                        /* inventory for player			 */
+var ivenarg [26]int                     /* inventory for player			 */
 var lastmonst string                    /* this has the name of the current monster	 */
 var beenhere [MAXLEVEL + MAXVLEVEL]bool /* true if have been on this level */
 
@@ -100,12 +100,12 @@ var predostuff byte
 var loginname [20]int8        /* players login name */
 var logname [LOGNAMESIZE]int8 /* players name storage for scoring				 */
 var sex byte = 1              /* default is a man  0=woman						 */
-var boldon byte = 1           /* 1=bold objects  0=inverse objects				 */
+var boldon = true             /* 1=bold objects  0=inverse objects				 */
 var ckpflag byte = 0          /* 1 if want checkpointing of game, 0 otherwise	 */
 var cheat byte = 0            /* 1 if the player has fudged save file			 */
 var level = 0                 /* cavelevel player is on = c[CAVELEVEL]			 */
 var wizard = false            /* the wizard mode flag							 */
-var lastnum int16 = 0         /* the number of the monster last hitting player 	 */
+var lastnum = 0               /* the number of the monster last hitting player 	 */
 var hitflag int16 = 0         /* flag for if player has been hit when running 	 */
 var hit2flag int16 = 0        /* flag for if player has been hit when running 	 */
 var hit3flag int16 = 0        /* flag for if player has been hit flush input 	 */
@@ -166,7 +166,7 @@ var objectname = [...]string{"",
  *
  *	array to do rnd() to create monsters <= a given level
  */
-var monstlevel = []byte{5, 11, 17, 22, 27, 33, 39, 42, 46, 50, 53, 56, 59}
+var monstlevel = []int{5, 11, 17, 22, 27, 33, 39, 42, 46, 50, 53, 56, 59}
 
 var monster = [...]monst{
 	/*
@@ -583,7 +583,7 @@ var spelmes = [...]string{"",
  *	20 - remove curse	21 - annihilation			22 - pulverization
  *  23 - life protection
  */
-var scprob = [...]byte{0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
+var scprob = [...]int{0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
 	3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9,
 	9, 9, 10, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 13, 14, 14,
 	15, 15, 16, 16, 16, 17, 17, 18, 18, 19, 19, 19, 20, 20, 20, 20, 21, 22,
@@ -602,10 +602,10 @@ var scprob = [...]byte{0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
  *	18 - fire resistance	19 - treasure finding		20 - instant healing
  *	21 - cure dianthroritis	22 - poison					23 - see invisible
  */
-var potprob = [...]byte{0, 0, 1, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9, 9, 9, 10, 10, 10, 11, 11, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 20, 20, 22, 22, 23, 23}
+var potprob = [...]int{0, 0, 1, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9, 9, 9, 10, 10, 10, 11, 11, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 20, 20, 22, 22, 23, 23}
 
-var nlpts = [...]byte{0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7}
-var nch = [...]byte{0, 0, 0, 1, 1, 1, 2, 2, 3, 4}
-var nplt = [...]byte{0, 0, 0, 0, 1, 1, 2, 2, 3, 4}
-var ndgg = [...]byte{0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5}
-var nsw = [...]byte{0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 3}
+var nlpts = [...]int{0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7}
+var nch = [...]int{0, 0, 0, 1, 1, 1, 2, 2, 3, 4}
+var nplt = [...]int{0, 0, 0, 0, 1, 1, 2, 2, 3, 4}
+var ndgg = [...]int{0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5}
+var nsw = [...]int{0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 3}

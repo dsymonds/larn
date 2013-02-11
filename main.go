@@ -262,7 +262,7 @@ func main() {
 func showstr() {
 	number := 3
 	for i := 0; i < 26; i++ {
-		if iven[i] {
+		if iven[i] != 0 {
 			number++ /* count items in inventory */
 		}
 	}
@@ -280,7 +280,7 @@ func qshowstr() {
 		srcount++
 	}
 	for k := 26; k >= 0; k-- {
-		if iven[k] {
+		if iven[k] != 0 {
 			for i := 22; i < 84; i++ {
 				for j := 0; j <= k; j++ {
 					if i == iven[j] {

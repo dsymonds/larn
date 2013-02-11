@@ -47,7 +47,7 @@ func loselevel() {
 
 	subroutine to increase experience points
 */
-func raiseexperience(x int32) {
+func raiseexperience(x int) {
 	i := c[LEVEL]
 	c[EXPERIENCE] += x
 	for c[EXPERIENCE] >= skill[c[LEVEL]] && c[LEVEL] < MAXPLEVEL {
@@ -72,7 +72,7 @@ func raiseexperience(x int32) {
 
 	subroutine to lose experience points
 */
-func loseexperience(x int32) {
+func loseexperience(x int) {
 	i := c[LEVEL]
 	c[EXPERIENCE] -= x
 	if c[EXPERIENCE] < 0 {
@@ -187,13 +187,13 @@ func makemonst(lev int) int {
 	tmp := WATERLORD
 	if lev < 5 {
 		for tmp == WATERLORD {
-			x = monstlevel[lev-1]
-			tmp = rnd(icond(x, x, 1))
+			x := monstlevel[lev-1]
+			tmp = rnd(icond(x != 0, x, 1))
 		}
 	} else {
 		for tmp == WATERLORD {
-			x = monstlevel[lev-1] - monstlevel[lev-4]
-			tmp = rnd(icond(x, x, 1)) + monstlevel[lev-4]
+			x := monstlevel[lev-1] - monstlevel[lev-4]
+			tmp = rnd(icond(x != 0, x, 1)) + monstlevel[lev-4]
 		}
 	}
 
@@ -210,7 +210,7 @@ func makemonst(lev int) int {
 */
 func positionplayer() {
 	try := 2
-	for (item[playerx][playery] || mitem[playerx][playery]) && try != 0 {
+	for (item[playerx][playery] != 0 || mitem[playerx][playery] != 0) && try != 0 {
 		playerx++
 		if playerx >= MAXX-1 {
 			playerx = 1
@@ -297,9 +297,9 @@ func recalc() {
 	/* now for regeneration abilities based on rings	 */
 	c[REGEN] = 1
 	c[ENERGY] = 0
-	j = 0
+	j := 0
 	for k := 25; k > 0; k-- {
-		if iven[k] {
+		if iven[k] != 0 {
 			j = k
 			k = 0
 		}
@@ -438,7 +438,7 @@ func drop_object(k int) int {
 		lprintf("\nYou don't have item %c! ", k+'a')
 		return 1
 	}
-	if item[playerx][playery] {
+	if item[playerx][playery] != 0 {
 		beep()
 		lprcat("\nThere's something here already")
 		return 1
@@ -546,7 +546,7 @@ func pocketfull() int {
 func nearbymonst() int {
 	for tmp := playerx - 1; tmp < playerx+2; tmp++ {
 		for tmp2 := playery - 1; tmp2 < playery+2; tmp2++ {
-			if mitem[tmp][tmp2] {
+			if mitem[tmp][tmp2] != 0 {
 				return 1 /* if monster nearby */
 			}
 		}
@@ -562,7 +562,7 @@ func stealsomething() int {
 	j := 100
 	for {
 		i := rund(26)
-		if iven[i] {
+		if iven[i] != 0 {
 			if c[WEAR] != i {
 				if c[WIELD] != i {
 					if c[SHIELD] != i {
@@ -587,7 +587,7 @@ func stealsomething() int {
 */
 func emptyhanded() int {
 	for i := 0; i < 26; i++ {
-		if iven[i] {
+		if iven[i] != 0 {
 			if i != c[WIELD] {
 				if i != c[WEAR] {
 					if i != c[SHIELD] {
@@ -627,25 +627,25 @@ func creategem() {
 	that affects these characteristics
 */
 func adjustcvalues(theitem, arg int) {
-	flag := 0
+	flag := false
 	switch theitem {
 	case ODEXRING:
 		c[DEXTERITY] -= arg + 1
-		flag = 1
+		flag = true
 	case OSTRRING:
 		c[STREXTRA] -= arg + 1
-		flag = 1
+		flag = true
 	case OCLEVERRING:
 		c[INTELLIGENCE] -= arg + 1
-		flag = 1
+		flag = true
 	case OHAMMER:
 		c[DEXTERITY] -= 10
 		c[STREXTRA] -= 10
 		c[INTELLIGENCE] += 10
-		flag = 1
+		flag = true
 	case OSWORDofSLASHING:
 		c[DEXTERITY] -= 5
-		flag = 1
+		flag = true
 	case OORBOFDRAGON:
 		c[SLAYING]--
 		return
@@ -665,7 +665,7 @@ func adjustcvalues(theitem, arg int) {
 		return
 
 	default:
-		flag = 1
+		flag = true
 	}
 	if flag {
 		bottomline()
@@ -752,10 +752,10 @@ func packweight() int {
 /* macros to generate random numbers   1<=rnd(N)<=N   0<=rund(N)<=N-1 */
 func rnd(x int) int {
 	randx = randx*1103515245 + 12345
-	return ((randx >> 7) % x) + 1
+	return int(((randx >> 7) % uint32(x)) + 1)
 }
 
 func rund(x int) int {
 	randx = randx*1103515245 + 12345
-	return (randx >> 7) % x
+	return int((randx >> 7) % uint32(x))
 }

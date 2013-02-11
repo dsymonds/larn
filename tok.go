@@ -173,11 +173,11 @@ func readopts() {
 				i++;	// eat leading whitespace
 
 			if (strcmp(i, "bold-objects") == 0)
-				boldon = 1;
+				boldon = true
 			else if (strcmp(i, "enable-checkpointing") == 0)
 				ckpflag = 1;
 			else if (strcmp(i, "inverse-objects") == 0)
-				boldon = 0;
+				boldon = false
 			else if (strcmp(i, "female") == 0)
 				sex = 0;	// male or female
 			else if (strcmp(i, "monster:") == 0) {	// name favorite monster

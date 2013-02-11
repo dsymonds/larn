@@ -320,7 +320,7 @@ const (
 
 /*
 extern char     VERSION, SUBVERSION;
-extern u_char   boldon, cheat, ckpflag;
+extern u_char   cheat, ckpflag;
 extern const char *class[];
 extern u_char   course[];
 extern char     diagfile[], helpfile[], ckpfile[], larnlevels[],
@@ -332,14 +332,12 @@ extern char     logfile[], loginname[], logname[], lastmonst[];
 extern u_char  *lpbuf, *lpend;
 extern u_char  *lpnt, moved[MAXX][MAXY], mitem[MAXX][MAXY], monstlevel[];
 extern char     monstnamelist[], objnamelist[];
-extern u_char   nch[], ndgg[], nlpts[], nomove, nosignal, nowelcome;
-extern u_char   nplt[], nsw[];
+extern u_char   nomove, nosignal, nowelcome;
 extern const char *objectname[];
 extern const char *potionhide[];
 extern const char *spelcode[], *spelname[], *spelmes[];
 extern char     spelweird[MAXMONST + 8][SPNUM];
-extern u_char   potprob[];
-extern u_char   predostuff, restorflag, scprob[];
+extern u_char   predostuff, restorflag;
 extern u_char   screen[MAXX][MAXY], sex;
 extern const char *speldescript[];
 extern const char *scrollhide[];
@@ -363,7 +361,7 @@ extern int      rmst, lasttime;
 */
 
 func hardcond(a, b int) int {
-	if c[HARDGAME] {
+	if c[HARDGAME] != 0 {
 		return a
 	}
 	return b
@@ -426,7 +424,7 @@ func cltoeoln() { lprcat("\033[K") }
 func lprc(ch byte) { os.Stderr.Write([]byte{ch}) }
 
 /* macro to seed the random number generator */
-func seedrand(x int) { randx = x }
+func seedrand(x uint32) { randx = x }
 
 /* macros for miscellaneous data conversion */
 func min(x, y int) int {
