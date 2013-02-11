@@ -623,18 +623,18 @@ func cl_line(x, y int) {
 func cl_up(x, y int) {
 	// TODO
 	/*
-	#ifdef VT100
-		cursor(x, y);
-		lprcat("\33[1J\33[2K");
-	#else	// VT100
-		int    i;
-		cursor(1, 1);
-		for (i = 1; i <= y; i++) {
-			*lpnt++ = CL_LINE;
-			*lpnt++ = '\n';
-		}
-		cursor(x, y);
-	#endif	// VT100
+		#ifdef VT100
+			cursor(x, y);
+			lprcat("\33[1J\33[2K");
+		#else	// VT100
+			int    i;
+			cursor(1, 1);
+			for (i = 1; i <= y; i++) {
+				*lpnt++ = CL_LINE;
+				*lpnt++ = '\n';
+			}
+			cursor(x, y);
+		#endif	// VT100
 	*/
 }
 
@@ -644,24 +644,24 @@ func cl_up(x, y int) {
 func cl_dn(x, y int) {
 	// TODO
 	/*
-	#ifdef VT100
-		cursor(x, y);
-		lprcat("\33[J\33[2K");
-	#else	// VT100
-		int    i;
-		cursor(1, y);
-		if (!clr_eos) {
-			*lpnt++ = CL_LINE;
-			for (i = y; i <= 24; i++) {
-				*lpnt++ = CL_LINE;
-				if (i != 24)
-					*lpnt++ = '\n';
-			}
+		#ifdef VT100
 			cursor(x, y);
-		} else
-			*lpnt++ = CL_DOWN;
-		cursor(x, y);
-	#endif	// VT100
+			lprcat("\33[J\33[2K");
+		#else	// VT100
+			int    i;
+			cursor(1, y);
+			if (!clr_eos) {
+				*lpnt++ = CL_LINE;
+				for (i = y; i <= 24; i++) {
+					*lpnt++ = CL_LINE;
+					if (i != 24)
+						*lpnt++ = '\n';
+				}
+				cursor(x, y);
+			} else
+				*lpnt++ = CL_DOWN;
+			cursor(x, y);
+		#endif	// VT100
 	*/
 }
 

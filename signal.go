@@ -55,29 +55,29 @@ func tstop(n int) {
 	}
 	// TODO
 	/*
-		lcreat((char *) 0);
-		clearvt100();
-		lflush();
-		signal(SIGTSTP, SIG_DFL);
-	#ifdef SIGVTALRM
+			lcreat((char *) 0);
+			clearvt100();
+			lflush();
+			signal(SIGTSTP, SIG_DFL);
+		#ifdef SIGVTALRM
 	*/
 	/*
 	 * looks like BSD4.2 or higher - must clr mask for signal to take
 	 * effect
 	 */
 	/*
-		sigsetmask(sigblock(0) & ~bit(SIGTSTP));
-	#endif
-		kill(getpid(), SIGTSTP);
+			sigsetmask(sigblock(0) & ~bit(SIGTSTP));
+		#endif
+			kill(getpid(), SIGTSTP);
 
-		setupvt100();
-		signal(SIGTSTP, tstop);
-		if (predostuff == 1)
-			s2choose();
-		else
-			drawscreen();
-		showplayer();
-		lflush();
+			setupvt100();
+			signal(SIGTSTP, tstop);
+			if (predostuff == 1)
+				s2choose();
+			else
+				drawscreen();
+			showplayer();
+			lflush();
 	*/
 }
 
