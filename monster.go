@@ -1114,7 +1114,7 @@ func hitmonster(x, y int) {
 	if monst == 0 {
 		return
 	}
-	hit3flag = 1
+	hit3flag = true
 	ifblind(x, y)
 	tmp := monster[monst].armorclass + c[LEVEL] + c[DEXTERITY] + c[WCLASS]/4 - 12
 	cursors()
@@ -1234,7 +1234,7 @@ func hitplayer(x, y int) {
 		show1cell(x, y)
 	}
 	bias := c[HARDGAME] + 1
-	hitflag, hit2flag, hit3flag = 1, 1, 1
+	hitflag, hit2flag, hit3flag = true, true, true
 	yrepcount = 0
 	cursors()
 	ifblind(x, y)

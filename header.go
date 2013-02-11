@@ -318,7 +318,7 @@ const (
 
 /*
 extern char     VERSION, SUBVERSION;
-extern u_char   cheat, ckpflag;
+extern u_char   ckpflag;
 extern const char *class[];
 extern u_char   course[];
 extern char     diagfile[], helpfile[], ckpfile[], larnlevels[],
@@ -326,11 +326,11 @@ extern char     diagfile[], helpfile[], ckpfile[], larnlevels[],
 		scorefile[];
 extern u_char   item[MAXX][MAXY], iven[], know[MAXX][MAXY];
 extern const char *levelname[];
-extern char     logfile[], loginname[], logname[], lastmonst[];
+extern char     logfile[], lastmonst[];
 extern u_char  *lpbuf, *lpend;
 extern u_char  *lpnt, moved[MAXX][MAXY], mitem[MAXX][MAXY], monstlevel[];
 extern char     monstnamelist[], objnamelist[];
-extern u_char   nomove, nosignal, nowelcome;
+extern u_char   nosignal;
 extern const char *objectname[];
 extern const char *potionhide[];
 extern const char *spelcode[], *spelname[], *spelmes[];
@@ -340,11 +340,11 @@ extern u_char   screen[MAXX][MAXY], sex;
 extern const char *speldescript[];
 extern const char *scrollhide[];
 extern u_char   splev[], stealth[MAXX][MAXY];
-extern short    diroffx[], diroffy[], hitflag, hit2flag, hit3flag, hitp[MAXX][MAXY];
+extern short    diroffx[], diroffy[], hitp[MAXX][MAXY];
 extern short    iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
                 lastpy;
 extern short    nobeep, oldx, oldy, playerx, playery, level;
-extern int      enable_scroll, srcount, yrepcount, userid, wisid;
+extern int      enable_scroll, srcount, userid, wisid;
 extern gid_t    gid, egid;
 extern long     outstanding_taxes, skill[], gltime, c[], cbak[];
 extern time_t	initialtime;

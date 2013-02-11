@@ -345,7 +345,7 @@ func fsorry() {
 	lprcat("\nSorry, but your savefile has been altered.\n")
 	lprcat("However, seeing as I am a good sport, I will let you play.\n")
 	lprcat("Be advised though, you won't be placed on the normal scoreboard.")
-	cheat = 1
+	cheat = true
 	nap(4000)
 }
 

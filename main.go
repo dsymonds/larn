@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 )
 
 const copyright = "\nLarn is copyrighted 1986 by Noah Morgan.\n"
@@ -11,7 +12,7 @@ var dropflag = 0           /* if 1 then don't lookforobject() next round */
 var rmst = 80              /* random monster creation counter		 */
 var userid int             /* the players login user id number */
 var gid, egid int          /* used for security */
-var nowelcome, nomove byte /* if (nomove) then don't count next iteration as a move */
+var nowelcome, nomove bool /* if (nomove) then don't count next iteration as a move */
 var viewflag int8
 
 /*
@@ -44,7 +45,7 @@ const cmdhelp = `Cmd line format: larn [-slicnh] [-o<optsfile>] [-##] [++]
 func main() {
 	egid = os.Getegid()
 	gid = os.Getgid()
-	setegid(gid) /* give up "games" if we have it */
+	//setegid(gid) /* give up "games" if we have it */
 	/*
 	 *	first task is to identify the player
 	 */
@@ -106,7 +107,7 @@ func main() {
 	/*
 	 *	now make scoreboard if it is not there (don't clear)
 	 */
-	if access(scorefile, 0) == -1 { /* not there */
+	if !exists(scorefile) { /* not there */
 		makeboard()
 	}
 
@@ -140,7 +141,7 @@ func main() {
 					exit(0);
 
 				case 'n':	// no welcome msg
-					nowelcome = 1;
+					nowelcome = true
 					argv[i][0] = 0;
 					break;
 
@@ -175,7 +176,7 @@ func main() {
 				clear();
 				restorflag = 1;
 				if (argv[i][1] == '+') {
-					hitflag = 1;
+					hitflag = true
 					restoregame(ckpfile);	// restore checkpointed game
 				}
 				i = argc;
@@ -190,10 +191,10 @@ func main() {
 		log.Fatal("Can't obtain playerid")
 	}
 
-	if access(savefilename, 0) == 0 { /* restore game if need to */
+	if exists(savefilename) { /* restore game if need to */
 		clear()
 		restorflag = 1
-		hitflag = 1
+		hitflag = true
 		restoregame(savefilename) /* restore last game	 */
 	}
 	sigsetup()      /* trap all needed signals	 */
@@ -203,7 +204,7 @@ func main() {
 		makeplayer()    /* make the character that will play			 */
 		newcavelevel(0) /* make the dungeon						 	 */
 		predostuff = 1  /* tell signals that we are in the welcome screen */
-		if nowelcome == 0 {
+		if !nowelcome {
 			welcome() /* welcome the player to the game */
 		}
 	}
@@ -212,15 +213,15 @@ func main() {
 
 	//nice(1);		/* games should be run niced */
 
-	yrepcount, hit2flag = 0, 0
+	yrepcount, hit2flag = 0, false
 	for {
 		if dropflag == 0 {
 			lookforobject() /* see if there is an object here	 */
 		} else {
 			dropflag = 0 /* don't show it just dropped an item */
 		}
-		if hitflag == 0 {
-			if c[HASTEMONST] {
+		if !hitflag {
+			if c[HASTEMONST] != 0 {
 				movemonst()
 			}
 			movemonst()
@@ -233,14 +234,14 @@ func main() {
 		if hit3flag {
 			flushall()
 		}
-		hitflag, hit3flag = 0, 0
-		nomove = 1
+		hitflag, hit3flag = false, false
+		nomove = true
 		bot_linex() /* update bottom line */
 		for nomove {
 			if hit3flag {
 				flushall()
 			}
-			nomove = 0
+			nomove = false
 			parse()
 		} /* get commands and make moves	 */
 		regen() /* regenerate hp and spells			 */
@@ -252,6 +253,11 @@ func main() {
 			}
 		}
 	}
+}
+
+func exists(filename string) bool {
+	_, err := os.Stat(filename)
+	return err == nil
 }
 
 /*
@@ -275,7 +281,7 @@ func qshowstr() {
 	srcount = 0
 	sigsav := nosignal
 	nosignal = 1 /* don't allow ^c etc */
-	if c[GOLD] {
+	if c[GOLD] != 0 {
 		lprintf(".)   %d gold pieces", c[GOLD])
 		srcount++
 	}
@@ -506,7 +512,7 @@ func show3(indx int) {
 		show1(indx, scrollname)
 
 	case OLARNEYE, OBOOK, OSPIRITSCARAB, ODIAMOND, ORUBY, OCUBEofUNDEAD, OEMERALD, OCHEST, OCOOKIE, OSAPPHIRE, ONOTHEFT:
-		show1(indx, NULL)
+		show1(indx, nil)
 
 	default:
 		lprintf("\n%c)   %s", indx+'a', objectname[iven[indx]])
@@ -534,7 +540,7 @@ func show3(indx int) {
 	subroutine to randomly create monsters if needed
 */
 func randmonst() {
-	if c[TIMESTOP] {
+	if c[TIMESTOP] != 0 {
 		return /* don't make monsters if time is stopped	 */
 	}
 	rmst--
@@ -603,7 +609,7 @@ func parse() {
 			return /* southwest	 */
 
 		case '.':
-			if yrepcount {
+			if yrepcount > 0 {
 				viewflag = 1
 			}
 			return /* stay here		 */
@@ -620,7 +626,7 @@ func parse() {
 
 		case 'r':
 			yrepcount = 0
-			if c[BLINDCOUNT] {
+			if c[BLINDCOUNT] != 0 {
 				cursors()
 				lprcat("\nYou can't read anything when you're blind!")
 			} else if c[TIMESTOP] == 0 {
@@ -649,7 +655,7 @@ func parse() {
 
 		case 'i':
 			yrepcount = 0
-			nomove = 1
+			nomove = true
 			showstr()
 			return /* status		 */
 
@@ -663,13 +669,13 @@ func parse() {
 		case 'D':
 			yrepcount = 0
 			seemagic(0)
-			nomove = 1
+			nomove = true
 			return /* list spells and scrolls */
 
 		case '?':
 			yrepcount = 0
 			help()
-			nomove = 1
+			nomove = true
 			return /* give the help screen */
 
 		case 'S':
@@ -725,7 +731,7 @@ func parse() {
 		case '_': /* this is the fudge player password for wizard mode */
 			yrepcount = 0
 			cursors()
-			nomove = 1
+			nomove = true
 			if !WIZID || userid != wisid {
 				lprcat("Sorry, you are not empowered to be a wizard.\n")
 				scbr() /* system("stty -echo cbreak"); */
@@ -750,42 +756,42 @@ func parse() {
 			raiseexperience(6000000)
 			c[AWARENESS] += 25000
 			{
-				for i = 0; i < MAXY; i++ {
-					for j = 0; j < MAXX; j++ {
+				for i := 0; i < MAXY; i++ {
+					for j := 0; j < MAXX; j++ {
 						know[j][i] = true
 					}
 				}
-				for i = 0; i < SPNUM; i++ {
+				for i := 0; i < SPNUM; i++ {
 					spelknow[i] = true
 				}
-				for i = 0; i < MAXSCROLL; i++ {
+				for i := 0; i < MAXSCROLL; i++ {
 					scrollname[i] = scrollhide[i]
 				}
-				for i = 0; i < MAXPOTION; i++ {
+				for i := 0; i < MAXPOTION; i++ {
 					potionname[i] = potionhide[i]
 				}
 			}
-			for i = 0; i < MAXSCROLL; i++ {
+			for i := 0; i < MAXSCROLL; i++ {
 				if len(scrollname[i]) > 2 { /* no null items */
 					item[i][0] = OSCROLL
 					iarg[i][0] = i
 				}
 			}
-			for i = MAXX - 1; i > MAXX-1-MAXPOTION; i-- {
+			for i := MAXX - 1; i > MAXX-1-MAXPOTION; i-- {
 				if len(potionname[i-MAXX+MAXPOTION]) > 2 { /* no null items */
 					item[i][0] = OPOTION
 					iarg[i][0] = i - MAXX + MAXPOTION
 				}
 			}
-			for i = 1; i < MAXY; i++ {
+			for i := 1; i < MAXY; i++ {
 				item[0][i] = i
 				iarg[0][i] = 0
 			}
-			for i = MAXY; i < MAXY+MAXX; i++ {
+			for i := MAXY; i < MAXY+MAXX; i++ {
 				item[i-MAXY][MAXY-1] = i
 				iarg[i-MAXY][MAXY-1] = 0
 			}
-			for i = MAXX + MAXY; i < MAXX+MAXY+MAXY; i++ {
+			for i := MAXX + MAXY; i < MAXX+MAXY+MAXY; i++ {
 				item[MAXX-1][i-MAXX-MAXY] = i
 				iarg[MAXX-1][i-MAXX-MAXY] = 0
 			}
@@ -814,7 +820,7 @@ func parse() {
 			lprintf("\nThe stuff you are carrying presently weighs %d pounds", packweight())
 		case ' ':
 			yrepcount = 0
-			nomove = 1
+			nomove = true
 			return
 
 		case 'v':
@@ -825,7 +831,7 @@ func parse() {
 			if wizard {
 				lprcat(" Wizard")
 			}
-			nomove = 1
+			nomove = true
 			if cheat {
 				lprcat(" Cheater")
 			}
@@ -835,18 +841,18 @@ func parse() {
 		case 'Q':
 			yrepcount = 0
 			quit()
-			nomove = 1
+			nomove = true
 			return /* quit		 */
 
 		case 'L' - 64:
 			yrepcount = 0
 			drawscreen()
-			nomove = 1
+			nomove = true
 			return /* look		 */
 
 		case 'A':
 			yrepcount = 0
-			nomove = 1
+			nomove = true
 			if WIZID && wizard {
 				diag()
 				return
@@ -867,7 +873,7 @@ func parse() {
 }
 
 func parse2() {
-	if c[HASTEMONST] {
+	if c[HASTEMONST] != 0 {
 		movemonst()
 	}
 	movemonst() /* move the monsters		 */
@@ -880,7 +886,7 @@ func run(dir int) {
 	for i != 0 {
 		i = moveplayer(dir)
 		if i > 0 {
-			if c[HASTEMONST] {
+			if c[HASTEMONST] != 0 {
 				movemonst()
 			}
 			movemonst()
@@ -1005,7 +1011,7 @@ func dropobj() {
 			showstr()
 		} else {
 			if i == '.' { /* drop some gold */
-				if *p {
+				if *p != 0 {
 					lprcat("\nThere's something here already!")
 					return
 				}
@@ -1104,7 +1110,7 @@ func eatcookie() {
 				if iven[i-'a'] == OCOOKIE {
 					lprcat("\nThe cookie was delicious.")
 					iven[i-'a'] = 0
-					if !c[BLINDCOUNT] {
+					if c[BLINDCOUNT] == 0 {
 						p := fortune()
 						if p != "" {
 							lprcat("  Inside you find a scrap of paper that says:\n")

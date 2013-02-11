@@ -22,7 +22,7 @@ var usermpoint byte = 0       /* the user monster pointer */
 */
 func yylex() int {
 	if hit2flag {
-		hit2flag = 0
+		hit2flag = false
 		yrepcount = 0
 		return ' '
 	}
@@ -201,7 +201,7 @@ func readopts() {
 				strlcpy(logname, i, LOGNAMESIZE);
 				flag = 0;
 			} else if (strcmp(i, "no-introduction") == 0)
-				nowelcome = 1;
+				nowelcome = true
 			else if (strcmp(i, "no-beep") == 0)
 				nobeep = 1;
 			else if (strcmp(i, "process-name:") == 0) {

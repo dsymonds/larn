@@ -465,7 +465,7 @@ func showplayer() {
 	subroutine to move the player from one room to another
 	returns 0 if can't move in that direction or hit a monster or on an object
 	else returns 1
-	nomove is set to 1 to stop the next move (inadvertent monsters hitting
+	nomove is set to true to stop the next move (inadvertent monsters hitting
 	players when walking into walls) if player walks off screen or into wall
 */
 var diroffx = []int{0, 0, 1, 0, -1, 1, -1, 1, -1}
@@ -485,14 +485,14 @@ func moveplayer(dir int) int {
 	kk := playerx + diroffx[dir]
 	mm := playery + diroffy[dir]
 	if kk < 0 || kk >= MAXX || mm < 0 || mm >= MAXY {
-		nomove = 1
+		nomove = true
 		yrepcount = 0
 		return 0
 	}
 	i := item[kk][mm]
 	j := mitem[kk][mm]
 	if i == OWALL && c[WTW] == 0 {
-		nomove = 1
+		nomove = true
 		yrepcount = 0
 		return 0
 	} /* hit a wall	 */

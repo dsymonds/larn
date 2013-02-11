@@ -98,19 +98,19 @@ var nosignal byte /* set to 1 to disable the signals from doing anything */
 * screen 2 - we are in the normal game	 */
 var predostuff byte
 
-var loginname [20]int8        /* players login name */
-var logname [LOGNAMESIZE]int8 /* players name storage for scoring				 */
-var sex byte = 1              /* default is a man  0=woman						 */
-var boldon = true             /* 1=bold objects  0=inverse objects				 */
-var ckpflag byte = 0          /* 1 if want checkpointing of game, 0 otherwise	 */
-var cheat byte = 0            /* 1 if the player has fudged save file			 */
-var level = 0                 /* cavelevel player is on = c[CAVELEVEL]			 */
-var wizard = false            /* the wizard mode flag							 */
-var lastnum = 0               /* the number of the monster last hitting player 	 */
-var hitflag int16 = 0         /* flag for if player has been hit when running 	 */
-var hit2flag int16 = 0        /* flag for if player has been hit when running 	 */
-var hit3flag int16 = 0        /* flag for if player has been hit flush input 	 */
-var playerx, playery int      /* the room on the present level of the player		 */
+var loginname string     /* players login name */
+var logname string       /* players name storage for scoring				 */
+var sex byte = 1         /* default is a man  0=woman						 */
+var boldon = true        /* 1=bold objects  0=inverse objects				 */
+var ckpflag byte = 0     /* 1 if want checkpointing of game, 0 otherwise	 */
+var cheat bool           /* whether the player has fudged save file			 */
+var level = 0            /* cavelevel player is on = c[CAVELEVEL]			 */
+var wizard = false       /* the wizard mode flag							 */
+var lastnum = 0          /* the number of the monster last hitting player 	 */
+var hitflag bool         /* flag for if player has been hit when running 	 */
+var hit2flag bool        /* flag for if player has been hit when running 	 */
+var hit3flag = false     /* flag for if player has been hit flush input 	 */
+var playerx, playery int /* the room on the present level of the player		 */
 
 var lastpx, lastpy int /* 0 --- MAXX-1  or  0 --- MAXY-1					 */
 var oldx, oldy int
@@ -285,7 +285,7 @@ var monster = [...]monst{
 
 /* name array for scrolls		 */
 
-var scrollname = [...]string{"", "", "", "", "", "", "", "", "", "", "", "", "", "",
+var scrollname = []string{"", "", "", "", "", "", "", "", "", "", "", "", "", "",
 	"", "", "", "", "", "", "", "", "", "", "", "", "", ""}
 
 var scrollhide = [...]string{
@@ -319,7 +319,7 @@ var scrollhide = [...]string{
 	"  ",
 }
 
-var potionname = [...]string{"", "", "", "", "", "", "", "", "", "", "", "", "", "",
+var potionname = []string{"", "", "", "", "", "", "", "", "", "", "", "", "", "",
 	"", "", "", "", "", "", "", "", "", "", "", "", "", "",
 	"", "", "", "", "", "", ""}
 

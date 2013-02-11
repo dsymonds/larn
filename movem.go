@@ -391,7 +391,7 @@ func mmove(aa, bb, cc, dd int) {
 		}
 	}
 	/*
-	 * if (yrepcount>1) { know[aa][bb] &= 2;  know[cc][dd] &= 2; return
+	 * if yrepcount > 1 { know[aa][bb] &= 2;  know[cc][dd] &= 2; return
 	 * }
 	 */
 	if know[aa][bb] {
