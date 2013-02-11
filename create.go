@@ -337,13 +337,13 @@ func troom(lv, xsize, ysize, tx, ty, glyph int) {
 
 	switch rnd(2) { /* locate the door on the treasure room */
 	case 1:
-		i = tx + rund(xsize)
-		j = ty + (ysize-1)*rund(2)
+		i := tx + rund(xsize)
+		j := ty + (ysize-1)*rund(2)
 		item[i][j] = OCLOSEDDOOR
 		iarg[i][j] = glyph /* on horizontal walls */
 	case 2:
-		i = tx + (xsize-1)*rund(2)
-		j = ty + rund(ysize)
+		i := tx + (xsize-1)*rund(2)
+		j := ty + rund(ysize)
 		item[i][j] = OCLOSEDDOOR
 		iarg[i][j] = glyph /* on vertical walls */
 	}
@@ -353,14 +353,14 @@ func troom(lv, xsize, ysize, tx, ty, glyph int) {
 	playery = ty + (ysize >> 1)
 	if c[HARDGAME] < 2 {
 		for playerx = tx + 1; playerx <= tx+xsize-2; playerx += 2 {
-			for i, j = 0, rnd(6); i <= j; i++ {
+			for i, j := 0, rnd(6); i <= j; i++ {
 				something(lv + 2)
 				createmonster(makemonst(lv + 1))
 			}
 		}
 	} else {
 		for playerx = tx + 1; playerx <= tx+xsize-2; playerx += 2 {
-			for i, j = 0, rnd(4); i <= j; i++ {
+			for i, j := 0, rnd(4); i <= j; i++ {
 				something(lv + 2)
 				createmonster(makemonst(lv + 3))
 			}
@@ -428,13 +428,13 @@ func makeobject(j int) {
 		fillmroom(rund(2), OEMERALD, rnd(4*j+1)+4)
 		fillmroom(rund(2), OSAPPHIRE, rnd(3*j+1)+2)
 	}
-	for i = 0; i < rnd(4)+3; i++ {
+	for i := 0; i < rnd(4)+3; i++ {
 		fillroom(OPOTION, newpotion()) /* make a POTION	 */
 	}
-	for i = 0; i < rnd(5)+3; i++ {
+	for i := 0; i < rnd(5)+3; i++ {
 		fillroom(OSCROLL, newscroll()) /* make a SCROLL	 */
 	}
-	for i = 0; i < rnd(12)+11; i++ {
+	for i := 0; i < rnd(12)+11; i++ {
 		fillroom(OGOLDPILE, 12*rnd(j+1)+(j<<3)+10) /* make GOLD	 */
 	}
 	if j == 5 {
@@ -476,9 +476,7 @@ func makeobject(j int) {
 	subroutine to fill in a number of objects of the same kind
 */
 
-func fillmroom(n, what_i, arg int) {
-	/* truncate to char width (just in case it matters) */
-	what = int8(what_i)
+func fillmroom(n, what, arg int) {
 	for i := 0; i < n; i++ {
 		fillroom(what, arg)
 	}
@@ -494,15 +492,12 @@ func froom(n, theitem, arg int) {
 	subroutine to put an object into an empty room
  *	uses a random walk
 */
-func fillroom(what_i, arg int) {
-	/* truncate to char width (just in case it matters) */
-	what := int8(what_i)
-
+func fillroom(what, arg int) {
 	c[FILLROOM]++
 
 	x := rnd(MAXX - 2)
 	y := rnd(MAXY - 2)
-	for item[x][y] {
+	for item[x][y] != 0 {
 
 		c[RANDOMWALK]++ /* count up these random walks */
 

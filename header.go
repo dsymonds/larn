@@ -20,12 +20,12 @@ const MAXOBJ = 93       /* the maximum number of objects   n < MAXOBJ */
 /* this is the structure definition of the monster data	 */
 type monst struct {
 	name         string
-	level        int8
-	armorclass   int16
+	level        int
+	armorclass   int
 	damage       int8
 	attack       int8
 	defense      int8
-	genocided    int8
+	genocided    bool
 	intelligence int8 /* monsters intelligence -- used to choose movement */
 	gold         int16
 	hitpoints    int

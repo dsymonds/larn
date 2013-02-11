@@ -1,5 +1,9 @@
 package main
 
+import (
+	"log"
+)
+
 /*
 	***************************
 	DIAG -- dungeon diagnostics
@@ -15,7 +19,7 @@ func diag() int {
 		lprcat("\ndiagnostic failure\n")
 		return -1
 	}
-	write(1, "\nDiagnosing . . .\n", 18)
+	log.Print("Diagnosing . . .")
 	lprcat("\n\nBeginning of DIAG diagnostics ----------\n")
 
 	/* for the character attributes	 */
@@ -65,23 +69,23 @@ func diag() int {
 
 	lprcat("\n\nHere's the list of available potions:\n\n")
 	for i = 0; i < MAXPOTION; i++ {
-		lprintf("%20s\n", &potionhide[i][1])
+		lprintf("%20s\n", potionhide[i][1])
 	}
 	lprcat("\n\nHere's the list of available scrolls:\n\n")
 	for i = 0; i < MAXSCROLL; i++ {
-		lprintf("%20s\n", &scrollhide[i][1])
+		lprintf("%20s\n", scrollhide[i][1])
 	}
 	lprcat("\n\nHere's the spell list:\n\n")
 	lprcat("spell          name           description\n")
 	lprcat("-------------------------------------------------------------------------------------------\n\n")
-	for j = 0; j < SPNUM; j++ {
+	for j := 0; j < SPNUM; j++ {
 		lprc(' ')
 		lprcat(spelcode[j])
 		lprintf(" %21s  %s\n", spelname[j], speldescript[j])
 	}
 
 	lprcat("\n\nFor the c[] array:\n")
-	for j = 0; j < 100; j += 10 {
+	for j := 0; j < 100; j += 10 {
 		lprintf("\nc[%2d] = ", j)
 		for i = 0; i < 9; i++ {
 			lprintf("%5d ", c[i+j])
@@ -113,29 +117,12 @@ func diag() int {
 }
 
 /*
-	subroutine to count the number of occurrences of an object
-*/
-func dcount(l int) int {
-	k := 0
-	for i = 0; i < MAXX; i++ {
-		for j = 0; j < MAXY; j++ {
-			for p = 0; p < MAXLEVEL; p++ {
-				if cell[p*MAXX*MAXY+i*MAXY+j].item == l {
-					k++
-				}
-			}
-		}
-	}
-	return k
-}
-
-/*
 	subroutine to draw the whole screen as the player knows it
 */
 func diagdrawscreen() {
-	for i = 0; i < MAXY; i++ {
+	for i := 0; i < MAXY; i++ {
 		/* for the east west walls of this line	 */
-		for j = 0; j < MAXX; j++ {
+		for j := 0; j < MAXX; j++ {
 			k := mitem[j][i]
 			if k != 0 {
 				lprc(monstnamelist[k])
@@ -155,58 +142,54 @@ func savegame(fname string) int {
 	//struct sphere *sp;
 	//struct stat     statbuf;
 
-	nosignal = 1
-	lflush()
-	savelevel()
-	ointerest()
-	if lcreat(fname) < 0 {
-		lcreat("")
-		lprintf("\nCan't open file <%s> to save game\n", fname)
-		nosignal = 0
-		return -1
-	}
-	set_score_output()
 	// TODO
-	//lwrite(beenhere, MAXLEVEL+MAXVLEVEL)
-	for k := 0; k < MAXLEVEL+MAXVLEVEL; k++ {
-		if beenhere[k] {
-			// TODO
-			//lwrite((char *) &cell[k * MAXX * MAXY], sizeof(struct cel) * MAXY * MAXX)
-		}
-	}
-	// TODO
+	return -1
 	/*
+		nosignal = 1
+		lflush()
+		savelevel()
+		ointerest()
+		if lcreat(fname) < 0 {
+			lcreat("")
+			lprintf("\nCan't open file <%s> to save game\n", fname)
+			nosignal = 0
+			return -1
+		}
+		set_score_output()
+		lwrite(beenhere, MAXLEVEL+MAXVLEVEL)
+		for k := 0; k < MAXLEVEL+MAXVLEVEL; k++ {
+			if beenhere[k] {
+				lwrite((char *) &cell[k * MAXX * MAXY], sizeof(struct cel) * MAXY * MAXX)
+			}
+		}
 		struct tms cputime
 		times(&cputime);	// get cpu time
 		c[CPUTIME] += (cputime.tms_utime + cputime.tms_stime) / 60
 		lwrite((char *) &c[0], 100 * sizeof(long))
-	*/
-	lprint(gltime)
-	lprc(level)
-	lprc(playerx)
-	lprc(playery)
-	lwrite(iven, 26)
-	lwrite(ivenarg, 26*sizeof(short))
-	for k := 0; k < MAXSCROLL; k++ {
-		lprc(scrollname[k][0])
-	}
-	for k := 0; k < MAXPOTION; k++ {
-		lprc(potionname[k][0])
-	}
-	lwrite(spelknow, SPNUM)
-	lprc(wizard)
-	lprc(rmst) /* random monster generation counter */
-	for i := 0; i < 90; i++ {
-		lprc(itm[i].qty)
-	}
-	lwrite(course, 25)
-	lprc(cheat)
-	lprc(VERSION)
-	for i := 0; i < MAXMONST; i++ {
-		lprc(monster[i].genocided) /* genocide info */
-	}
-	// TODO
-	/*
+		lprint(gltime)
+		lprc(level)
+		lprc(playerx)
+		lprc(playery)
+		lwrite(iven, 26)
+		lwrite(ivenarg, 26*sizeof(short))
+		for k := 0; k < MAXSCROLL; k++ {
+			lprc(scrollname[k][0])
+		}
+		for k := 0; k < MAXPOTION; k++ {
+			lprc(potionname[k][0])
+		}
+		lwrite(spelknow, SPNUM)
+		lprc(wizard)
+		lprc(rmst) // random monster generation counter
+		for i := 0; i < 90; i++ {
+			lprc(itm[i].qty)
+		}
+		lwrite(course, 25)
+		lprc(cheat)
+		lprc(VERSION)
+		for i := 0; i < MAXMONST; i++ {
+			lprc(monster[i].genocided) // genocide info
+		}
 		for (sp = spheres; sp; sp = sp->p)
 			lwrite((char *) sp, sizeof(struct sphere));	// save spheres of annihilation
 		time(&zzz);
@@ -216,11 +199,11 @@ func savegame(fname string) int {
 			lprint(0L);
 		else
 			lprint((long) statbuf.st_ino);	// inode #
+		lwclose()
+		lastmonst = ""
+		lcreat("")
+		nosignal = 0
 	*/
-	lwclose()
-	lastmonst = ""
-	lcreat("")
-	nosignal = 0
 	return 0
 }
 
