@@ -266,7 +266,7 @@ func drawscreen() {
 
 	for i := d_ymin; i < d_ymax; i++ {
 		for j = d_xmin; j < d_xmax; j++ {
-			if know[j][i] == 0 {
+			if !know[j][i] {
 				screen[j][i] = ' '
 			} else if mitem[j][i] != 0 {
 				screen[j][i] = monstnamelist[mitem[j][i]]
@@ -388,7 +388,7 @@ func showcell(x, y int) {
 
 	for j := miny; j <= maxy; j++ {
 		for mm = minx; mm <= maxx; mm++ {
-			if know[mm][j] == 0 {
+			if !know[mm][j] {
 				cursor(mm+1, j+1)
 				x = maxx
 				for know[x][j] {
@@ -410,7 +410,7 @@ func showcell(x, y int) {
 							resetbold()
 						}
 					}
-					know[i][j] = 1
+					know[i][j] = true
 				}
 				mm = maxx
 			}
@@ -443,7 +443,7 @@ func show1cell(x, y int) {
 			resetbold()
 		}
 	}
-	know[x][y] |= 1 /* we end up knowing about it */
+	know[x][y] = true /* we end up knowing about it */
 }
 
 /*

@@ -451,7 +451,7 @@ func drop_object(k int) int {
 	srcount = 0
 	lprcat("\n  You drop:")
 	show3(k) /* show what item you dropped */
-	know[playerx][playery] = 0
+	know[playerx][playery] = false
 	iven[k] = 0
 	if c[WIELD] == k {
 		c[WIELD] = -1

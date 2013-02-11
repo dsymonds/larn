@@ -77,7 +77,7 @@ var hitp [MAXX][MAXY]int                /* monster hp on level		 */
 var iarg [MAXX][MAXY]int                /* arg for the item array	 */
 var item [MAXX][MAXY]int                /* objects in maze if any	 */
 var know [MAXX][MAXY]bool               /* whether here before	 */
-var mitem [MAXX][MAXY]byte              /* monster item array 		 */
+var mitem [MAXX][MAXY]int               /* monster item array 		 */
 var moved [MAXX][MAXY]byte              /* monster movement flags  */
 var stealth [MAXX][MAXY]byte            /* 0=sleeping 1=awake monst */
 var iven [26]byte                       /* inventory for player			 */

@@ -752,7 +752,7 @@ func parse() {
 			{
 				for i = 0; i < MAXY; i++ {
 					for j = 0; j < MAXX; j++ {
-						know[j][i] = 1
+						know[j][i] = true
 					}
 				}
 				for i = 0; i < SPNUM; i++ {
@@ -1044,7 +1044,7 @@ func dropobj() {
 				lprintf("You drop %d gold pieces", amt)
 				iarg[playerx][playery] = i
 				bottomgold()
-				know[playerx][playery] = 0
+				know[playerx][playery] = false
 				dropflag = 1
 				return
 			}

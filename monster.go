@@ -129,7 +129,7 @@ func createmonster(mon int) {
 		if cgood(x, y, 0, 1) { /* if we can create here */
 			mitem[x][y] = mon
 			hitp[x][y] = monster[mon].hitpoints
-			stealth[x][y], know[x][y] = 0, 0
+			stealth[x][y], know[x][y] = 0, false
 			switch mon {
 			case ROTHE, POLTERGEIST, VAMPIRE:
 				stealth[x][y] = 1
@@ -189,7 +189,7 @@ func createitem(it, arg int) {
 		y := playery + diroffy[k]
 		if cgood(x, y, 1, 0) { /* if we can create here */
 			item[x][y] = it
-			know[x][y] = 0
+			know[x][y] = false
 			iarg[x][y] = arg
 			return
 		}
@@ -353,7 +353,7 @@ func speldamage(x int) {
 		vxy(&xh, &yh)               /* check bounds */
 		for i := yl; i <= yh; i++ { /* enlightenment	 */
 			for j := xl; j <= xh; j++ {
-				know[j][i] = 1
+				know[j][i] = true
 			}
 		}
 		draws(xl, xh+1, yl, yh+1)
@@ -588,9 +588,9 @@ func speldamage(x int) {
 					item[i][j] = OWALL;
 					mitem[i][j] = 0;
 					if (wizard)
-						know[i][j] = 1;
+						know[i][j] = true
 					else
-						know[i][j] = 0;
+						know[i][j] = false
 				}
 			eat(1, 1);
 			if (level == 1)
@@ -844,7 +844,7 @@ func godirect(spnum, dam int, str string, delay, cshow_i int) {
 						god3:
 							*p = 0
 						god:
-							know[x][y] = 0
+							know[x][y] = false
 							show1cell(x, y)
 						}
 					}
@@ -945,7 +945,7 @@ func tdirect(spnum int) {
 		return
 	}
 	fillmonst(m)
-	mitem[x][y], know[x][y] = 0, 0
+	mitem[x][y], know[x][y] = 0, false
 }
 
 /*
@@ -1150,7 +1150,7 @@ func hitmonster(x, y int) {
 	if monst == VAMPIRE {
 		if hitp[x][y] < 25 {
 			mitem[x][y] = BAT
-			know[x][y] = 0
+			know[x][y] = false
 		}
 	}
 }
@@ -1229,8 +1229,8 @@ func hitplayer(x, y int) {
 			return
 		}
 	}
-	if know[x][y]&1 == 0 {
-		know[x][y] = 1
+	if !know[x][y] {
+		know[x][y] = true
 		show1cell(x, y)
 	}
 	bias := c[HARDGAME] + 1
@@ -1694,7 +1694,7 @@ func annihilate() int {
 				if *p { /* if a monster there */
 					if *p < DEMONLORD+2 {
 						k += monster[*p].experience
-						*p, know[i][j] = 0, 0
+						*p, know[i][j] = 0, false
 					} else {
 						lprintf("\nThe %s barely escapes being annihilated!", monster[*p].name)
 						hitp[i][j] = (hitp[i][j] >> 1) + 1 /* lose half hit points */
@@ -1742,7 +1742,7 @@ func newsphere(x, y, dir, life int) int {
 				y = MAXY - 2;
 		}
 		if ((m = mitem[x][y]) >= DEMONLORD + 4) {	// demons dispel spheres
-			know[x][y] = 1;
+			know[x][y] = true
 			show1cell(x, y);// show the demon (ha ha)
 			cursors();
 			lprintf("\nThe %s dispels the sphere!", monster[m].name);
@@ -1783,7 +1783,7 @@ func newsphere(x, y, dir, life int) int {
 		}
 		item[x][y] = OANNIHILATION;
 		mitem[x][y] = 0;
-		know[x][y] = 1;
+		know[x][y] = true
 		show1cell(x, y);	// show the new sphere
 		sp->x = x;
 		sp->y = y;
@@ -1816,7 +1816,7 @@ func rmsphere(x, y int) int {
 			if (level == sp->lev) {	// is sphere on this level?
 				if ((x == sp->x) && (y == sp->y)) {	// locate sphere at this location
 					item[x][y] = mitem[x][y] = 0;
-					know[x][y] = 1;
+					know[x][y] = true
 					show1cell(x, y);	// show the now missing sphere
 					--c[SPHCAST];
 					if (sp == spheres) {

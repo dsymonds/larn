@@ -112,7 +112,7 @@ func ochest() {
 		case 't':
 			lprcat(" take")
 			if take(OCHEST, iarg[playerx][playery]) == 0 {
-				item[playerx][playery], know[playerx][playery] = 0, 0
+				item[playerx][playery], know[playerx][playery] = 0, false
 			}
 			return
 

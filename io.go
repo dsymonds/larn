@@ -288,14 +288,14 @@ func lwrite(s string) {
  *
  *  Returns 0 if EOF, otherwise the character
  */
-func lgetc() int32 {
+func lgetc() int {
 	var buf [1]byte
 	_, err := io_in.Read(buf[:])
 	if err != nil {
 		log.Printf("Reading from input file %s: %v", io_in.Name(), err)
 		return 0
 	}
-	return int32(buf[0])
+	return int(buf[0])
 }
 
 /*

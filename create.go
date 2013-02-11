@@ -1,5 +1,9 @@
 package main
 
+import (
+	"log"
+)
+
 /*
 	makeplayer()
 
@@ -137,7 +141,7 @@ func makemaze(k int) {
 				for j := myl; j < myh; j++ {
 					item[i][j] = 0
 					mitem[i][j] = z
-					if mitem[i][j] {
+					if mitem[i][j] != 0 {
 						hitp[i][j] = monster[z].hitpoints
 					}
 				}
@@ -146,7 +150,7 @@ func makemaze(k int) {
 	}
 	if k != MAXLEVEL - 1 {
 		my = rnd(MAXY - 2)
-		for i = 1; i < MAXX - 1; i++ {
+		for i := 1; i < MAXX - 1; i++ {
 			item[i][my] = 0
 		}
 	}
@@ -225,7 +229,7 @@ func eat(xx, yy int) {
  */
 func cannedlevel(k int) bool {
 	if lopen(larnlevels) < 0 {
-		write(1, "Can't open the maze data file\n", 30)
+		log.Print("Can't open the maze data file")
 		died(-282)
 		return false
 	}
@@ -240,7 +244,7 @@ func cannedlevel(k int) bool {
 	for i := 0; i < MAXY; i++ {
 		row := lgetl()
 		for j := 0; j < MAXX; j++ {
-			it, mit, arg, marg = 0, 0, 0, 0
+			it, mit, arg, marg := 0, 0, 0, 0
 			ch := row[0]
 			row = row[1:]
 			switch ch {
@@ -278,9 +282,9 @@ func cannedlevel(k int) bool {
 			mitem[j][i] = mit
 			hitp[j][i] = marg
 
-			know[j][i] = 0
+			know[j][i] = false
 			if WIZID && wizard {
-				know[j][i] = 1
+				know[j][i] = true
 			}
 		}
 	}
@@ -533,7 +537,7 @@ func fillmonst(what int) int {
 		y := rnd(MAXY - 2)
 		if item[x][y] == 0 && mitem[x][y] == 0 && playerx != x || playery != y {
 			mitem[x][y] = what
-			know[x][y] = 0
+			know[x][y] = false
 			hitp[x][y] = monster[what].hitpoints
 			return 0
 		}

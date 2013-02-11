@@ -28,7 +28,7 @@ type monst struct {
 	genocided    int8
 	intelligence int8 /* monsters intelligence -- used to choose movement */
 	gold         int16
-	hitpoints    int16
+	hitpoints    int
 	experience   uint32
 }
 
@@ -392,10 +392,10 @@ func newdagger() int { return ndgg[rund(13)] }
 func newsword() int { return nsw[rund(hardcond(6, 13))] }
 
 /* macro to destroy object at present location */
-func forget() { item[playerx][playery], know[playerx][playery] = 0, 0 }
+func forget() { item[playerx][playery], know[playerx][playery] = 0, false }
 
 /* macro to wipe out a monster at a location */
-func disappear(x, y int) { mitem[x][y], know[x][y] = 0, 0 }
+func disappear(x, y int) { mitem[x][y], know[x][y] = 0, false }
 
 // TODO: fix term codes?
 

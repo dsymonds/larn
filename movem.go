@@ -373,7 +373,7 @@ func mmove(aa, bb, cc, dd int) {
 	if c[BLINDCOUNT] {
 		return /* if blind don't show where monsters are	 */
 	}
-	if know[cc][dd] & 1 {
+	if know[cc][dd] {
 		if flag {
 			cursors()
 		}
@@ -394,10 +394,10 @@ func mmove(aa, bb, cc, dd int) {
 	 * if (yrepcount>1) { know[aa][bb] &= 2;  know[cc][dd] &= 2; return
 	 * }
 	 */
-	if know[aa][bb] & 1 {
+	if know[aa][bb] {
 		show1cell(aa, bb)
 	}
-	if know[cc][dd] & 1 {
+	if know[cc][dd] {
 		show1cell(cc, dd)
 	}
 }

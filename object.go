@@ -110,7 +110,7 @@ func lookforobject() {
 			return
 		}
 		item[playerx][playery] = OTELEPORTER
-		know[playerx][playery] = 1
+		know[playerx][playery] = true
 		fallthrough
 
 	case OTELEPORTER:
@@ -272,7 +272,7 @@ func lookforobject() {
 			newcavelevel(1)
 			playerx = 33
 			playery = MAXY - 2
-			item[33][MAXY-1], know[33][MAXY-1], mitem[33][MAXY-1] = 0, 0, 0
+			item[33][MAXY-1], know[33][MAXY-1], mitem[33][MAXY-1] = 0, false, 0
 			draws(0, MAXX, 0, MAXY)
 			bot_linex()
 			return
@@ -371,7 +371,7 @@ func lookforobject() {
 			return /* for an arrow trap */
 		}
 		item[playerx][playery] = OTRAPARROW
-		know[playerx][playery] = 0
+		know[playerx][playery] = false
 		fallthrough
 
 	case OTRAPARROW:
@@ -387,7 +387,7 @@ func lookforobject() {
 			return /* for a dart trap */
 		}
 		item[playerx][playery] = ODARTRAP
-		know[playerx][playery] = 0
+		know[playerx][playery] = false
 		fallthrough
 
 	case ODARTRAP:
@@ -407,7 +407,7 @@ func lookforobject() {
 			return /* for a trap door */
 		}
 		item[playerx][playery] = OTRAPDOOR
-		know[playerx][playery] = 1
+		know[playerx][playery] = true
 		fallthrough
 
 	case OTRAPDOOR:
@@ -666,7 +666,7 @@ func quaffpotion(pot int) {
 		for i := 0; i < MAXY; i++ {
 			for j := 0; j < MAXX; j++ {
 				if item[j][i] == OGOLDPILE || item[j][i] == OMAXGOLD {
-					know[j][i] = 1
+					know[j][i] = true
 					show1cell(j, i)
 				}
 			}
@@ -681,7 +681,7 @@ func quaffpotion(pot int) {
 			for j := 0; j < MAXX; j++ {
 				k := item[j][i]
 				if k == ODIAMOND || k == ORUBY || k == OEMERALD || k == OMAXGOLD || k == OSAPPHIRE || k == OLARNEYE || k == OGOLDPILE {
-					know[j][i] = 1
+					know[j][i] = true
 					show1cell(j, i)
 				}
 			}
@@ -737,7 +737,7 @@ func quaffpotion(pot int) {
 		for i := 0; i < MAXY; i++ {
 			for j := 0; j < MAXX; j++ {
 				if mitem[j][i] {
-					know[j][i] = 1
+					know[j][i] = true
 					show1cell(j, i)
 				}
 			}
@@ -799,7 +799,7 @@ func quaffpotion(pot int) {
 		lprcat("\nYou stagger for a moment . .")
 		for i := 0; i < MAXY; i++ {
 			for j := 0; j < MAXX; j++ {
-				know[j][i] = 0
+				know[j][i] = false
 			}
 		}
 		nap(2000)
@@ -939,7 +939,7 @@ func read_scroll(typ int) {
 		xl = max(playerx-25, 0)
 		for i := yl; i < yh; i++ {
 			for j := xl; j < xh; j++ {
-				know[j][i] = 1
+				know[j][i] = true
 			}
 		}
 		nap(2000)
@@ -1013,7 +1013,7 @@ func read_scroll(typ int) {
 		lprcat("\nYou have been granted enlightenment!") /* magic mapping */
 		for i := 0; i < MAXY; i++ {
 			for j := 0; j < MAXX; j++ {
-				know[j][i] = 1
+				know[j][i] = true
 			}
 		}
 		nap(2000)
@@ -1220,7 +1220,7 @@ func ogold(arg int) {
 	lprintf("\nIt is worth %d!", i)
 	c[GOLD] += i
 	bottomgold()
-	item[playerx][playery], know[playerx][playery] = 0, 0 /* destroy gold	 */
+	item[playerx][playery], know[playerx][playery] = 0, false /* destroy gold	 */
 }
 
 func ohome() {
