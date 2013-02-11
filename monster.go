@@ -1,5 +1,9 @@
 package main
 
+import (
+	"fmt"
+)
+
 /*
  * This file contains the following functions:
  * ----------------------------------------------------------------------------
@@ -124,8 +128,8 @@ func createmonster(mon int) {
 		if k > 8 {
 			k = 1 /* wraparound the diroff arrays */
 		}
-		x = playerx + diroffx[k]
-		y = playery + diroffy[k]
+		x := playerx + diroffx[k]
+		y := playery + diroffy[k]
 		if cgood(x, y, 0, 1) { /* if we can create here */
 			mitem[x][y] = mon
 			hitp[x][y] = monster[mon].hitpoints
@@ -151,7 +155,7 @@ func createmonster(mon int) {
  * 		  if monst==TRUE check for no monster at this location
  * This routine will return FALSE if at a wall or the dungeon exit on level 1
  */
-func cgood(x, y, theitem, monst int) int {
+func cgood(x, y, theitem, monst int) bool {
 	if y >= 0 && y <= MAXY-1 && x >= 0 && x <= MAXX-1 {
 		/* within bounds? */
 		if item[x][y] != OWALL { /* can't make anything on walls */
@@ -161,13 +165,13 @@ func cgood(x, y, theitem, monst int) int {
 				if monst == 0 || mitem[x][y] == 0 {
 					if level != 1 || x != 33 || y != MAXY-1 {
 						/* not exit to level 1 */
-						return 1
+						return true
 					}
 				}
 			}
 		}
 	}
-	return 0
+	return false
 }
 
 /*
@@ -211,8 +215,9 @@ func cast() {
 	const eys = "\nEnter your spell: "
 	lprcat(eys)
 	c[SPELLS]--
+	var a int
 	for {
-		a := ttgetch()
+		a = ttgetch()
 		if a != 'D' {
 			break
 		}
@@ -236,8 +241,10 @@ func cast() {
 	} /* to escape casting a spell	 */
 	c[SPELLSCAST]++
 	lprc('\n')
-	for j, i := -1, 0; i < SPNUM; i++ { /* seq search for his spell, hash? */
-		if spelcode[i][0] == a && spelcode[i][1] == b && spelcode[i][2] == d {
+	spell := fmt.Sprintf("%c%c%c", a, b, d)
+	var i, j int
+	for j, i = -1, 0; i < SPNUM; i++ { /* seq search for his spell, hash? */
+		if spelcode[i] == spell {
 			if spelknow[i] {
 				speldamage(i)
 				j = 1
@@ -276,7 +283,7 @@ func speldamage(x int) {
 	if x >= SPNUM {
 		return /* no such spell */
 	}
-	if c[TIMESTOP] {
+	if c[TIMESTOP] != 0 {
 		lprcat("  It didn't seem to work")
 		return
 	} /* not if time stopped */
@@ -303,7 +310,7 @@ func speldamage(x int) {
 		return
 
 	case 1:
-		i = rnd((clev+1)<<1) + clev + 3
+		i := rnd((clev+1)<<1) + clev + 3
 		godirect(x, i, scond(clev >= 2, "  Your missiles hit the %s", "  Your missile hit the %s"), 100, '+') /* magic missile */
 
 		return
@@ -332,7 +339,7 @@ func speldamage(x int) {
 		/* ----- LEVEL 2 SPELLS ----- */
 
 	case 6: /* web 			*/
-		i = rnd(3) + 2
+		i := rnd(3) + 2
 		direct(x, fullhit(i),
 			"  While the %s is entangled, you hit %ld times", i)
 		return
@@ -345,9 +352,9 @@ func speldamage(x int) {
 		return
 
 	case 8:
-		yl = playery - 5 /* enlightenment */
-		yh = playery + 6
-		xl = playerx - 15
+		yl := playery - 5 /* enlightenment */
+		yh := playery + 6
+		xl := playerx - 15
 		xh := playerx + 16
 		vxy(&xl, &yl)
 		vxy(&xh, &yh)               /* check bounds */
@@ -417,7 +424,7 @@ func speldamage(x int) {
 
 	case 20:
 		xh := min(playerx+1, MAXX-2)
-		yh = min(playery+1, MAXY-2)
+		yh := min(playery+1, MAXY-2)
 		for i := max(playerx-1, 1); i <= xh; i++ { /* vaporize rock */
 			for j := max(playery-1, 1); j <= yh; j++ {
 				kn := &know[i][j]
@@ -425,25 +432,25 @@ func speldamage(x int) {
 				switch p := &item[i][j]; *p {
 				case OWALL:
 					if level < MAXLEVEL+MAXVLEVEL-1 {
-						*p, *kn = 0, 0
+						*p, *kn = 0, false
 					}
 
 				case OSTATUE:
 					if c[HARDGAME] < 3 {
 						*p = OBOOK
 						iarg[i][j] = level
-						*kn = 0
+						*kn = false
 					}
 
 				case OTHRONE:
 					*pm = GNOMEKING
-					*kn = 0
+					*kn = false
 					*p = OTHRONE2
 					hitp[i][j] = monster[GNOMEKING].hitpoints
 
 				case OALTAR:
 					*pm = DEMONPRINCE
-					*kn = 0
+					*kn = false
 					hitp[i][j] = monster[DEMONPRINCE].hitpoints
 				}
 				switch *pm {
@@ -467,7 +474,7 @@ func speldamage(x int) {
 		return
 
 	case 23:
-		i = min(c[HP]-1, c[HPMAX]/2) /* drain life */
+		i := min(c[HP]-1, c[HPMAX]/2) /* drain life */
 		direct(x, i+i, "", 0)
 		c[HP] -= i
 		return
@@ -524,7 +531,7 @@ func speldamage(x int) {
 		/* ----- LEVEL 6 SPELLS ----- */
 
 	case 32:
-		if rnd(23) == 5 && wizard == 0 { /* sphere of annihilation */
+		if rnd(23) == 5 && !wizard { /* sphere of annihilation */
 			beep()
 			lprcat("\nYou have been enveloped by the zone of nothingness!\n")
 			nap(4000)
@@ -555,7 +562,7 @@ func speldamage(x int) {
 		}
 		lprcat("  The demon turned on you and vanished!")
 		beep()
-		i = rnd(40) + 30
+		i := rnd(40) + 30
 		lastnum = 277
 		losehp(i) /* must say killed by a demon */
 		return
@@ -656,12 +663,13 @@ func loseint() {
  * This routine prints out a message saying "You can't aim your magic!"
  * returns 0 if not confused, non-zero (time remaining confused) if confused
  */
-func isconfuse() int {
-	if c[CONFUSE] {
+func isconfuse() bool {
+	if c[CONFUSE] != 0 {
 		lprcat(" You can't aim your magic!")
 		beep()
+		return true
 	}
-	return c[CONFUSE]
+	return false
 }
 
 /*
@@ -672,18 +680,18 @@ func isconfuse() int {
  *   otherwise returns 0
  * Enter with the spell number in x, and the monster number in monst.
  */
-func nospell(x, monst int) int {
+func nospell(x, monst int) bool {
 	if x >= SPNUM || monst >= MAXMONST+8 || monst < 0 || x < 0 {
-		return 0 /* bad spell or monst */
+		return false /* bad spell or monst */
 	}
 	tmp := spelweird[monst-1][x]
 	if tmp == 0 {
-		return 0
+		return false
 	}
 	cursors()
 	lprc('\n')
 	lprintf(spelmes[tmp], monster[monst].name)
-	return 1
+	return true
 }
 
 /*
@@ -697,7 +705,7 @@ func fullhit(xx int) int {
 	if xx < 0 || xx > 20 {
 		return 0 /* fullhits are out of range */
 	}
-	if c[LANCEDEATH] {
+	if c[LANCEDEATH] != 0 {
 		return 10000 /* lance of death */
 	}
 	i := xx * ((c[WCLASS] >> 1) + c[STRENGTH] + c[STREXTRA] - c[HARDGAME] - 12 + c[MOREDAM])
@@ -715,7 +723,7 @@ func fullhit(xx int) int {
  * Returns no value.
  */
 func direct(spnum, dam int, str string, arg int) {
-	if spnum < 0 || spnum >= SPNUM || str == 0 {
+	if spnum < 0 || spnum >= SPNUM || str == "" {
 		return /* bad arguments */
 	}
 	if isconfuse() {
@@ -777,11 +785,8 @@ func direct(spnum, dam int, str string, arg int) {
  *   locations in delay, and the character to represent the weapon in cshow.
  * Returns no value.
  */
-func godirect(spnum, dam int, str string, delay, cshow_i int) {
-	/* truncate to char width in case it matters */
-	cshow := int8(cshow_i)
-
-	if spnum < 0 || spnum >= SPNUM || str == 0 || delay < 0 {
+func godirect(spnum, dam int, str string, delay, cshow int) {
+	if spnum < 0 || spnum >= SPNUM || str == "" || delay < 0 {
 		return /* bad args */
 	}
 	if isconfuse() {
@@ -812,7 +817,7 @@ func godirect(spnum, dam int, str string, delay, cshow_i int) {
 		}
 		if c[BLINDCOUNT] == 0 { /* if not blind show effect */
 			cursor(x+1, y+1)
-			lprc(cshow)
+			lprc(byte(cshow))
 			nap(delay)
 			show1cell(x, y)
 		}
@@ -907,7 +912,7 @@ func godirect(spnum, dam int, str string, delay, cshow_i int) {
  */
 func ifblind(x, y int) {
 	vxy(&x, &y) /* verify correct x,y coordinates */
-	if c[BLINDCOUNT] {
+	if c[BLINDCOUNT] != 0 {
 		lastnum = 279
 		lastmonst = "monster"
 	} else {
@@ -959,13 +964,13 @@ func tdirect(spnum int) {
  * Returns no value.
  */
 func omnidirect(spnum, dam int, str string) {
-	if spnum < 0 || spnum >= SPNUM || str == 0 {
+	if spnum < 0 || spnum >= SPNUM || str == "" {
 		return /* bad args */
 	}
 	for x := playerx - 1; x < playerx+2; x++ {
 		for y := playery - 1; y < playery+2; y++ {
 			if m := mitem[x][y]; m != 0 {
-				if nospell(spnum, m) == 0 {
+				if !nospell(spnum, m) {
 					ifblind(x, y)
 					cursors()
 					lprc('\n')
@@ -1037,23 +1042,23 @@ out:
  * Returns TRUE if it was out of bounds, and the *x & *y in the calling
  * routine are affected.
  */
-func vxy(x, y *int) int {
-	flag := 0
+func vxy(x, y *int) bool {
+	flag := false
 	if *x < 0 {
 		*x = 0
-		flag++
+		flag = true
 	}
 	if *y < 0 {
 		*y = 0
-		flag++
+		flag = true
 	}
 	if *x >= MAXX {
 		*x = MAXX - 1
-		flag++
+		flag = true
 	}
 	if *y >= MAXY {
 		*y = MAXY - 1
-		flag++
+		flag = true
 	}
 	return flag
 }
@@ -1106,7 +1111,7 @@ func dirpoly(spnum int) {
  * Returns no value.
  */
 func hitmonster(x, y int) {
-	if c[TIMESTOP] {
+	if c[TIMESTOP] != 0 {
 		return /* not if time stopped */
 	}
 	vxy(&x, &y) /* verify coordinates are within range */
@@ -1119,17 +1124,18 @@ func hitmonster(x, y int) {
 	tmp := monster[monst].armorclass + c[LEVEL] + c[DEXTERITY] + c[WCLASS]/4 - 12
 	cursors()
 	/* need at least random chance to hit */
-	var damag, flag int
+	var damag int
+	var flag bool
 	if rnd(20) < tmp-c[HARDGAME] || rnd(71) < 5 {
 		lprcat("\nYou hit")
-		flag = 1
+		flag = true
 		damag = fullhit(1)
 		if damag < 9999 {
 			damag = rnd(damag) + 1
 		}
 	} else {
 		lprcat("\nYou missed")
-		flag = 0
+		flag = false
 	}
 	lprcat(" the ")
 	lprcat(lastmonst)
@@ -1167,7 +1173,7 @@ func hitm(x, y, amt int) int {
 	vxy(&x, &y) /* verify coordinates are within range */
 	amt2 := amt /* save initial damage so we can return it */
 	monst := mitem[x][y]
-	if c[HALFDAM] {
+	if c[HALFDAM] != 0 {
 		amt >>= 1 /* if half damage curse adjust damage points */
 	}
 	if amt <= 0 {
@@ -1218,13 +1224,13 @@ func hitplayer(x, y int) {
 	 * spirit nagas and poltergeists do nothing if scarab of negate
 	 * spirit
 	 */
-	if c[NEGATESPIRIT] || c[SPIRITPRO] {
+	if c[NEGATESPIRIT] != 0 || c[SPIRITPRO] != 0 {
 		if mster == POLTERGEIST || mster == SPIRITNAGA {
 			return
 		}
 	}
 	/* if undead and cube of undead control	 */
-	if c[CUBEofUNDEAD] || c[UNDEADPRO] {
+	if c[CUBEofUNDEAD] != 0 || c[UNDEADPRO] != 0 {
 		if mster == VAMPIRE || mster == WRAITH || mster == ZOMBIE {
 			return
 		}
@@ -1238,13 +1244,13 @@ func hitplayer(x, y int) {
 	yrepcount = 0
 	cursors()
 	ifblind(x, y)
-	if c[INVISIBILITY] {
+	if c[INVISIBILITY] != 0 {
 		if rnd(33) < 20 {
 			lprintf("\nThe %s misses wildly", lastmonst)
 			return
 		}
 	}
-	if c[CHARMCOUNT] {
+	if c[CHARMCOUNT] != 0 {
 		if rnd(30)+5*monster[mster].level-c[CHARISMA] < 30 {
 			lprintf("\nThe %s is awestruck at your magnificence!", lastmonst)
 			return
@@ -1355,7 +1361,7 @@ func something(cavelevel int) {
  * Returns the object number created, and sets *i for its argument
  * Enter with the cave level and a pointer to the items arg
  */
-var nobjtab = [...]int8{
+var nobjtab = [...]int{
 	0, OSCROLL, OSCROLL, OSCROLL, OSCROLL, OPOTION, OPOTION,
 	OPOTION, OPOTION, OGOLDPILE, OGOLDPILE, OGOLDPILE, OGOLDPILE,
 	OBOOK, OBOOK, OBOOK, OBOOK, ODAGGER, ODAGGER, ODAGGER,
@@ -1460,7 +1466,7 @@ func newobject(lev int, i *int) int {
  */
 const ARMORTYPES = 6
 
-var rustarm = [ARMORTYPES][2]int8{
+var rustarm = [ARMORTYPES][2]int{
 	{OSTUDLEATHER, -2},
 	{ORING, -4},
 	{OCHAIN, -5},
@@ -1468,13 +1474,13 @@ var rustarm = [ARMORTYPES][2]int8{
 	{OPLATE, -8},
 	{OPLATEARMOR, -9},
 }
-var spsel = []int8{1, 2, 3, 5, 6, 8, 9, 11, 13, 14}
+var spsel = []int{1, 2, 3, 5, 6, 8, 9, 11, 13, 14}
 
-func spattack(x, xx, yy int) int {
+func spattack(x, xx, yy int) bool {
 	var p string
 
-	if c[CANCELLATION] {
-		return 0
+	if c[CANCELLATION] != 0 {
+		return false
 	}
 	vxy(&xx, &yy) /* verify x & y coordinates */
 	var i int
@@ -1523,17 +1529,17 @@ func spattack(x, xx, yy int) int {
 		i = rnd(15) + 8 - c[AC]
 	spout:
 		p = "\nThe %s breathes fire at you!"
-		if c[FIRERESISTANCE] {
+		if c[FIRERESISTANCE] != 0 {
 			p = "\nThe %s's flame doesn't faze you!"
 		} else {
 		spout2:
-			if p {
+			if p != "" {
 				lprintf(p, lastmonst)
 				beep()
 			}
 		}
 		checkloss(i)
-		return 0
+		return false
 
 	case 3:
 		i = rnd(20) + 25 - c[AC]
@@ -1557,7 +1563,7 @@ func spattack(x, xx, yy int) int {
 		lprintf("\nThe %s drains you of your life energy!", lastmonst)
 		loselevel()
 		beep()
-		return 0
+		return false
 
 	case 7:
 		p = "\nThe %s got you with a gusher!"
@@ -1565,8 +1571,8 @@ func spattack(x, xx, yy int) int {
 		goto spout2
 
 	case 8:
-		if c[NOTHEFT] {
-			return 0 /* he has a device of no theft */
+		if c[NOTHEFT] != 0 {
+			return false /* he has a device of no theft */
 		}
 		if c[GOLD] > 0 {
 			p = "\nThe %s hit you -- Your purse feels lighter"
@@ -1585,7 +1591,7 @@ func spattack(x, xx, yy int) int {
 		disappear(xx, yy)
 		beep()
 		bottomgold()
-		return 1
+		return true
 
 	case 9:
 		j := 50
@@ -1602,7 +1608,7 @@ func spattack(x, xx, yy int) int {
 				beep()
 				show3(i)
 				bottomline()
-				return 0
+				return false
 			}
 			j--
 			if j <= 0 {
@@ -1631,8 +1637,8 @@ func spattack(x, xx, yy int) int {
 		goto spout2
 
 	case 14:
-		if c[NOTHEFT] {
-			return 0 /* he has device of no theft */
+		if c[NOTHEFT] != 0 {
+			return false /* he has device of no theft */
 		}
 		if emptyhanded() == 1 {
 			p = "\nThe %s couldn't find anything to steal"
@@ -1645,7 +1651,7 @@ func spattack(x, xx, yy int) int {
 		}
 		disappear(xx, yy)
 		bottomline()
-		return 1
+		return true
 
 	case 15:
 		i = rnd(10) + 5 - c[AC]
@@ -1661,7 +1667,7 @@ func spattack(x, xx, yy int) int {
 		lprintf(p, lastmonst)
 		bottomline()
 	}
-	return 0
+	return false
 }
 
 /*
@@ -1691,7 +1697,7 @@ func annihilate() int {
 		for j := playery - 1; j <= playery+1; j++ {
 			if !vxy(&i, &j) { /* if not out of bounds */
 				p := &mitem[i][j]
-				if *p { /* if a monster there */
+				if *p != 0 { /* if a monster there */
 					if *p < DEMONLORD+2 {
 						k += monster[*p].experience
 						*p, know[i][j] = 0, false
@@ -1843,10 +1849,10 @@ func rmsphere(x, y int) int {
  * Enter with the coordinates of the blast, Returns no value
  */
 func sphboom(x, y int) {
-	if c[HOLDMONST] {
+	if c[HOLDMONST] != 0 {
 		c[HOLDMONST] = 1
 	}
-	if c[CANCELLATION] {
+	if c[CANCELLATION] != 0 {
 		c[CANCELLATION] = 1
 	}
 	for j := max(1, x-2); j < min(x+3, MAXX-1); j++ {
@@ -1864,6 +1870,10 @@ func sphboom(x, y int) {
 	}
 }
 
+func isalpha(x int) bool {
+	return ('A' <= x && x <= 'Z') || ('a' <= x && x <= 'z')
+}
+
 /*
  * genmonst()		Function to ask for monster and genocide from game
  *
@@ -1879,10 +1889,10 @@ func genmonst() {
 			break
 		}
 	}
-	lprc(i)
+	lprc(byte(i))
 	for j := 0; j < MAXMONST; j++ { /* search for the monster type */
-		if monstnamelist[j] == i { /* have we found it? */
-			monster[j].genocided = 1 /* genocided from game */
+		if monstnamelist[j] == byte(i) { /* have we found it? */
+			monster[j].genocided = true /* genocided from game */
 			lprintf("  There will be no more %s's", monster[j].name)
 			/* now wipe out monsters on this level */
 			newcavelevel(level)

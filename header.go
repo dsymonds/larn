@@ -20,14 +20,14 @@ type monst struct {
 	name         string
 	level        int
 	armorclass   int
-	damage       int8
-	attack       int8
+	damage       int
+	attack       int
 	defense      int8
 	genocided    bool
 	intelligence int8 /* monsters intelligence -- used to choose movement */
-	gold         int16
+	gold         int
 	hitpoints    int
-	experience   uint32
+	experience   int
 }
 
 /* this is the structure definition for the items in the dnd store */
@@ -417,6 +417,7 @@ func clear()    { lprcat("\033[2J\033[f"); cbak[SPELLS] = -50 }
 func cltoeoln() { lprcat("\033[K") }
 
 /* macro to output one byte to the output buffer */
+// TODO: move this to io.go.
 func lprc(ch byte) { lpbuf = append(lpbuf, ch) }
 
 /* macro to seed the random number generator */
