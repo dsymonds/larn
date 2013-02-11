@@ -1,7 +1,5 @@
 package main
 
-import "os"
-
 const MAXLEVEL = 11 /* max # levels in the dungeon			 */
 const MAXVLEVEL = 3 /* max # of levels in the temple of the luran	 */
 const MAXX = 67
@@ -419,9 +417,7 @@ func clear()    { lprcat("\033[2J\033[f"); cbak[SPELLS] = -50 }
 func cltoeoln() { lprcat("\033[K") }
 
 /* macro to output one byte to the output buffer */
-//#define lprc(ch) ((lpnt>=lpend)?(void)(*lpnt++ = (ch), lflush()):(void)(*lpnt++ = (ch)))
-// TODO
-func lprc(ch byte) { os.Stderr.Write([]byte{ch}) }
+func lprc(ch byte) { lpbuf = append(lpbuf, ch) }
 
 /* macro to seed the random number generator */
 func seedrand(x uint32) { randx = x }

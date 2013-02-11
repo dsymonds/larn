@@ -1,8 +1,11 @@
 package main
 
 import (
+	"encoding/binary"
+	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/jabb/gocurse/curses"
 )
@@ -184,9 +187,7 @@ func newgame() {
 	for i := 0; i < 100; i++ {
 		c[i] = 0
 	}
-	time(&initialtime)
-	seedrand(initialtime)
-	srandom(initialtime)
+	seedrand(uint32(time.Now().Unix()))
 	lcreat("") /* open buffering for output to terminal */
 }
 
@@ -203,10 +204,10 @@ func newgame() {
  *		are done beforehand if needed.
  *	Returns nothing of value.
  */
-func lprintf(fmt string, args ...interface{}) {
-	buf := fmt.Sprintf(fmt, args...)
+func lprintf(format string, args ...interface{}) {
+	buf := fmt.Sprintf(format, args...)
 
-	if lpnt >= lpend {
+	if len(lpbuf) >= cap(lpbuf) {
 		lflush()
 	}
 
@@ -230,16 +231,12 @@ func lprintf(fmt string, args ...interface{}) {
  *	Returns nothing of value.
  */
 func lprint(x int32) {
-	if lpnt >= lpend {
+	if len(lpbuf) >= cap(lpbuf) {
 		lflush()
 	}
-	// TODO
-	/*
-	*lpnt++ = 255 & x;
-	*lpnt++ = 255 & (x >> 8);
-	*lpnt++ = 255 & (x >> 16);
-	*lpnt++ = 255 & (x >> 24);
-	 */
+	var b [4]byte
+	binary.LittleEndian.PutUint32(b[:], uint32(x))
+	lpbuf = append(lpbuf, b[:]...)
 }
 
 /*
@@ -265,20 +262,15 @@ func lwrite(s string) {
 		//#endif	/* VT100 */
 	} else {
 		for s != "" {
-			if lpnt >= lpend {
+			if len(lpbuf) >= cap(lpbuf) {
 				lflush() /* if buffer is full flush it	 */
 			}
-			num2 := lpbuf + BUFBIG - lpnt /* # bytes left in output buffer	 */
+			// TODO: this isn't the correct computation, but it matches the original C version
+			num2 := BUFBIG - len(lpbuf) /* # bytes left in output buffer	 */
 			if num2 > len(s) {
 				num2 = len(s)
 			}
-			// TODO
-			/*
-				t := lpnt
-				while (num2--)
-					*t++ = *buf++;	// copy in the bytes
-				lpnt = t;
-			*/
+			lpbuf = append(lpbuf, []byte(s[:num2])...)
 		}
 	}
 }
@@ -313,10 +305,10 @@ func lgetc() int {
  */
 func larn_lrint() int32 {
 	var i uint32
-	i = 255 & lgetc()
-	i |= (255 & lgetc()) << 8
-	i |= (255 & lgetc()) << 16
-	i |= (255 & lgetc()) << 24
+	i = 255 & uint32(lgetc())
+	i |= (255 & uint32(lgetc())) << 8
+	i |= (255 & uint32(lgetc())) << 16
+	i |= (255 & uint32(lgetc())) << 24
 	return int32(i)
 }
 
@@ -365,7 +357,7 @@ func lrfill(char *adr, int num) {
  */
 func lgetw() string {
 	n, quote := LINBUFSIZE, 0
-	var cc int8
+	var cc int
 	lgp := ""
 	for {
 		cc = lgetc()
@@ -425,8 +417,8 @@ func lgetl() string {
  */
 func lcreat(str string) int {
 	lflush()
-	lpnt = lpbuf
-	lpend = lpbuf + BUFBIG
+	// TODO: original C version shrinks the output buffer to BUFBIG, despite allocating more. why?
+	lpbuf = lpbuf[:0]
 	if str == "" {
 		io_out = os.Stdout
 		return 1
@@ -450,7 +442,6 @@ func lcreat(str string) int {
  *	Returns -1 if error, otherwise the file descriptor opened.
  */
 func lopen(str string) int {
-	ipoint, iepoint = MAXIBUF, MAXIBUF
 	if str == "" {
 		io_in = os.Stdin
 		return 0
@@ -460,7 +451,7 @@ func lopen(str string) int {
 	if err != nil {
 		lwclose()
 		io_out = os.Stdout
-		lpnt = lpbuf
+		lpbuf = lpbuf[:0]
 		return -1
 	}
 	return int(io_in.Fd()) // TODO: really need to return the fd?
