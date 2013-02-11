@@ -348,7 +348,7 @@ func speldamage(x int) {
 		yl = playery - 5 /* enlightenment */
 		yh = playery + 6
 		xl = playerx - 15
-		xh = playerx + 16
+		xh := playerx + 16
 		vxy(&xl, &yl)
 		vxy(&xh, &yh)               /* check bounds */
 		for i := yl; i <= yh; i++ { /* enlightenment	 */
@@ -416,7 +416,7 @@ func speldamage(x int) {
 		return
 
 	case 20:
-		xh = min(playerx+1, MAXX-2)
+		xh := min(playerx+1, MAXX-2)
 		yh = min(playery+1, MAXY-2)
 		for i := max(playerx-1, 1); i <= xh; i++ { /* vaporize rock */
 			for j := max(playery-1, 1); j <= yh; j++ {

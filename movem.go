@@ -125,7 +125,7 @@ func movemonst() {
  * move to.  Enter with the monsters coordinates in (x,y).
  * Returns no value.
  */
-var tmpitem, xl, xh, yl, yh int
+var tmpitem int
 
 func movemt(i, j int) {
 	monst := mitem[i][j]
@@ -137,14 +137,14 @@ func movemt(i, j int) {
 	}
 
 	if c[SCAREMONST] { /* choose destination randomly if scared */
-		xl = i + rnd(3) - 2
+		xl := i + rnd(3) - 2
 		if xl < 0 {
 			xl = 0
 		}
 		if xl >= MAXX {
 			xl = MAXX - 1
 		}
-		yl = j + rnd(3) - 2
+		yl := j + rnd(3) - 2
 		if yl < 0 {
 			yl = 0
 		}
@@ -165,10 +165,10 @@ func movemt(i, j int) {
 	}
 	if monster[monst].intelligence > 10-c[HARDGAME] { /* if smart monster */
 		/* intelligent movement here -- first setup screen array */
-		xl = tmp3 - 2
-		yl = tmp1 - 2
-		xh = tmp4 + 2
-		yh = tmp2 + 2
+		xl := tmp3 - 2
+		yl := tmp1 - 2
+		xh := tmp4 + 2
+		yh := tmp2 + 2
 		vxy(&xl, &yl)
 		vxy(&xh, &yh)
 		for k := yl; k < yh; k++ {
@@ -223,8 +223,8 @@ func movemt(i, j int) {
 		if tmp < distance { /* did find connectivity */
 			/* now select lowest value around playerx,playery */
 			for z = 1; z < 9; z++ { /* go around in a circle */
-				xl = i + diroffx[z]
-				yl = j + diroffy[z]
+				xl := i + diroffx[z]
+				yl := j + diroffy[z]
 				if screen[xl][yl] == tmp {
 					if !mitem[xl][yl] {
 						w1x[0] = xl
@@ -237,10 +237,10 @@ func movemt(i, j int) {
 		}
 	}
 	/* dumb monsters move here */
-	xl = i - 1
-	yl = j - 1
-	xh = i + 2
-	yh = j + 2
+	xl := i - 1
+	yl := j - 1
+	xh := i + 2
+	yh := j + 2
 	if i < playerx {
 		xl++
 	} else if i > playerx {

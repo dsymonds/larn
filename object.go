@@ -878,7 +878,6 @@ func oscroll(typ int) {
 /*
 	data for the function to read a scroll
 */
-var xh, yh, yl, xl int // TODO: these will cause conflicts
 var curse = [...]byte{
 	BLINDCOUNT, CONFUSE, AGGRAVATE, HASTEMONST, ITCHING,
 	LAUGHING, DRAINSTRENGTH, CLUMSINESS, INFEEBLEMENT, HALFDAM,
@@ -933,10 +932,10 @@ func read_scroll(typ int) {
 
 	case 2:
 		lprcat("\nYou have been granted enlightenment!")
-		yh = min(playery+7, MAXY)
-		xh = min(playerx+25, MAXX)
-		yl = max(playery-7, 0)
-		xl = max(playerx-25, 0)
+		yh := min(playery+7, MAXY)
+		xh := min(playerx+25, MAXX)
+		yl := max(playery-7, 0)
+		xl := max(playerx-25, 0)
 		for i := yl; i < yh; i++ {
 			for j := xl; j < xh; j++ {
 				know[j][i] = true

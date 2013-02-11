@@ -90,7 +90,7 @@ func newcavelevel(x int) {
 
 	subroutine to make the caverns for a given level.  only walls are made.
 */
-var mx, mxl, mxh, my, myl, myh, tmp2 int // static
+var mx, mxl, mxh, my, myl, myh int // static
 
 func makemaze(k int) {
 	if k > 1 && (rnd(17) <= 4 || k == MAXLEVEL-1 || k == MAXLEVEL+MAXVLEVEL-1) {
@@ -119,7 +119,7 @@ func makemaze(k int) {
 
 	/* now for open spaces -- not on level 10	 */
 	if k != MAXLEVEL-1 {
-		tmp2 = rnd(3) + 3
+		tmp2 := rnd(3) + 3
 		for tmp = 0; tmp < tmp2; tmp++ {
 			my = rnd(11) + 2
 			myl = my - rnd(2)
