@@ -364,7 +364,7 @@ var potionhide = [...]string{
 /*
 	spell data
 */
-var spelknow [SPNUM]byte
+var spelknow [SPNUM]bool
 var splev = [...]byte{1, 4, 9, 14, 18, 22, 26, 29, 32, 35, 37, 37, 37, 37, 37}
 
 var spelcode = [...]string{

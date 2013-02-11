@@ -540,7 +540,7 @@ func speldamage(x int) {
 
 	case 33:
 		genmonst()
-		spelknow[33] = 0 /* genocide */
+		spelknow[33] = false /* genocide */
 		loseint()
 		return
 
@@ -618,7 +618,7 @@ func speldamage(x int) {
 			loseint();
 			draws(0, MAXX, 0, MAXY);
 			if !wizard {
-				spelknow[36] = 0
+				spelknow[36] = false
 			}
 			free((char *) save);
 			positionplayer();
@@ -628,7 +628,7 @@ func speldamage(x int) {
 
 	case 37: /* permanence */
 		adjusttime(-99999)
-		spelknow[37] = 0 /* forget */
+		spelknow[37] = false /* forget */
 		loseint()
 		return
 

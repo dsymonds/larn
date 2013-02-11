@@ -756,7 +756,7 @@ func parse() {
 					}
 				}
 				for i = 0; i < SPNUM; i++ {
-					spelknow[i] = 1
+					spelknow[i] = true
 				}
 				for i = 0; i < MAXSCROLL; i++ {
 					scrollname[i] = scrollhide[i]

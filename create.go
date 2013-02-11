@@ -22,7 +22,7 @@ func makeplayer() {
 	for i := 0; i < 26; i++ {
 		iven[i] = 0
 	}
-	spelknow[0], spelknow[1] = 1, 1 /* he knows protection, magic missile */
+	spelknow[0], spelknow[1] = true, true /* he knows protection, magic missile */
 	if c[HARDGAME] <= 0 {
 		iven[0] = OLEATHER
 		iven[1] = ODAGGER

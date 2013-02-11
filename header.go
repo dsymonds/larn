@@ -335,15 +335,14 @@ extern char     monstnamelist[], objnamelist[];
 extern u_char   nch[], ndgg[], nlpts[], nomove, nosignal, nowelcome;
 extern u_char   nplt[], nsw[];
 extern const char *objectname[];
-extern const char *potionhide[], *potionname[];
+extern const char *potionhide[];
 extern const char *spelcode[], *spelname[], *spelmes[];
 extern char     spelweird[MAXMONST + 8][SPNUM];
 extern u_char   potprob[];
 extern u_char   predostuff, restorflag, scprob[];
 extern u_char   screen[MAXX][MAXY], sex;
 extern const char *speldescript[];
-extern const char *scrollhide[], *scrollname[];
-extern u_char   spelknow[];
+extern const char *scrollhide[];
 extern u_char   splev[], stealth[MAXX][MAXY];
 extern short    diroffx[], diroffy[], hitflag, hit2flag, hit3flag, hitp[MAXX][MAXY];
 extern short    iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,

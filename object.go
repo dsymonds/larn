@@ -25,7 +25,7 @@ func lookforobject() {
 	case OPOTION:
 		lprcat("\n\nYou have found a magic potion")
 		i = iarg[playerx][playery]
-		if potionname[i][0] != 0 {
+		if potionname[i] != "" {
 			lprintf(" of%s", potionname[i])
 		}
 		opotion(i)
@@ -33,7 +33,7 @@ func lookforobject() {
 	case OSCROLL:
 		lprcat("\n\nYou have found a magic scroll")
 		i = iarg[playerx][playery]
-		if scrollname[i][0] != 0 {
+		if scrollname[i] != "" {
 			lprintf(" of%s", scrollname[i])
 		}
 		oscroll(i)
@@ -1162,7 +1162,7 @@ func readbook(lev int) {
 		tmp = splev[lev] - 9
 		i = rnd(icond(tmp, tmp, 1)) + 9
 	}
-	spelknow[i] = 1
+	spelknow[i] = true
 	lprintf("\nSpell \"%s\":  %s\n%s", spelcode[i], spelname[i], speldescript[i])
 	if rnd(10) == 4 {
 		lprcat("\nYour int went up by one!")

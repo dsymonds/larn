@@ -5,8 +5,8 @@ func makecode(a, b, c int) int {
 }
 
 var minx, maxx, miny, maxy, k, m int
-var bot1f, bot2f, bot3f int8 = 0, 0, 0
-var always int8 = 0
+var bot1f, bot2f, bot3f bool
+var always bool
 
 /*
 	bottomline()
@@ -15,29 +15,29 @@ var always int8 = 0
 */
 func bottomline() {
 	recalc()
-	bot1f = 1
+	bot1f = true
 }
 
 func bottomhp() {
-	bot2f = 1
+	bot2f = true
 }
 
 func bottomspell() {
-	bot3f = 1
+	bot3f = true
 }
 
 func bottomdo() {
 	if bot1f {
-		bot3f, bot1f, bot2f = 0, 0, 0
+		bot3f, bot1f, bot2f = false, false, false
 		bot_linex()
 		return
 	}
 	if bot2f {
-		bot2f = 0
+		bot2f = false
 		bot_hpx()
 	}
 	if bot3f {
-		bot3f = 0
+		bot3f = false
 		bot_spellx()
 	}
 }
@@ -65,13 +65,13 @@ func bot_linex() {
 		if level == 0 || wizard {
 			c[TELEFLAG] = 0
 		}
-		if c[TELEFLAG] {
+		if c[TELEFLAG] != 0 {
 			lprcat(" ?")
 		} else {
 			lprcat(levelname[level])
 		}
 		lprintf("  Gold: %-6d", c[GOLD])
-		always = 1
+		always = true
 		botside()
 		c[TMP] = c[STRENGTH] + c[STREXTRA]
 		for i := 0; i < 100; i++ {
@@ -113,7 +113,7 @@ func bot_linex() {
 		cbak[TELEFLAG] = c[TELEFLAG]
 		cbak[CAVELEVEL] = level
 		cursor(59, 19)
-		if c[TELEFLAG] {
+		if c[TELEFLAG] != 0 {
 			lprcat(" ?")
 		} else {
 			lprcat(levelname[level])
@@ -183,7 +183,7 @@ func botside() {
 		idx := bot_data[i].typ
 		if always || c[idx] != cbak[idx] {
 			if always || cbak[idx] == 0 {
-				if c[idx] {
+				if c[idx] != 0 {
 					cursor(70, i+1)
 					lprcat(bot_data[i].str)
 				}
@@ -194,7 +194,7 @@ func botside() {
 			cbak[idx] = c[idx]
 		}
 	}
-	always = 0
+	always = false
 }
 
 func botsub(idx int, str string) {
@@ -233,9 +233,9 @@ func draws(xmin, xmax, ymin, ymax int) {
 	d_ymax = ymax /* for limited screen drawing */
 	drawscreen()
 	if xmin <= 0 && xmax == MAXX { /* draw stuff on right side of screen as needed */
-		for i = ymin; i < ymax; i++ {
+		for i := ymin; i < ymax; i++ {
 			idx := bot_data[i].typ
-			if c[idx] {
+			if c[idx] != 0 {
 				cursor(70, i+1)
 				lprcat(bot_data[i].str)
 			}
@@ -250,14 +250,14 @@ func draws(xmin, xmax, ymin, ymax int) {
 	subroutine to redraw the whole screen as the player knows it
 */
 var screen [MAXX][MAXY]byte /* template for the screen */
-var d_flag byte
+var d_flag bool
 
 func drawscreen() {
 	if d_xmin == 0 && d_xmax == MAXX && d_ymin == 0 && d_ymax == MAXY {
-		d_flag = 1
+		d_flag = true
 		clear() /* clear the screen */
 	} else {
-		d_flag = 0
+		d_flag = true
 		cursor(1, 1)
 	}
 	if d_xmin < 0 {
@@ -265,7 +265,7 @@ func drawscreen() {
 	}
 
 	for i := d_ymin; i < d_ymax; i++ {
-		for j = d_xmin; j < d_xmax; j++ {
+		for j := d_xmin; j < d_xmax; j++ {
 			if !know[j][i] {
 				screen[j][i] = ' '
 			} else if mitem[j][i] != 0 {
@@ -300,7 +300,8 @@ func drawscreen() {
 		}
 		for j <= m {
 			if j <= m-3 {
-				for kk := j; kk <= j+3; kk++ {
+				var kk int
+				for kk = j; kk <= j+3; kk++ {
 					if screen[kk][i] != ' ' {
 						kk = 1000
 					}
@@ -320,7 +321,7 @@ func drawscreen() {
 
 	//int lastx, lasty;	/* variables used to optimize the object printing */
 	for lastx, lasty, i := 127, 127, d_ymin; i < d_ymax; i++ {
-		for j = d_xmin; j < d_xmax; j++ {
+		for j := d_xmin; j < d_xmax; j++ {
 			kk := item[j][i]
 			if kk != 0 {
 				if kk != OWALL {
@@ -343,9 +344,9 @@ func drawscreen() {
 
 	resetbold()
 	if d_flag {
-		always = 1
+		always = true
 		botside()
-		always = 1
+		always = true
 		bot_linex()
 	}
 	oldx = 99
@@ -358,10 +359,10 @@ func drawscreen() {
 	subroutine to display a cell location on the screen
 */
 func showcell(x, y int) {
-	if c[BLINDCOUNT] {
+	if c[BLINDCOUNT] != 0 {
 		return /* see nothing if blind		 */
 	}
-	if c[AWARENESS] {
+	if c[AWARENESS] != 0 {
 		minx = x - 3
 		maxx = x + 3
 		miny = y - 3
@@ -387,7 +388,7 @@ func showcell(x, y int) {
 	}
 
 	for j := miny; j <= maxy; j++ {
-		for mm = minx; mm <= maxx; mm++ {
+		for mm := minx; mm <= maxx; mm++ {
 			if !know[mm][j] {
 				cursor(mm+1, j+1)
 				x = maxx
@@ -424,7 +425,7 @@ func showcell(x, y int) {
 	used in godirect() in monster.c for missile weapons display
 */
 func show1cell(x, y int) {
-	if c[BLINDCOUNT] {
+	if c[BLINDCOUNT] != 0 {
 		return /* see nothing if blind		 */
 	}
 	cursor(x+1, y+1)
@@ -467,8 +468,8 @@ func showplayer() {
 	nomove is set to 1 to stop the next move (inadvertent monsters hitting
 	players when walking into walls) if player walks off screen or into wall
 */
-var diroffx = []int16{0, 0, 1, 0, -1, 1, -1, 1, -1}
-var diroffy = []int16{0, 1, 0, -1, 0, -1, -1, 1, 1}
+var diroffx = []int{0, 0, 1, 0, -1, 1, -1, 1, -1}
+var diroffy = []int{0, 1, 0, -1, 0, -1, -1, 1, 1}
 
 func moveplayer(dir int) int {
 	/* from = present room #  direction =
@@ -476,7 +477,7 @@ func moveplayer(dir int) int {
 	 * [5-northeast] [6-northwest] [7-southeast]
 	 * [8-southwest] if direction=0, don't
 	 * move--just show where he is */
-	if c[CONFUSE] {
+	if c[CONFUSE] != 0 {
 		if c[LEVEL] < rnd(30) {
 			dir = rund(9) /* if confused any dir */
 		}
@@ -571,10 +572,10 @@ func seemagic(arg int) {
 	}
 	lprcat("\nThe magic scrolls you have found to date are:\n\n")
 	count = 0
-	for i = 0; i < MAXSCROLL; i++ {
-		if scrollname[i][0] {
+	for i := 0; i < MAXSCROLL; i++ {
+		if scrollname[i] != "" {
 			if scrollname[i][1] != ' ' {
-				lprintf("%-26s", &scrollname[i][1])
+				lprintf("%-26s", scrollname[i][1:])
 				seepage()
 			}
 		}
@@ -586,10 +587,10 @@ func seemagic(arg int) {
 	}
 	lprcat("\nThe magic potions you have found to date are:\n\n")
 	count = 0
-	for i = 0; i < MAXPOTION; i++ {
-		if potionname[i][0] {
+	for i := 0; i < MAXPOTION; i++ {
+		if potionname[i] != "" {
 			if potionname[i][1] != ' ' {
-				lprintf("%-26s", &potionname[i][1])
+				lprintf("%-26s", potionname[i][1:])
 				seepage()
 			}
 		}

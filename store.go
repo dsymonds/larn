@@ -708,13 +708,13 @@ func otradepost() {
 		isub := i - 'a'
 		j := 0
 		if iven[isub] == OSCROLL {
-			if scrollname[ivenarg[isub]][0] == 0 {
+			if scrollname[ivenarg[isub]] == "" {
 				j = 1
 				cnsitm()
 			} /* can't sell unidentified item */
 		}
 		if iven[isub] == OPOTION {
-			if potionname[ivenarg[isub]][0] == 0 {
+			if potionname[ivenarg[isub]] == "" {
 				j = 1
 				cnsitm()
 			} /* can't sell unidentified item */
