@@ -230,7 +230,7 @@ func cast() {
 	d := ttgetch()
 	if d == '\033' {
 	over:
-		lprcat(aborted)
+		lprcat(" aborted")
 		c[SPELLS]++
 		return
 	} /* to escape casting a spell	 */
@@ -617,8 +617,9 @@ func speldamage(x int) {
 			}
 			loseint();
 			draws(0, MAXX, 0, MAXY);
-			if (wizard == 0)
-				spelknow[36] = 0;
+			if !wizard {
+				spelknow[36] = 0
+			}
 			free((char *) save);
 			positionplayer();
 			return;

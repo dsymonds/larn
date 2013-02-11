@@ -44,7 +44,7 @@ func cntlc(int) {
  */
 func sgam(_ int) {
 	savegame(savefilename)
-	wizard = 1
+	wizard = true
 	died(-257) /* hangup signal */
 }
 

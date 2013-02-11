@@ -63,19 +63,19 @@ func newcavelevel(x int) {
 	/* fill in new level */
 	for i := 0; i < MAXY; i++ {
 		for j := 0; j < MAXX; j++ {
-			know[j][i], mitem[j][i] = 0, 0
+			know[j][i], mitem[j][i] = false, 0
 		}
 	}
 	makemaze(x)
 	makeobject(x)
-	beenhere[x] = 1
+	beenhere[x] = true
 	sethp(1)
 	checkgen()		/* wipe out any genocided monsters */
 
 	if (WIZID && wizard) || x == 0 {
 		for j := 0; j < MAXY; j++ {
 			for i := 0; i < MAXX; i++ {
-				know[i][j] = 1
+				know[i][j] = true
 			}
 		}
 	}
@@ -101,8 +101,8 @@ func makemaze(k int) {
 	} else {
 		tmp = OWALL
 	}
-	for i = 0; i < MAXY; i++ {
-		for j = 0; j < MAXX; j++ {
+	for i := 0; i < MAXY; i++ {
+		for j := 0; j < MAXX; j++ {
 			item[j][i] = tmp
 		}
 	}
@@ -133,8 +133,8 @@ func makemaze(k int) {
 				mxh = mx + rnd(2)
 				z = makemonst(k)
 			}
-			for i = mxl; i < mxh; i++ {
-				for j = myl; j < myh; j++ {
+			for i := mxl; i < mxh; i++ {
+				for j := myl; j < myh; j++ {
 					item[i][j] = 0
 					mitem[i][j] = z
 					if mitem[i][j] {
@@ -223,16 +223,16 @@ func eat(xx, yy int) {
  *		~	eye of larn		!	cure dianthroritis
  *		-	random object
  */
-func cannedlevel(k int) int {
+func cannedlevel(k int) bool {
 	if lopen(larnlevels) < 0 {
 		write(1, "Can't open the maze data file\n", 30)
 		died(-282)
-		return 0
+		return false
 	}
 	i := lgetc()
 	if i <= '0' {
 		died(-282)
-		return 0
+		return false
 	}
 	for i = 18 * rund(i - '0'); i > 0; i-- {
 		lgetl()	/* advance to desired maze */
@@ -285,7 +285,7 @@ func cannedlevel(k int) int {
 		}
 	}
 	lrclose()
-	return 1
+	return true
 }
 
 /*

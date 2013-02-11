@@ -73,17 +73,17 @@ var lpbuf, lpnt, lpend *byte /* input/output pointers to the buffers */
 
 var cell = make([]cel, (MAXLEVEL+MAXVLEVEL)*MAXX*MAXY) /* pointer to the dungeon storage	 */
 
-var hitp [MAXX][MAXY]int16              /* monster hp on level		 */
-var iarg [MAXX][MAXY]int16              /* arg for the item array	 */
-var item [MAXX][MAXY]byte               /* objects in maze if any	 */
-var know [MAXX][MAXY]byte               /* 1 or 0 if here before	 */
+var hitp [MAXX][MAXY]int                /* monster hp on level		 */
+var iarg [MAXX][MAXY]int                /* arg for the item array	 */
+var item [MAXX][MAXY]int                /* objects in maze if any	 */
+var know [MAXX][MAXY]bool               /* whether here before	 */
 var mitem [MAXX][MAXY]byte              /* monster item array 		 */
 var moved [MAXX][MAXY]byte              /* monster movement flags  */
 var stealth [MAXX][MAXY]byte            /* 0=sleeping 1=awake monst */
 var iven [26]byte                       /* inventory for player			 */
 var ivenarg [26]int16                   /* inventory for player			 */
 var lastmonst string                    /* this has the name of the current monster	 */
-var beenhere [MAXLEVEL + MAXVLEVEL]byte /* 1 if have been on this level */
+var beenhere [MAXLEVEL + MAXVLEVEL]bool /* true if have been on this level */
 
 const VERSION = 12 /* this is the present version # of the program	 */
 const SUBVERSION = 0
@@ -103,26 +103,25 @@ var sex byte = 1              /* default is a man  0=woman						 */
 var boldon byte = 1           /* 1=bold objects  0=inverse objects				 */
 var ckpflag byte = 0          /* 1 if want checkpointing of game, 0 otherwise	 */
 var cheat byte = 0            /* 1 if the player has fudged save file			 */
-var level int16 = 0           /* cavelevel player is on = c[CAVELEVEL]			 */
-var wizard byte = 0           /* the wizard mode flag							 */
+var level = 0                 /* cavelevel player is on = c[CAVELEVEL]			 */
+var wizard = false            /* the wizard mode flag							 */
 var lastnum int16 = 0         /* the number of the monster last hitting player 	 */
 var hitflag int16 = 0         /* flag for if player has been hit when running 	 */
 var hit2flag int16 = 0        /* flag for if player has been hit when running 	 */
 var hit3flag int16 = 0        /* flag for if player has been hit flush input 	 */
-var playerx, playery int16    /* the room on the present level of the player		 */
+var playerx, playery int      /* the room on the present level of the player		 */
 
-var lastpx, lastpy int16 /* 0 --- MAXX-1  or  0 --- MAXY-1					 */
-var oldx, oldy int16
-var lasthx, lasthy int16 = 0, 0 /* location of monster last hit by player		 */
+var lastpx, lastpy int /* 0 --- MAXX-1  or  0 --- MAXY-1					 */
+var oldx, oldy int
+var lasthx, lasthy int = 0, 0 /* location of monster last hit by player		 */
 
 var nobeep int16 = 0            /* true if program is not to beep  					 */
 var randx uint32 = 33601        /* the random number seed						 */
 var initialtime int32 = 0       /* time playing began 							 */
 var gltime int32 = 0            /* the clock for the game						 */
 var outstanding_taxes int32 = 0 /* present tax bill from score file 			 */
-var c, cbak [100]int32          /* the character description arrays			 */
+var c, cbak [100]int            /* the character description arrays			 */
 var enable_scroll = 0           /* constant for enabled/disabled scrolling regn */
-const aborted = " aborted"
 
 var spheres *sphere /* pointer to linked list for spheres of annihilation */
 var levelname = [...]string{" H", " 1", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", "10", "V1", "V2", "V3"}

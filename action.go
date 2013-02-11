@@ -21,11 +21,11 @@ func act_remove_gems(arg int) {
 			creategem() /* gems pop off the throne */
 		}
 		item[playerx][playery] = ODEADTHRONE
-		know[playerx][playery] = 0
+		know[playerx][playery] = false
 	} else if k < 40 && arg == 0 {
 		createmonster(GNOMEKING)
 		item[playerx][playery] = OTHRONE2
-		know[playerx][playery] = 0
+		know[playerx][playery] = false
 	} else {
 		lprcat("\nnothing happens")
 	}
@@ -45,7 +45,7 @@ func act_sit_throne(arg int) {
 	if k < 30 && arg == 0 {
 		createmonster(GNOMEKING)
 		item[playerx][playery] = OTHRONE2
-		know[playerx][playery] = 0
+		know[playerx][playery] = false
 	} else if k < 35 {
 		lprcat("\nZaaaappp!  You've been teleported!\n")
 		beep()
@@ -85,7 +85,7 @@ func act_drink_fountain() {
 	if rnd(12) < 3 {
 		lprcat("\nThe fountains bubbling slowly quiets")
 		item[playerx][playery] = ODEADFOUNTAIN /* dead fountain */
-		know[playerx][playery] = 0
+		know[playerx][playery] = false
 	}
 }
 
@@ -152,13 +152,13 @@ func act_donation_pray() {
 		ohear()
 		return
 	} else if rnd(43) == 5 {
-		if c[WEAR] {
+		if c[WEAR] != 0 {
 			lprcat("\nYou feel your armor vibrate for a moment")
 		}
 		enchantarmor()
 		return
 	} else if rnd(43) == 8 {
-		if c[WIELD] {
+		if c[WIELD] != 0 {
 			lprcat("\nYou feel your weapon vibrate for a moment")
 		}
 		enchweapon()
@@ -182,13 +182,13 @@ func act_just_pray() {
 	} else if rnd(13) < 4 {
 		ohear()
 	} else if rnd(43) == 10 {
-		if c[WEAR] {
+		if c[WEAR] != 0 {
 			lprcat("\nYou feel your armor vibrate for a moment")
 		}
 		enchantarmor()
 		return
 	} else if rnd(43) == 10 {
-		if c[WIELD] {
+		if c[WIELD] != 0 {
 			lprcat("\nYou feel your weapon vibrate for a moment")
 		}
 		enchweapon()
@@ -235,7 +235,7 @@ func act_open_chest(x, y int) {
 	if k < 40 {
 		lprcat("\nThe chest explodes as you open it")
 		beep()
-		i = rnd(10)
+		i := rnd(10)
 		lastnum = 281 /* in case he dies */
 		lprintf("\nYou suffer %d hit points damage!", i)
 		checkloss(i)
@@ -255,7 +255,7 @@ func act_open_chest(x, y int) {
 			beep()
 			lprcat("\nA sickness engulfs you!")
 		}
-		item[x][y], know[x][y] = 0, 0
+		item[x][y], know[x][y] = 0, false
 		if rnd(100) < 69 {
 			creategem() /* gems from the chest */
 		}

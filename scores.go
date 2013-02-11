@@ -615,7 +615,7 @@ invalid:
 	lflush()
 
 	set_score_output()
-	if wizard == 0 && c[GOLD] > 0 { /* wizards can't score		 */
+	if !wizard && c[GOLD] > 0 { /* wizards can't score		 */
 		if gid != egid {
 			setegid(egid)
 		}

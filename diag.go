@@ -166,7 +166,8 @@ func savegame(fname string) int {
 		return -1
 	}
 	set_score_output()
-	lwrite(beenhere, MAXLEVEL+MAXVLEVEL)
+	// TODO
+	//lwrite(beenhere, MAXLEVEL+MAXVLEVEL)
 	for k := 0; k < MAXLEVEL+MAXVLEVEL; k++ {
 		if beenhere[k] {
 			// TODO

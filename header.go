@@ -320,7 +320,7 @@ const (
 
 /*
 extern char     VERSION, SUBVERSION;
-extern u_char   beenhere[], boldon, cheat, ckpflag;
+extern u_char   boldon, cheat, ckpflag;
 extern const char *class[];
 extern u_char   course[];
 extern char     diagfile[], helpfile[], ckpfile[], larnlevels[],
@@ -337,14 +337,14 @@ extern u_char   nplt[], nsw[];
 extern const char *objectname[];
 extern const char *potionhide[], *potionname[];
 extern const char *spelcode[], *spelname[], *spelmes[];
-extern char     aborted[], spelweird[MAXMONST + 8][SPNUM];
+extern char     spelweird[MAXMONST + 8][SPNUM];
 extern u_char   potprob[];
 extern u_char   predostuff, restorflag, scprob[];
 extern u_char   screen[MAXX][MAXY], sex;
 extern const char *speldescript[];
 extern const char *scrollhide[], *scrollname[];
 extern u_char   spelknow[];
-extern u_char   splev[], stealth[MAXX][MAXY], wizard;
+extern u_char   splev[], stealth[MAXX][MAXY];
 extern short    diroffx[], diroffy[], hitflag, hit2flag, hit3flag, hitp[MAXX][MAXY];
 extern short    iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
                 lastpy;

@@ -677,7 +677,7 @@ func parse() {
 			lprcat("Saving . . .")
 			lflush()
 			savegame(savefilename)
-			wizard = 1
+			wizard = true
 			died(-257) /* save the game - doesn't return	 */
 
 		case 'Z':
@@ -736,7 +736,7 @@ func parse() {
 				scbr() /* system("stty -echo cbreak"); */
 				return
 			}
-			wizard = 1
+			wizard = true
 			scbr() /* system("stty -echo cbreak"); */
 			for i := 0; i < 6; i++ {
 				c[i] = 70
@@ -1173,8 +1173,8 @@ func whatitem(str string) int {
 	subroutine to get a number from the player
 	and allow * to mean return amt, else return the number entered
 */
-func readnum(mx int32) uint32 {
-	var amt uint32
+func readnum(mx int) int {
+	var amt int
 	sncbr()
 	i := ttgetch()
 	if i == '*' {
