@@ -24,7 +24,7 @@ type monst struct {
 	attack       int
 	defense      int8
 	genocided    bool
-	intelligence int8 /* monsters intelligence -- used to choose movement */
+	intelligence int /* monsters intelligence -- used to choose movement */
 	gold         int
 	hitpoints    int
 	experience   int

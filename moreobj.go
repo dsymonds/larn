@@ -157,7 +157,7 @@ func ofountain() {
 
 	subroutine to process an up/down of a character attribute for ofountain
 */
-func fch(how int, x *int32) {
+func fch(how int, x *int) {
 	if how < 0 {
 		lprcat(" went down by one!")
 		(*x)--

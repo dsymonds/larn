@@ -16,26 +16,26 @@ package main
  * move, and call movemt() to do the move.
  * Returns no value.
  */
-var w1, w1x, w1y [9]int16
+var w1, w1x, w1y [9]int
 var tmp1, tmp2, tmp3, tmp4, distance int
 
 func movemonst() {
-	if c[TIMESTOP] {
+	if c[TIMESTOP] != 0 {
 		return /* no action if time is stopped */
 	}
-	if c[HASTESELF] {
-		if (c[HASTESELF] & 1) == 0 {
+	if c[HASTESELF] != 0 {
+		if c[HASTESELF]&1 == 0 {
 			return
 		}
 	}
-	if spheres {
+	if spheres != nil {
 		movsphere() /* move the spheres of annihilation if any */
 	}
-	if c[HOLDMONST] {
+	if c[HOLDMONST] != 0 {
 		return /* no action if monsters are held */
 	}
 
-	if c[AGGRAVATE] { /* determine window of monsters to move */
+	if c[AGGRAVATE] != 0 { /* determine window of monsters to move */
 		tmp1 = playery - 5
 		tmp2 = playery + 6
 		tmp3 = playerx - 10
@@ -84,10 +84,10 @@ func movemonst() {
 	}
 	moved[lasthx][lasthy] = 0
 
-	if c[AGGRAVATE] || !c[STEALTH] { /* who gets moved? split for efficiency */
+	if c[AGGRAVATE] != 0 || c[STEALTH] == 0 { /* who gets moved? split for efficiency */
 		for j := tmp1; j < tmp2; j++ { /* look thru all locations in window */
 			for i := tmp3; i < tmp4; i++ {
-				if mitem[i][j] { /* if there is a monster to move */
+				if mitem[i][j] != 0 { /* if there is a monster to move */
 					if moved[i][j] == 0 { /* if it has not already been moved */
 						movemt(i, j) /* go and move the monster */
 					}
@@ -97,9 +97,9 @@ func movemonst() {
 	} else { /* not aggravated and not stealth */
 		for j := tmp1; j < tmp2; j++ { /* look thru all locations in window */
 			for i := tmp3; i < tmp4; i++ {
-				if mitem[i][j] { /* if there is a monster to move */
+				if mitem[i][j] != 0 { /* if there is a monster to move */
 					if moved[i][j] == 0 { /* if it has not already been moved */
-						if stealth[i][j] { /* if it is asleep due to stealth */
+						if stealth[i][j] != 0 { /* if it is asleep due to stealth */
 							movemt(i, j) /* go and move the monster */
 						}
 					}
@@ -108,7 +108,7 @@ func movemonst() {
 		}
 	}
 
-	if mitem[lasthx][lasthy] { /* now move monster last hit by player if not already moved */
+	if mitem[lasthx][lasthy] != 0 { /* now move monster last hit by player if not already moved */
 		if moved[lasthx][lasthy] == 0 { /* if it has not already been moved */
 			movemt(lasthx, lasthy)
 			lasthx = w1x[0]
@@ -136,7 +136,7 @@ func movemt(i, j int) {
 		}
 	}
 
-	if c[SCAREMONST] { /* choose destination randomly if scared */
+	if c[SCAREMONST] != 0 { /* choose destination randomly if scared */
 		xl := i + rnd(3) - 2
 		if xl < 0 {
 			xl = 0
@@ -200,11 +200,12 @@ func movemt(i, j int) {
 		yh = tmp2 + 1
 		vxy(&xl, &yl)
 		vxy(&xh, &yh)
-		for tmp := 1; tmp < distance; tmp++ { /* only up to 20 squares away */
+		var tmp byte
+		for tmp = 1; tmp < byte(distance); tmp++ { /* only up to 20 squares away */
 			for k := yl; k < yh; k++ {
 				for m := xl; m < xh; m++ {
 					if screen[m][k] == tmp { /* if find proximity n advance it */
-						for z = 1; z < 9; z++ { /* go around in a circle */
+						for z := 1; z < 9; z++ { /* go around in a circle */
 							xtmp := m + diroffx[z]
 							ytmp := k + diroffy[z]
 							if screen[xtmp][ytmp] == 0 {
@@ -220,13 +221,13 @@ func movemt(i, j int) {
 		}
 
 	out:
-		if tmp < distance { /* did find connectivity */
+		if tmp < byte(distance) { /* did find connectivity */
 			/* now select lowest value around playerx,playery */
-			for z = 1; z < 9; z++ { /* go around in a circle */
+			for z := 1; z < 9; z++ { /* go around in a circle */
 				xl := i + diroffx[z]
 				yl := j + diroffy[z]
 				if screen[xl][yl] == tmp {
-					if !mitem[xl][yl] {
+					if mitem[xl][yl] == 0 {
 						w1x[0] = xl
 						w1y[0] = yl
 						mmove(i, j, w1x[0], w1y[0])
@@ -370,11 +371,11 @@ func mmove(aa, bb, cc, dd int) {
 		fillmonst(mitem[cc][dd])
 		mitem[cc][dd] = 0
 	}
-	if c[BLINDCOUNT] {
+	if c[BLINDCOUNT] != 0 {
 		return /* if blind don't show where monsters are	 */
 	}
 	if know[cc][dd] {
-		if flag {
+		if flag != 0 {
 			cursors()
 		}
 		switch flag {
