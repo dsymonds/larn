@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"os"
+	"time"
 )
 
 /*
@@ -29,45 +32,46 @@ import (
 
 /* This is the structure for the scoreboard 		 */
 type scofmt struct {
-	score   int32       /* the score of the player 							 */
-	suid    int32       /* the user id number of the player 				 */
-	what    int16       /* the number of the monster that killed player 	 */
-	level   int16       /* the level player was on when he died 			 */
-	hardlev int16       /* the level of difficulty player played at 		 */
-	order   int16       /* the relative ordering place of this entry 		 */
-	who     [40]int8    /* the name of the character 						 */
-	sciv    [26][2]int8 /* this is the inventory list of the character 		 */
+	score   int        /* the score of the player 							 */
+	suid    int        /* the user id number of the player 				 */
+	what    int        /* the number of the monster that killed player 	 */
+	level   int        /* the level player was on when he died 			 */
+	hardlev int        /* the level of difficulty player played at 		 */
+	order   int        /* the relative ordering place of this entry 		 */
+	who     string     /* the name of the character 						 */
+	sciv    [26][2]int /* this is the inventory list of the character 		 */
 }
 
 /* This is the structure for the winning scoreboard */
 type wscofmt struct {
-	score    int32    /* the score of the player 							 */
-	timeused int32    /* the time used in mobuls to win the game 			 */
-	taxes    int32    /* taxes he owes to LRS 							 */
-	suid     int32    /* the user id number of the player 				 */
-	hardlev  int16    /* the level of difficulty player played at 		 */
-	order    int16    /* the relative ordering place of this entry 		 */
-	who      [40]int8 /* the name of the character 						 */
+	score    int    /* the score of the player 							 */
+	timeused int    /* the time used in mobuls to win the game 			 */
+	taxes    int    /* taxes he owes to LRS 							 */
+	suid     int    /* the user id number of the player 				 */
+	hardlev  int    /* the level of difficulty player played at 		 */
+	order    int    /* the relative ordering place of this entry 		 */
+	who      string /* the name of the character 						 */
 }
 
 /* 102 bytes struct for the log file 				 */
+// TODO: it isn't 102 bytes any more
 type log_fmt struct {
-	score          int32 /* the players score 								 */
-	diedtime       int32 /* time when game was over 							 */
-	cavelev        int16 /* level in caves 									 */
-	diff           int16 /* difficulty player played at 						 */
-	elapsedtime    int32 /* real time of game in seconds 					 */
-	bytout         int32 /* bytes input and output 							 */
-	bytin          int32
-	moves          int32    /* number of moves made by player 					 */
-	ac             int16    /* armor class of player 							 */
-	hp, hpmax      int16    /* players hitpoints 								 */
-	cputime        int16    /* CPU time needed in seconds 						 */
-	killed, spused int16    /* monsters killed and spells cast 					 */
-	usage          int16    /* usage of the CPU in % 							 */
-	lev            int16    /* player level 									 */
-	who            [12]int8 /* player name 										 */
-	what           [46]int8 /* what happened to player 							 */
+	score          int /* the players score 								 */
+	diedtime       int /* time when game was over 							 */
+	cavelev        int /* level in caves 									 */
+	diff           int /* difficulty player played at 						 */
+	elapsedtime    int /* real time of game in seconds 					 */
+	bytout         int /* bytes input and output 							 */
+	bytin          int
+	moves          int    /* number of moves made by player 					 */
+	ac             int    /* armor class of player 							 */
+	hp, hpmax      int    /* players hitpoints 								 */
+	cputime        int    /* CPU time needed in seconds 						 */
+	killed, spused int    /* monsters killed and spells cast 					 */
+	usage          int    /* usage of the CPU in % 							 */
+	lev            int    /* player level 									 */
+	who            string /* player name 										 */
+	what           string /* what happened to player 							 */
 }
 
 var sco [SCORESIZE]scofmt   /* the structure for the scoreboard  */
@@ -95,13 +99,19 @@ var whydead = [...]string{
  * returns -1 if unable to read in the scoreboard, returns 0 if all is OK
  */
 func readboard() int {
-	if gid != egid {
-		setegid(egid)
-	}
+	// TODO
+	/*
+		if gid != egid {
+			setegid(egid)
+		}
+	*/
 	i := lopen(scorefile)
-	if gid != egid {
-		setegid(gid)
-	}
+	// TODO
+	/*
+		if gid != egid {
+			setegid(gid)
+		}
+	*/
 	if i < 0 {
 		lprcat("Can't read scoreboard\n")
 		lflush()
@@ -121,55 +131,69 @@ func readboard() int {
 /*
  * writeboard()	Function to write the scoreboard from readboard()'s buffer
  *
- * returns -1 if unable to write the scoreboard, returns 0 if all is OK
+ * returns false if unable to write the scoreboard, returns true if all is OK
  */
-func writeboard() int {
+func writeboard() bool {
 	set_score_output()
-	if gid != egid {
-		setegid(egid)
-	}
+	// TODO
+	/*
+		if gid != egid {
+			setegid(egid)
+		}
+	*/
 	i := lcreat(scorefile)
-	if gid != egid {
-		setegid(gid)
-	}
+	// TODO
+	/*
+		if gid != egid {
+			setegid(gid)
+		}
+	*/
 	if i < 0 {
 		lprcat("Can't write scoreboard\n")
 		lflush()
-		return (-1)
+		return false
 	}
 	// TODO
-	return -1
+	return false
 	/*
 		lwrite((char *) sco, sizeof(sco))
 		lwrite((char *) winr, sizeof(winr))
 		lwclose()
 		lcreat((char *) 0)
-		return (0)
+		return true
 	*/
 }
 
 /*
  * makeboard() 		Function to create a new scoreboard (wipe out old one)
  *
- * returns -1 if unable to write the scoreboard, returns 0 if all is OK
+ * returns false if unable to write the scoreboard, returns true if all is OK
  */
-func makeboard() int {
+func makeboard() bool {
 	set_score_output()
 	for i := 0; i < SCORESIZE; i++ {
 		winr[i].taxes, winr[i].score, sco[i].score = 0, 0, 0
 		winr[i].order, sco[i].order = i, i
 	}
-	if writeboard() {
-		return -1
+	if !writeboard() {
+		return false
 	}
-	if gid != egid {
-		setegid(egid)
+	// TODO
+	/*
+		if gid != egid {
+			setegid(egid)
+		}
+	*/
+	if err := os.Chmod(scorefile, 0660); err != nil {
+		log.Printf("Chmodding scoreboard %v: %v", scorefile, err)
 	}
-	chmod(scorefile, 0660)
-	if gid != egid {
-		setegid(gid)
-	}
-	return 0
+	// TODO
+	/*
+		if gid != egid {
+			setegid(gid)
+		}
+	*/
+	return true
 }
 
 /*
@@ -185,7 +209,7 @@ func hashewon() int {
 	if readboard() < 0 {
 		return 0 /* can't find scoreboard */
 	}
-	for i = 0; i < SCORESIZE; i++ { /* search through winners scoreboard */
+	for i := 0; i < SCORESIZE; i++ { /* search through winners scoreboard */
 		if winr[i].suid == userid {
 			if winr[i].score > 0 {
 				c[HARDGAME] = winr[i].hardlev + 1
@@ -203,7 +227,7 @@ func hashewon() int {
  * Enter with the amount (in gp) to pay on the taxes.
  * Returns amount actually paid.
  */
-func paytaxes(x int32) int32 {
+func paytaxes(x int) int {
 	if x < 0 {
 		return 0
 	}
@@ -220,7 +244,7 @@ func paytaxes(x int32) int32 {
 				winr[i].taxes -= amt
 				outstanding_taxes -= amt
 				set_score_output()
-				if writeboard() < 0 {
+				if !writeboard() {
 					return 0
 				}
 				return amt
@@ -250,7 +274,7 @@ func winshou() int {
 			for j = 0; j < SCORESIZE; j++ { /* winners in order */
 				p := &winr[j] /* pointer to the scoreboard entry */
 				if p.order == i {
-					if p.score {
+					if p.score != 0 {
 						count++
 						lprintf("%10d     %2d      %5d Mobuls   %s \n",
 							p.score, p.hardlev, p.timeused, p.who)
@@ -283,7 +307,7 @@ func shou(x int) int {
 		for i := 0; i < SCORESIZE; i++ { /* be sure to print them out in order */
 			for j = 0; j < SCORESIZE; j++ {
 				if sco[j].order == i {
-					if sco[j].score {
+					if sco[j].score != 0 {
 						count++
 						lprintf("%10d     %2d       %s ",
 							sco[j].score, sco[j].hardlev, sco[j].who)
@@ -295,13 +319,13 @@ func shou(x int) int {
 						if x != 263 {
 							lprintf(" on %s", levelname[sco[j].level])
 						}
-						if x {
+						if x != 0 {
 							for n := 0; n < 26; n++ {
 								iven[n] = sco[j].sciv[n][0]
 								ivenarg[n] = sco[j].sciv[n][1]
 							}
 							for k := 1; k < 99; k++ {
-								for n = 0; n < 26; n++ {
+								for n := 0; n < 26; n++ {
 									if k == iven[n] {
 										srcount = 0
 										show3(n)
@@ -362,8 +386,8 @@ func showallscores() {
 	for i := 0; i < MAXSCROLL; i++ {
 		scrollname[i] = scrollhide[i]
 	}
-	i = winshou()
-	j = shou(1)
+	i := winshou()
+	j := shou(1)
 	if i+j == 0 {
 		lprcat(esb)
 	} else {
@@ -375,13 +399,13 @@ func showallscores() {
 /*
  * sortboard()		Function to sort the scoreboard
  *
- * Returns 0 if no sorting done, else returns 1
+ * Returns false if no sorting done, else returns true
  */
-func sortboard() int {
-	for i = 0; i < SCORESIZE; i++ {
+func sortboard() bool {
+	for i := 0; i < SCORESIZE; i++ {
 		sco[i].order, winr[i].order = -1, -1
 	}
-	j, pos = 0, 0
+	j, pos := 0, 0
 	for pos < SCORESIZE {
 		jdat := 0
 		for i := 0; i < SCORESIZE; i++ {
@@ -405,7 +429,7 @@ func sortboard() int {
 		winr[j].order = pos
 		pos++
 	}
-	return 1
+	return true
 }
 
 /*
@@ -417,13 +441,13 @@ func sortboard() int {
  * 	died() reason # in whyded, and TRUE/FALSE in winner if a winner
  * ex.		newscore(1000, "player 1", 32, 0);
  */
-func newscore(score int32, whoo string, whyded, winner int) {
+func newscore(score int, whoo string, whyded int, winner bool) {
 	if readboard() < 0 {
 		return /* do the scoreboard	 */
 	}
 	/* if a winner then delete all non-winning scores */
 	if cheat {
-		winner = 0 /* if he cheated, don't let him win */
+		winner = false /* if he cheated, don't let him win */
 	}
 	if winner {
 		for i := 0; i < SCORESIZE; i++ {
@@ -487,7 +511,7 @@ func newscore(score int32, whoo string, whyded, winner int) {
  * 	slot in scoreboard in i, and the tax bill in taxes.
  * Returns nothing of value
  */
-func new1sub(score int32, i int, whoo string, taxes int32) {
+func new1sub(score, i int, whoo string, taxes int) {
 	p := &winr[i]
 	p.taxes += taxes
 	if score >= p.score || c[HARDGAME] > p.hardlev {
@@ -508,7 +532,7 @@ func new1sub(score int32, i int, whoo string, taxes int32) {
  * 	died() reason # in whyded, and slot in scoreboard in i.
  * Returns nothing of value
  */
-func new2sub(score int32, i int, whoo string, whyded int) {
+func new2sub(score, i int, whoo string, whyded int) {
 	p := &sco[i]
 	if score >= p.score || c[HARDGAME] > p.hardlev {
 		p.who = whoo
@@ -565,8 +589,6 @@ func new2sub(score int32, i int, whoo string, whyded int) {
  * 	300		quick quit -- don't put on scoreboard
  */
 
-var scorerror int
-
 func died(x int) {
 	if c[LIFEPROT] > 0 { /* if life protection */
 		q := x
@@ -584,7 +606,7 @@ func died(x int) {
 		lprcat("\nYou feel wiiieeeeerrrrrd all over! ")
 		beep()
 		lflush()
-		sleep(4)
+		time.Sleep(4 * time.Second)
 		return /* only case where died() returns */
 	}
 invalid:
@@ -592,7 +614,10 @@ invalid:
 	lflush()
 	f := 0
 	if ckpflag {
-		unlink(ckpfile) /* remove checkpoint file if used */
+		/* remove checkpoint file if used */
+		if err := os.Remove(ckpfile); err != nil {
+			log.Printf("Removing checkpoint file: %v", err)
+		}
 	}
 	if x < 0 {
 		f++
@@ -601,12 +626,7 @@ invalid:
 	if x == 300 || x == 257 {
 		os.Exit(0) /* for quick exit or saved game */
 	}
-	var win int
-	if x == 263 {
-		win = 1
-	} else {
-		win = 0
-	}
+	win := x == 263
 	c[GOLD] += c[BANKACCOUNT]
 	c[BANKACCOUNT] = 0
 	/* now enter the player at the end of the scoreboard */
@@ -615,10 +635,14 @@ invalid:
 	lflush()
 
 	set_score_output()
+	scorerror := true
 	if !wizard && c[GOLD] > 0 { /* wizards can't score		 */
-		if gid != egid {
-			setegid(egid)
-		}
+		// TODO
+		/*
+			if gid != egid {
+				setegid(egid)
+			}
+		*/
 		if lappend(logfile) < 0 { /* append to file */
 			if lcreat(logfile) < 0 { /* and can't create new log file */
 				lcreat("")
@@ -626,19 +650,30 @@ invalid:
 				sncbr()
 				resetscroll()
 				lflush()
-				exit(0)
+				os.Exit(0)
 			}
-			if gid != egid {
-				setegid(egid)
+			// TODO
+			/*
+				if gid != egid {
+					setegid(egid)
+				}
+			*/
+			if err := os.Chmod(logfile, 0660); err != nil {
+				log.Printf("Chmodding log file %s: %v", logfile, err)
 			}
-			chmod(logfile, 0660)
+			// TODO
+			/*
+				if gid != egid {
+					setegid(gid)
+				}
+			*/
+		}
+		// TODO
+		/*
 			if gid != egid {
 				setegid(gid)
 			}
-		}
-		if gid != egid {
-			setegid(gid)
-		}
+		*/
 		logg.who = loginname
 		logg.score = c[GOLD]
 		logg.diff = c[HARDGAME]
@@ -650,15 +685,16 @@ invalid:
 			} else {
 				mod = "a"
 			}
-			snprintf(logg.what, sizeof(logg.what),
-				"killed by %s %s", mod, monster[x].name)
+			logg.what = fmt.Sprintf("killed by %s %s", mod, monster[x].name)
 		} else {
-			snprintf(logg.what, sizeof(logg.what),
-				"%s", whydead[x-256])
+			logg.what = whydead[x-256]
 		}
 		logg.cavelev = level
-		time(&zzz) /* get CPU time -- write out score info */
-		logg.diedtime = zzz
+		// TODO
+		/*
+			time(&zzz) // get CPU time -- write out score info
+			logg.diedtime = zzz
+		*/
 
 		// TODO
 		// times(&cputime)/* get CPU time -- write out score info */
@@ -669,8 +705,11 @@ invalid:
 		logg.ac = c[AC]
 		logg.hpmax = c[HPMAX]
 		logg.hp = c[HP]
-		logg.elapsedtime = (zzz - initialtime + 59) / 60
-		logg.usage = (10000 * i) / (zzz - initialtime)
+		// TODO
+		/*
+			logg.elapsedtime = (zzz - initialtime + 59) / 60
+			logg.usage = (10000 * i) / (zzz - initialtime)
+		*/
 		logg.bytin = c[BYTESIN]
 		logg.bytout = c[BYTESOUT]
 		logg.moves = c[MOVESMADE]
@@ -688,14 +727,14 @@ invalid:
 		if x != 257 {
 			if sortboard() {
 				set_score_output()
-				scorerror = writeboard()
+				scorerror = !writeboard()
 			}
 		}
 	}
 	if x == 256 || x == 257 || f != 0 {
 		os.Exit(0)
 	}
-	if scorerror == 0 {
+	if scorerror {
 		showscores() /* if we updated the scoreboard */
 	}
 	if x == 263 {

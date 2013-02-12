@@ -10,18 +10,18 @@ package main
 */
 func regen() {
 	c[MOVESMADE]++
-	if c[TIMESTOP] {
+	if c[TIMESTOP] != 0 {
 		c[TIMESTOP]--
 		if c[TIMESTOP] <= 0 {
 			bottomline()
 		}
 		return
 	} /* for stop time spell */
-	flag := 0
+	flag := false
 
 	if c[STRENGTH] < 3 {
 		c[STRENGTH] = 3
-		flag = 1
+		flag = true
 	}
 	if c[HASTESELF] == 0 || c[HASTESELF]&1 == 0 {
 		gltime++
@@ -46,44 +46,44 @@ func regen() {
 			bottomspell()
 		}
 	}
-	if c[HERO] {
+	if c[HERO] != 0 {
 		c[HERO]--
 		if c[HERO] <= 0 {
 			for i := 0; i < 6; i++ {
 				c[i] -= 10
 			}
-			flag = 1
+			flag = true
 		}
 	}
-	if c[ALTPRO] {
+	if c[ALTPRO] != 0 {
 		c[ALTPRO]--
 		if c[ALTPRO] <= 0 {
 			c[MOREDEFENSES] -= 3
-			flag = 1
+			flag = true
 		}
 	}
-	if c[PROTECTIONTIME] {
+	if c[PROTECTIONTIME] != 0 {
 		c[PROTECTIONTIME]--
 		if c[PROTECTIONTIME] <= 0 {
 			c[MOREDEFENSES] -= 2
-			flag = 1
+			flag = true
 		}
 	}
-	if c[DEXCOUNT] {
+	if c[DEXCOUNT] != 0 {
 		c[DEXCOUNT]--
 		if c[DEXCOUNT] <= 0 {
 			c[DEXTERITY] -= 3
-			flag = 1
+			flag = true
 		}
 	}
-	if c[STRCOUNT] {
+	if c[STRCOUNT] != 0 {
 		c[STRCOUNT]--
 		if c[STRCOUNT] <= 0 {
 			c[STREXTRA] -= 3
-			flag = 1
+			flag = true
 		}
 	}
-	if c[BLINDCOUNT] {
+	if c[BLINDCOUNT] != 0 {
 		c[BLINDCOUNT]--
 		if c[BLINDCOUNT] <= 0 {
 			cursors()
@@ -91,7 +91,7 @@ func regen() {
 			beep()
 		}
 	}
-	if c[CONFUSE] {
+	if c[CONFUSE] != 0 {
 		c[CONFUSE]--
 		if c[CONFUSE] <= 0 {
 			cursors()
@@ -99,96 +99,96 @@ func regen() {
 			beep()
 		}
 	}
-	if c[GIANTSTR] {
+	if c[GIANTSTR] != 0 {
 		c[GIANTSTR]--
 		if c[GIANTSTR] <= 0 {
 			c[STREXTRA] -= 20
-			flag = 1
+			flag = true
 		}
 	}
-	if c[CHARMCOUNT] {
+	if c[CHARMCOUNT] != 0 {
 		c[CHARMCOUNT]--
 		if c[CHARMCOUNT] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[INVISIBILITY] {
+	if c[INVISIBILITY] != 0 {
 		c[INVISIBILITY]--
 		if c[INVISIBILITY] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[CANCELLATION] {
+	if c[CANCELLATION] != 0 {
 		c[CANCELLATION]--
 		if c[CANCELLATION] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[WTW] {
+	if c[WTW] != 0 {
 		c[WTW]--
 		if c[WTW] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[HASTESELF] {
+	if c[HASTESELF] != 0 {
 		c[HASTESELF]--
 		if c[HASTESELF] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[AGGRAVATE] {
+	if c[AGGRAVATE] != 0 {
 		c[AGGRAVATE]--
 	}
-	if c[SCAREMONST] {
+	if c[SCAREMONST] != 0 {
 		c[SCAREMONST]--
 		if c[SCAREMONST] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[STEALTH] {
+	if c[STEALTH] != 0 {
 		c[STEALTH]--
 		if c[STEALTH] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[AWARENESS] {
+	if c[AWARENESS] != 0 {
 		c[AWARENESS]--
 	}
-	if c[HOLDMONST] {
+	if c[HOLDMONST] != 0 {
 		c[HOLDMONST]--
 		if c[HOLDMONST] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[HASTEMONST] {
+	if c[HASTEMONST] != 0 {
 		c[HASTEMONST]--
 	}
-	if c[FIRERESISTANCE] {
+	if c[FIRERESISTANCE] != 0 {
 		c[FIRERESISTANCE]--
 		if c[FIRERESISTANCE] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[GLOBE] {
+	if c[GLOBE] != 0 {
 		c[GLOBE]--
 		if c[GLOBE] <= 0 {
 			c[MOREDEFENSES] -= 10
-			flag = 1
+			flag = true
 		}
 	}
-	if c[SPIRITPRO] {
+	if c[SPIRITPRO] != 0 {
 		c[SPIRITPRO]--
 		if c[SPIRITPRO] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[UNDEADPRO] {
+	if c[UNDEADPRO] != 0 {
 		c[UNDEADPRO]--
 		if c[UNDEADPRO] <= 0 {
-			flag = 1
+			flag = true
 		}
 	}
-	if c[HALFDAM] {
+	if c[HALFDAM] != 0 {
 		c[HALFDAM]--
 		if c[HALFDAM] <= 0 {
 			cursors()
@@ -196,7 +196,7 @@ func regen() {
 			beep()
 		}
 	}
-	if c[SEEINVISIBLE] {
+	if c[SEEINVISIBLE] != 0 {
 		c[SEEINVISIBLE]--
 		if c[SEEINVISIBLE] <= 0 {
 			monstnamelist[INVISIBLESTALKER] = ' '
@@ -205,7 +205,7 @@ func regen() {
 			beep()
 		}
 	}
-	if c[ITCHING] {
+	if c[ITCHING] != 0 {
 		if c[ITCHING] > 1 {
 			if c[WEAR] != -1 || c[SHIELD] != -1 {
 				if rnd(100) < 50 {
@@ -225,7 +225,7 @@ func regen() {
 			beep()
 		}
 	}
-	if c[CLUMSINESS] {
+	if c[CLUMSINESS] != 0 {
 		if c[WIELD] != -1 {
 			if c[CLUMSINESS] > 1 {
 				if item[playerx][playery] == 0 { /* only if nothing there */

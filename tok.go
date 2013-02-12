@@ -175,7 +175,7 @@ func readopts() {
 			if (strcmp(i, "bold-objects") == 0)
 				boldon = true
 			else if (strcmp(i, "enable-checkpointing") == 0)
-				ckpflag = 1;
+				ckpflag = true
 			else if (strcmp(i, "inverse-objects") == 0)
 				boldon = false
 			else if (strcmp(i, "female") == 0)

@@ -318,7 +318,6 @@ const (
 
 /*
 extern char     VERSION, SUBVERSION;
-extern u_char   ckpflag;
 extern const char *class[];
 extern u_char   course[];
 extern char     diagfile[], helpfile[], ckpfile[], larnlevels[],
@@ -346,7 +345,7 @@ extern short    iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
 extern short    nobeep, oldx, oldy, playerx, playery, level;
 extern int      enable_scroll, srcount, userid, wisid;
 extern gid_t    gid, egid;
-extern long     outstanding_taxes, skill[]:
+extern long     skill[]:
 extern time_t	initialtime;
 extern unsigned long randx;
 */

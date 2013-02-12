@@ -102,7 +102,7 @@ var loginname string     /* players login name */
 var logname string       /* players name storage for scoring				 */
 var sex byte = 1         /* default is a man  0=woman						 */
 var boldon = true        /* 1=bold objects  0=inverse objects				 */
-var ckpflag byte = 0     /* 1 if want checkpointing of game, 0 otherwise	 */
+var ckpflag bool         /* 1 if want checkpointing of game, 0 otherwise	 */
 var cheat bool           /* whether the player has fudged save file			 */
 var level = 0            /* cavelevel player is on = c[CAVELEVEL]			 */
 var wizard = false       /* the wizard mode flag							 */
@@ -116,13 +116,13 @@ var lastpx, lastpy int /* 0 --- MAXX-1  or  0 --- MAXY-1					 */
 var oldx, oldy int
 var lasthx, lasthy int = 0, 0 /* location of monster last hit by player		 */
 
-var nobeep int16 = 0            /* true if program is not to beep  					 */
-var randx uint32 = 33601        /* the random number seed						 */
-var initialtime int32 = 0       /* time playing began 							 */
-var gltime int                  /* the clock for the game						 */
-var outstanding_taxes int32 = 0 /* present tax bill from score file 			 */
-var c, cbak [100]int            /* the character description arrays			 */
-var enable_scroll = 0           /* constant for enabled/disabled scrolling regn */
+var nobeep int16 = 0      /* true if program is not to beep  					 */
+var randx uint32 = 33601  /* the random number seed						 */
+var initialtime int32 = 0 /* time playing began 							 */
+var gltime int            /* the clock for the game						 */
+var outstanding_taxes int /* present tax bill from score file 			 */
+var c, cbak [100]int      /* the character description arrays			 */
+var enable_scroll = 0     /* constant for enabled/disabled scrolling regn */
 
 var spheres *sphere /* pointer to linked list for spheres of annihilation */
 var levelname = [...]string{" H", " 1", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", "10", "V1", "V2", "V3"}
