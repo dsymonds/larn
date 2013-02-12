@@ -8,22 +8,19 @@ package main
 var savefilename string
 
 /* the logging file */
-var logfile = "/var/games/larn/llog12.0"
+var logfile = "./llog12.0"
 
 /* the help text file */
-var helpfile = "/usr/share/games/larn/larn.help"
+var helpfile = "datfiles/larn.help"
 
 /* the score file */
-var scorefile = "/var/games/larn/lscore12.0"
+var scorefile = "./lscore12.0"
 
 /* the maze data file */
-var larnlevels = "/usr/share/games/larn/larnmaze"
+var larnlevels = "datfiles/larnmaze"
 
 /* the .larnopts filename */
 var optsfile = "/.larnopts"
-
-/* the player id datafile name */
-var playerids = "/var/games/larn/playerids"
 
 var diagfile = "Diagfile"    /* the diagnostic filename */
 var ckpfile = "Larn12.0.ckp" /* the checkpoint filename */

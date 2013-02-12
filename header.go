@@ -321,7 +321,7 @@ extern char     VERSION, SUBVERSION;
 extern const char *class[];
 extern u_char   course[];
 extern char     diagfile[], helpfile[], ckpfile[], larnlevels[],
-		playerids[], optsfile[1024], psname[], savefilename[],
+		optsfile[1024], psname[], savefilename[],
 		scorefile[];
 extern u_char   item[MAXX][MAXY], iven[], know[MAXX][MAXY];
 extern const char *levelname[];
