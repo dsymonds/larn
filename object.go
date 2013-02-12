@@ -7,7 +7,7 @@ package main
 	if an object was found.
 */
 func lookforobject() {
-	if c[TIMESTOP] {
+	if c[TIMESTOP] != 0 {
 		return /* can't find objects if time is stopped	 */
 	}
 	i := item[playerx][playery]
@@ -152,7 +152,7 @@ func lookforobject() {
 			lprcat("\n\nYou have found a branch office of the bank of Larn.")
 		}
 		lprcat("\nDo you (g) go inside, or (i) stay here? ")
-		j = 0
+		j := 0
 		for j != 'g' && j != 'i' && j != '\033' {
 			j = ttgetch()
 		}
@@ -307,8 +307,8 @@ func lookforobject() {
 		}
 		nap(3000)
 		newcavelevel(MAXLEVEL)
-		for i = 0; i < MAXY; i++ {
-			for j = 0; j < MAXX; j++ { /* put player near volcano shaft */
+		for i := 0; i < MAXY; i++ {
+			for j := 0; j < MAXX; j++ { /* put player near volcano shaft */
 				if item[j][i] == OVOLUP {
 					playerx = j
 					playery = i
@@ -351,8 +351,8 @@ func lookforobject() {
 		lflush()
 		nap(3000)
 		newcavelevel(0)
-		for i = 0; i < MAXY; i++ {
-			for j = 0; j < MAXX; j++ { /* put player near volcano shaft */
+		for i := 0; i < MAXY; i++ {
+			for j := 0; j < MAXX; j++ { /* put player near volcano shaft */
 				if item[j][i] == OVOLDOWN {
 					playerx = j
 					playery = i
@@ -736,7 +736,7 @@ func quaffpotion(pot int) {
 	case 10:
 		for i := 0; i < MAXY; i++ {
 			for j := 0; j < MAXX; j++ {
-				if mitem[j][i] {
+				if mitem[j][i] != 0 {
 					know[j][i] = true
 					show1cell(j, i)
 				}
@@ -852,7 +852,7 @@ func oscroll(typ int) {
 			return
 
 		case 'r':
-			if c[BLINDCOUNT] {
+			if c[BLINDCOUNT] != 0 {
 				break
 			}
 			lprcat("read")
@@ -899,9 +899,9 @@ var time_change = [...]byte{
 /*
  *	function to adjust time when time warping and taking courses in school
  */
-func adjusttime(tim int32) {
+func adjusttime(tim int) {
 	for j := 0; j < 26; j++ { /* adjust time related parameters */
-		if c[time_change[j]] {
+		if c[time_change[j]] != 0 {
 			c[time_change[j]] -= tim
 			if c[time_change[j]] < 1 {
 				c[time_change[j]] = 1
@@ -987,7 +987,7 @@ func read_scroll(typ int) {
 	case 11:
 		for i := 0; i < MAXY; i++ {
 			for j := 0; j < MAXX; j++ {
-				if mitem[j][i] {
+				if mitem[j][i] != 0 {
 					hitp[j][i] = monster[mitem[j][i]].hitpoints
 				}
 			}
@@ -1025,7 +1025,7 @@ func read_scroll(typ int) {
 		return /* hold monster */
 
 	case 17:
-		for i = 0; i < 26; i++ { /* gem perfection */
+		for i := 0; i < 26; i++ { /* gem perfection */
 			switch iven[i] {
 			case ODIAMOND, ORUBY, OEMERALD, OSAPPHIRE:
 				j := ivenarg[i]
@@ -1055,7 +1055,7 @@ func read_scroll(typ int) {
 
 	case 20:
 		for i := 0; i < 10; i++ { /* remove curse */
-			if c[curse[i]] {
+			if c[curse[i]] != 0 {
 				c[curse[i]] = 1
 			}
 		}
@@ -1131,7 +1131,7 @@ func obook() {
 			return
 
 		case 'r':
-			if c[BLINDCOUNT] {
+			if c[BLINDCOUNT] != 0 {
 				break
 			}
 			lprcat("read")
@@ -1156,10 +1156,10 @@ func readbook(lev int) {
 	var i, tmp int
 	if lev <= 3 {
 		tmp = splev[lev]
-		i = rund(icond(tmp, tmp, 1))
+		i = rund(icond(tmp != 0, tmp, 1))
 	} else {
 		tmp = splev[lev] - 9
-		i = rnd(icond(tmp, tmp, 1)) + 9
+		i = rnd(icond(tmp != 0, tmp, 1)) + 9
 	}
 	spelknow[i] = true
 	lprintf("\nSpell \"%s\":  %s\n%s", spelcode[i], spelname[i], speldescript[i])
@@ -1182,7 +1182,7 @@ func ocookie() {
 		case 'e':
 			lprcat("eat\nThe cookie tasted good.")
 			forget() /* no more cookie	 */
-			if c[BLINDCOUNT] {
+			if c[BLINDCOUNT] != 0 {
 				return
 			}
 			p := fortune()

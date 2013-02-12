@@ -339,14 +339,14 @@ extern u_char   predostuff, restorflag;
 extern u_char   screen[MAXX][MAXY], sex;
 extern const char *speldescript[];
 extern const char *scrollhide[];
-extern u_char   splev[], stealth[MAXX][MAXY];
+extern u_char   stealth[MAXX][MAXY];
 extern short    diroffx[], diroffy[], hitp[MAXX][MAXY];
 extern short    iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
                 lastpy;
 extern short    nobeep, oldx, oldy, playerx, playery, level;
 extern int      enable_scroll, srcount, userid, wisid;
 extern gid_t    gid, egid;
-extern long     outstanding_taxes, skill[], gltime, c[], cbak[];
+extern long     outstanding_taxes, skill[]:
 extern time_t	initialtime;
 extern unsigned long randx;
 */

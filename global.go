@@ -541,17 +541,17 @@ func pocketfull() int {
 }
 
 /*
-	function to return 1 if a monster is next to the player else returns 0
+	function to return true if a monster is next to the player else returns false
 */
-func nearbymonst() int {
+func nearbymonst() bool {
 	for tmp := playerx - 1; tmp < playerx+2; tmp++ {
 		for tmp2 := playery - 1; tmp2 < playery+2; tmp2++ {
 			if mitem[tmp][tmp2] != 0 {
-				return 1 /* if monster nearby */
+				return true /* if monster nearby */
 			}
 		}
 	}
-	return 0
+	return false
 }
 
 /*

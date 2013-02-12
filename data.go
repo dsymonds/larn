@@ -119,7 +119,7 @@ var lasthx, lasthy int = 0, 0 /* location of monster last hit by player		 */
 var nobeep int16 = 0            /* true if program is not to beep  					 */
 var randx uint32 = 33601        /* the random number seed						 */
 var initialtime int32 = 0       /* time playing began 							 */
-var gltime int32 = 0            /* the clock for the game						 */
+var gltime int                  /* the clock for the game						 */
 var outstanding_taxes int32 = 0 /* present tax bill from score file 			 */
 var c, cbak [100]int            /* the character description arrays			 */
 var enable_scroll = 0           /* constant for enabled/disabled scrolling regn */
@@ -366,7 +366,7 @@ var potionhide = [...]string{
 	spell data
 */
 var spelknow [SPNUM]bool
-var splev = [...]byte{1, 4, 9, 14, 18, 22, 26, 29, 32, 35, 37, 37, 37, 37, 37}
+var splev = [...]int{1, 4, 9, 14, 18, 22, 26, 29, 32, 35, 37, 37, 37, 37, 37}
 
 var spelcode = [...]string{
 	"pro", "mle", "dex", "sle", "chm", "ssp",

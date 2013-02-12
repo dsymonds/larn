@@ -131,7 +131,7 @@ func movemt(i, j int) {
 	monst := mitem[i][j]
 	switch monst { /* for half speed monsters */
 	case TROGLODYTE, HOBGOBLIN, METAMORPH, XVART, INVISIBLESTALKER, ICELIZARD:
-		if (gltime & 1) == 1 {
+		if gltime&1 == 1 {
 			return
 		}
 	}
@@ -339,7 +339,7 @@ func mmove(aa, bb, cc, dd int) {
 	}
 
 	if tmp == TROLL { /* if a troll regenerate him */
-		if (gltime & 1) == 0 {
+		if gltime&1 == 0 {
 			if monster[tmp].hitpoints > hitp[cc][dd] {
 				hitp[cc][dd]++
 			}
