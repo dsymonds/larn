@@ -8,7 +8,7 @@ import (
 /* Keystrokes (roughly) between checkpoints */
 const CHECKPOINT_INTERVAL = 400
 
-var lastok int8 = 0
+var lastok = 0
 var yrepcount = 0
 
 const flushno = 5             /* input queue flushing threshold */
@@ -45,8 +45,7 @@ func yylex() int {
 				savegame(ckpfile)
 			}
 		}
-		var cc int8
-		var ic int
+		var cc, ic int
 		// TODO
 		/*
 			for {		// if keyboard input buffer is too big, flush some of it
@@ -64,7 +63,7 @@ func yylex() int {
 			lastok = -1
 			return lastok
 		}
-		cc = buf[0]
+		cc = int(buf[0])
 
 		// TODO
 		/*
