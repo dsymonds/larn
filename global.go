@@ -525,19 +525,19 @@ func enchweapon() {
 
 /*
 	routine to tell if player can carry one more thing
-	returns 1 if pockets are full, else 0
+	returns true if pockets are full, else false
 */
-func pocketfull() int {
+func pocketfull() bool {
 	limit := 15 + (c[LEVEL] >> 1)
 	if limit > 26 {
 		limit = 26
 	}
 	for i := 0; i < limit; i++ {
 		if iven[i] == 0 {
-			return 0
+			return false
 		}
 	}
-	return 1
+	return true
 }
 
 /*

@@ -32,10 +32,10 @@ type monst struct {
 
 /* this is the structure definition for the items in the dnd store */
 type _itm struct {
-	price int16
-	obj   byte
-	arg   byte
-	qty   int8
+	price int
+	obj   int
+	arg   int
+	qty   int
 }
 
 /* this is the structure that holds the entire dungeon specifications	 */

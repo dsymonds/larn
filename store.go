@@ -226,7 +226,7 @@ func dndstore() {
 			}
 			dnd_hed()
 		} else { /* buy something */
-			lprc(i) /* echo the byte */
+			lprc(byte(i)) /* echo the byte */
 			i += dnditm - 'a'
 			if i >= MAXITM {
 				outofstock()
@@ -287,7 +287,7 @@ func dnditem(i int) {
 	for the college of larn
 */
 var course [26]byte /* the list of courses taken	 */
-var coursetime = [...]int8{10, 15, 10, 20, 10, 10, 10, 5}
+var coursetime = [...]int{10, 15, 10, 20, 10, 10, 10, 5}
 
 /*
 	function to display the header info for the school
@@ -336,7 +336,7 @@ func sch_hed() {
 }
 
 func oschool() {
-	var time_used int32
+	var time_used int
 	nosignal = true /* disable signals */
 	sch_hed()
 	for {
@@ -359,10 +359,10 @@ func oschool() {
 			drawscreen() /* enable signals */
 			return
 		}
-		lprc(i)
+		lprc(byte(i))
 		if c[GOLD] < 250 {
 			nogold()
-		} else if course[i-'a'] {
+		} else if course[i-'a'] != 0 {
 			lprcat("\nSorry, but that class is filled.")
 			nap(1000)
 		} else if i <= 'h' {
@@ -431,10 +431,10 @@ func oschool() {
 				c[HP] = c[HPMAX]
 				c[SPELLS] = c[SPELLMAX] /* he regenerated */
 
-				if c[BLINDCOUNT] {
+				if c[BLINDCOUNT] != 0 {
 					c[BLINDCOUNT] = 1 /* cure blindness too!  */
 				}
-				if c[CONFUSE] {
+				if c[CONFUSE] != 0 {
 					c[CONFUSE] = 1 /* end confusion	 */
 				}
 				adjusttime(time_used) /* adjust parameters for time change */
@@ -508,8 +508,8 @@ func ointerest() {
 	lasttime = (gltime / 100) * 100
 }
 
-var gemorder [26]int16 /* the reference to screen location for each */
-var gemvalue [26]int32 /* the appraisal of the gems */
+var gemorder [26]int /* the reference to screen location for each */
+var gemvalue [26]int /* the appraisal of the gems */
 
 func obanksub() {
 	ointerest() /* credit any needed interest */
@@ -553,14 +553,14 @@ func obanksub() {
 		standout("escape")
 		lprcat("]  ")
 		yrepcount = 0
-		i = 0
+		i := 0
 		for i != 'd' && i != 'w' && i != 's' && i != '\033' {
 			i = ttgetch()
 		}
 		switch i {
 		case 'd':
 			lprcat("deposit\nHow much? ")
-			amt = readnum(c[GOLD])
+			amt := readnum(c[GOLD])
 			if amt < 0 {
 				lprcat("\nSorry, but we can't take negative gold!")
 				nap(2000)
@@ -575,7 +575,7 @@ func obanksub() {
 
 		case 'w':
 			lprcat("withdraw\nHow much? ")
-			amt = readnum(c[BANKACCOUNT])
+			amt := readnum(c[BANKACCOUNT])
 			if amt < 0 {
 				lprcat("\nSorry, but we don't have any negative gold!")
 				nap(2000)
@@ -596,7 +596,7 @@ func obanksub() {
 			}
 			if i == '*' {
 				for i = 0; i < 26; i++ {
-					if gemvalue[i] {
+					if gemvalue[i] != 0 {
 						c[GOLD] += gemvalue[i]
 						iven[i] = 0
 						gemvalue[i] = 0
@@ -719,7 +719,7 @@ func otradepost() {
 				cnsitm()
 			} /* can't sell unidentified item */
 		}
-		if !j {
+		if j == 0 {
 			if i == '*' {
 				clear()
 				qshowstr()
