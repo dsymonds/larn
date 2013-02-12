@@ -580,6 +580,7 @@ func stealsomething() int {
 			return 0
 		}
 	}
+	panic("unreachable")
 }
 
 /*
@@ -674,9 +675,9 @@ func adjustcvalues(theitem, arg int) {
 
 /*
 	function to ask user for a password (no echo)
-	returns 1 if entered correctly, 0 if not
+	returns true if entered correctly, false if not
 */
-func getpassword() int {
+func getpassword() bool {
 	scbr() /* system("stty -echo cbreak"); */
 	lprcat("\nEnter Password: ")
 	lflush()
@@ -689,10 +690,9 @@ func getpassword() int {
 	if gpwbuf != password {
 		lprcat("\nSorry\n")
 		lflush()
-		return 0
-	} else {
-		return 1
+		return false
 	}
+	return true
 }
 
 /*

@@ -175,12 +175,12 @@ func movemt(i, j int) {
 			for m := xl; m < xh; m++ {
 				switch item[m][k] {
 				case OWALL, OPIT, OTRAPARROW, ODARTRAP, OCLOSEDDOOR, OTRAPDOOR, OTELEPORTER:
-				smm:
 					screen[m][k] = 127
 					break
 				case OMIRROR:
 					if mitem[m][k] == VAMPIRE {
-						goto smm
+						screen[m][k] = 127
+						break
 					}
 					fallthrough
 				default:

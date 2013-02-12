@@ -133,7 +133,7 @@ func main() {
 
 				case 'c':	// anyone with password can create scoreboard
 					lprcat("Preparing to initialize the scoreboard.\n");
-					if (getpassword() != 0) {	// make new scoreboard
+					if getpassword() {	// make new scoreboard
 						makeboard();
 						lprc('\n');
 						showscores();
@@ -738,7 +738,7 @@ func parse() {
 				lflush()
 				return
 			}
-			if getpassword() == 0 {
+			if !getpassword() {
 				scbr() /* system("stty -echo cbreak"); */
 				return
 			}

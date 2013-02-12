@@ -226,19 +226,25 @@ func cast() {
 		lprcat(eys)
 	}
 	if a == '\033' {
-		goto over /* to escape casting a spell	 */
-	}
-	b := ttgetch()
-	if b == '\033' {
-		goto over /* to escape casting a spell	 */
-	}
-	d := ttgetch()
-	if d == '\033' {
-	over:
+		/* to escape casting a spell	 */
 		lprcat(" aborted")
 		c[SPELLS]++
 		return
-	} /* to escape casting a spell	 */
+	}
+	b := ttgetch()
+	if b == '\033' {
+		/* to escape casting a spell	 */
+		lprcat(" aborted")
+		c[SPELLS]++
+		return
+	}
+	d := ttgetch()
+	if d == '\033' {
+		/* to escape casting a spell	 */
+		lprcat(" aborted")
+		c[SPELLS]++
+		return
+	}
 	c[SPELLSCAST]++
 	lprc('\n')
 	spell := fmt.Sprintf("%c%c%c", a, b, d)
@@ -733,10 +739,8 @@ func direct(spnum, dam int, str string, arg int) {
 	dirsub(&x, &y)
 	m := mitem[x][y]
 	if item[x][y] == OMIRROR {
-		if spnum == 3 { /* sleep */
-			lprcat("You fall asleep! ")
+		fool := func() {
 			beep()
-		fool:
 			arg += 2
 			for {
 				arg--
@@ -746,11 +750,15 @@ func direct(spnum, dam int, str string, arg int) {
 				parse2()
 				nap(1000)
 			}
+		}
+		if spnum == 3 { /* sleep */
+			lprcat("You fall asleep! ")
+			fool() // closure above
 			return
 		} else if spnum == 6 { /* web */
 			lprcat("You get stuck in your own web! ")
-			beep()
-			goto fool
+			fool() // closure above
+			return
 		} else {
 			lastnum = 278
 			lprintf(str, "spell caster (that's you)", arg)
@@ -846,15 +854,12 @@ func godirect(spnum, dam int, str string, delay, cshow int) {
 					if level < MAXLEVEL+MAXVLEVEL-1 { /* not on V3 */
 						if x < MAXX-1 && y < MAXY-1 && x != 0 && y != 0 {
 							lprcat("  The wall crumbles")
-						god3:
 							*p = 0
-						god:
 							know[x][y] = false
 							show1cell(x, y)
 						}
 					}
 				}
-			god2:
 				dam = 0
 
 			case OCLOSEDDOOR:
@@ -863,9 +868,11 @@ func godirect(spnum, dam int, str string, delay, cshow int) {
 				lprintf(str, "door")
 				if dam >= 40 {
 					lprcat("  The door is blasted apart")
-					goto god3
+					*p = 0
+					know[x][y] = false
+					show1cell(x, y)
 				}
-				goto god2
+				dam = 0
 
 			case OSTATUE:
 				cursors()
@@ -876,10 +883,11 @@ func godirect(spnum, dam int, str string, delay, cshow int) {
 						lprcat("  The statue crumbles")
 						*p = OBOOK
 						iarg[x][y] = level
-						goto god
+						know[x][y] = false
+						show1cell(x, y)
 					}
 				}
-				goto god2
+				dam = 0
 
 			case OTHRONE:
 				cursors()
@@ -889,9 +897,10 @@ func godirect(spnum, dam int, str string, delay, cshow int) {
 					mitem[x][y] = GNOMEKING
 					hitp[x][y] = monster[GNOMEKING].hitpoints
 					*p = OTHRONE2
-					goto god
+					know[x][y] = false
+					show1cell(x, y)
 				}
-				goto god2
+				dam = 0
 
 			case OMIRROR:
 				dx *= -1
@@ -1484,6 +1493,12 @@ func spattack(x, xx, yy int) bool {
 	}
 	vxy(&xx, &yy) /* verify x & y coordinates */
 	var i int
+	spout2 := func() {
+		if p != "" {
+			lprintf(p, lastmonst)
+			beep()
+		}
+	}
 	switch x {
 	case 1: /* rust your armor, j=1 when rusting has occurred */
 		k := c[WEAR]
@@ -1525,25 +1540,20 @@ func spattack(x, xx, yy int) bool {
 			p = "\nThe %s hit you -- your armor feels weaker"
 		}
 
-	case 2:
-		i = rnd(15) + 8 - c[AC]
-	spout:
+	case 2, 3:
+		if x == 2 {
+			i = rnd(15) + 8 - c[AC]
+		} else if x == 3 {
+			i = rnd(20) + 25 - c[AC]
+		}
 		p = "\nThe %s breathes fire at you!"
 		if c[FIRERESISTANCE] != 0 {
 			p = "\nThe %s's flame doesn't faze you!"
 		} else {
-		spout2:
-			if p != "" {
-				lprintf(p, lastmonst)
-				beep()
-			}
+			spout2()
 		}
 		checkloss(i)
 		return false
-
-	case 3:
-		i = rnd(20) + 25 - c[AC]
-		goto spout
 
 	case 4:
 		if c[STRENGTH] > 3 {
@@ -1557,7 +1567,9 @@ func spattack(x, xx, yy int) bool {
 	case 5:
 		p = "\nThe %s blasts you with his cold breath"
 		i = rnd(15) + 18 - c[AC]
-		goto spout2
+		spout2()
+		checkloss(i)
+		return false
 
 	case 6:
 		lprintf("\nThe %s drains you of your life energy!", lastmonst)
@@ -1568,7 +1580,9 @@ func spattack(x, xx, yy int) bool {
 	case 7:
 		p = "\nThe %s got you with a gusher!"
 		i = rnd(15) + 25 - c[AC]
-		goto spout2
+		spout2()
+		checkloss(i)
+		return false
 
 	case 8:
 		if c[NOTHEFT] != 0 {
@@ -1621,7 +1635,9 @@ func spattack(x, xx, yy int) bool {
 	case 10:
 		p = "\nThe %s hit you with his barbed tail"
 		i = rnd(25) - c[AC]
-		goto spout2
+		spout2()
+		checkloss(i)
+		return false
 
 	case 11:
 		p = "\nThe %s has confused you"
@@ -1634,7 +1650,9 @@ func spattack(x, xx, yy int) bool {
 	case 13:
 		p = "\nThe %s flattens you with his psionics!"
 		i = rnd(15) + 30 - c[AC]
-		goto spout2
+		spout2()
+		checkloss(i)
+		return false
 
 	case 14:
 		if c[NOTHEFT] != 0 {
@@ -1653,15 +1671,16 @@ func spattack(x, xx, yy int) bool {
 		bottomline()
 		return true
 
-	case 15:
-		i = rnd(10) + 5 - c[AC]
-	spout3:
+	case 15, 16:
+		if x == 15 {
+			i = rnd(10) + 5 - c[AC]
+		} else if x == 16 {
+			i = rnd(15) + 10 - c[AC]
+		}
 		p = "\nThe %s bit you!"
-		goto spout2
-
-	case 16:
-		i = rnd(15) + 10 - c[AC]
-		goto spout3
+		spout2()
+		checkloss(i)
+		return false
 	}
 	if p != "" {
 		lprintf(p, lastmonst)

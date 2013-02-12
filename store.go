@@ -797,6 +797,7 @@ func olrs() {
 	resetscroll()
 	cursor(1, 4)
 	lprcat("Welcome to the Larn Revenue Service district office.  How can we help you?")
+	var i int
 	for {
 		if first != 0 {
 			first = 0
@@ -809,7 +810,7 @@ func olrs() {
 		standout("escape")
 		lprcat("]  ")
 		yrepcount = 0
-		i := 0
+		i = 0
 		for i != 'p' && i != '\033' {
 			i = ttgetch()
 		}

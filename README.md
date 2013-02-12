@@ -8,14 +8,16 @@ I have done the minimal changes required to get it to be valid Go source
 code as far as gofmt is concerned. Some chunks have been stubbed out
 instead of ported (e.g. loading/saving).
 
+I have made sufficient changes to get it to build, linking against
+github.com/jabb/gocurse/curses, which is the only Go ncurses library
+I could get to build and work. Much is still stubbed out, though.
+
 Roadmap
 -------
-Next I will be making sufficient changes to get it to build,
-linking against github.com/jabb/gocurse/curses, which is the only
-Go ncurses library I could get to build and work.
+I will next be debugging, fixing and filling out the critical stubbed functions.
 
 After that, hopefully enough will work to be able to play; I shall then
-start turning the code into good Go code, and filling out the previously
+start turning the code into good Go code, and filling out any remaining
 stubbed functions.
 
 Next, I will abstract enough of the code to turn it into a web based

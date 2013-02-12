@@ -45,8 +45,9 @@ func yylex() int {
 				savegame(ckpfile)
 			}
 		}
-		var cc, ic int
+		var cc int
 		// TODO
+		//var ic int
 		/*
 			for {		// if keyboard input buffer is too big, flush some of it
 				ioctl(0, FIONREAD, &ic);
@@ -93,6 +94,7 @@ func yylex() int {
 			return lastok
 		}
 	}
+	panic("unreachable")
 }
 
 /*

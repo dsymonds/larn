@@ -380,6 +380,7 @@ func lgetw() string {
 		n--
 		cc = lgetc()
 	}
+	panic("unreachable")
 }
 
 /*
@@ -406,6 +407,7 @@ func lgetl() string {
 		}
 		i--
 	}
+	panic("unreachable")
 }
 
 /*
