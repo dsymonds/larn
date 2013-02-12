@@ -145,14 +145,14 @@ func savegame(fname string) int {
 	// TODO
 	return -1
 	/*
-		nosignal = 1
+		nosignal = true
 		lflush()
 		savelevel()
 		ointerest()
 		if lcreat(fname) < 0 {
 			lcreat("")
 			lprintf("\nCan't open file <%s> to save game\n", fname)
-			nosignal = 0
+			nosignal = false
 			return -1
 		}
 		set_score_output()
@@ -202,7 +202,7 @@ func savegame(fname string) int {
 		lwclose()
 		lastmonst = ""
 		lcreat("")
-		nosignal = 0
+		nosignal = false
 	*/
 	return 0
 }

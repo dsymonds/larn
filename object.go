@@ -1223,7 +1223,7 @@ func ogold(arg int) {
 }
 
 func ohome() {
-	nosignal = 1 /* disable signals */
+	nosignal = true /* disable signals */
 	for i := 0; i < 26; i++ {
 		if iven[i] == OPOTION {
 			if ivenarg[i] == 21 {
@@ -1277,7 +1277,7 @@ func ohome() {
 		}
 		if i == '\033' {
 			drawscreen()
-			nosignal = 0 /* enable signals */
+			nosignal = false /* enable signals */
 			return
 		}
 	}

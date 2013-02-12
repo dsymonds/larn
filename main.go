@@ -280,7 +280,7 @@ func showstr() {
 func qshowstr() {
 	srcount = 0
 	sigsav := nosignal
-	nosignal = 1 /* don't allow ^c etc */
+	nosignal = true /* don't allow ^c etc */
 	if c[GOLD] != 0 {
 		lprintf(".)   %d gold pieces", c[GOLD])
 		srcount++
@@ -332,7 +332,7 @@ func t_endup(count int) {
 */
 func showwear() {
 	sigsav := nosignal
-	nosignal = 1 /* don't allow ^c etc */
+	nosignal = true /* don't allow ^c etc */
 	srcount = 0
 
 	count := 2
@@ -368,7 +368,7 @@ func showwear() {
 */
 func showwield() {
 	sigsav := nosignal
-	nosignal = 1 /* don't allow ^c etc */
+	nosignal = true /* don't allow ^c etc */
 	srcount = 0
 
 	count := 2
@@ -406,7 +406,7 @@ func showwield() {
  */
 func showread() {
 	sigsav := nosignal
-	nosignal = 1 /* don't allow ^c etc */
+	nosignal = true /* don't allow ^c etc */
 	srcount = 0
 
 	count := 2
@@ -438,7 +438,7 @@ func showread() {
  */
 func showeat() {
 	sigsav := nosignal
-	nosignal = 1 /* don't allow ^c etc */
+	nosignal = true /* don't allow ^c etc */
 	srcount = 0
 
 	count := 2
@@ -470,7 +470,7 @@ func showeat() {
 */
 func showquaff() {
 	sigsav := nosignal
-	nosignal = 1 /* don't allow ^c etc */
+	nosignal = true /* don't allow ^c etc */
 	srcount = 0
 
 	count := 2

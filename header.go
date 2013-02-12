@@ -329,7 +329,6 @@ extern char     logfile[], lastmonst[];
 extern u_char  *lpbuf, *lpend;
 extern u_char  *lpnt, moved[MAXX][MAXY], mitem[MAXX][MAXY], monstlevel[];
 extern char     monstnamelist[], objnamelist[];
-extern u_char   nosignal;
 extern const char *objectname[];
 extern const char *potionhide[];
 extern const char *spelcode[], *spelname[], *spelmes[];

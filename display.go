@@ -534,7 +534,7 @@ var lincount, count int
 
 func seemagic(arg int) {
 	count, lincount = 0, 0
-	nosignal = 1
+	nosignal = true
 
 	number := 0
 	if arg == -1 { /* if display spells while casting one */
@@ -561,7 +561,7 @@ func seemagic(arg int) {
 	if arg == -1 {
 		seepage()
 		more()
-		nosignal = 0
+		nosignal = false
 		draws(0, MAXX, 0, number)
 		return
 	}
@@ -598,7 +598,7 @@ func seemagic(arg int) {
 	if lincount != 0 {
 		more()
 	}
-	nosignal = 0
+	nosignal = false
 	setscroll()
 	drawscreen()
 }

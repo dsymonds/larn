@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"os"
 	//"os/signal"
 	"syscall"
+	"time"
 )
 
-func bit(a int) int { return 1 << (a - 1) }
+func bit(a uint) int { return 1 << (a - 1) }
 
 func s2choose() {
 	/* text to be displayed if ^C during intro screen */
@@ -113,7 +115,7 @@ func sigpanic(sig int) {
 	// TODO
 	//signal(sig, SIG_DFL);
 	fmt.Fprintf(os.Stderr, "\nLarn - Panic! Signal %d received [%v]", sig, syscall.Signal(sig))
-	sleep(2)
+	time.Sleep(2 * time.Second)
 	sncbr()
 	savegame(savefilename)
 	// TODO

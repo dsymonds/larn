@@ -89,7 +89,7 @@ var beenhere [MAXLEVEL + MAXVLEVEL]bool /* true if have been on this level */
 const VERSION = 12 /* this is the present version # of the program	 */
 const SUBVERSION = 0
 
-var nosignal byte /* set to 1 to disable the signals from doing anything */
+var nosignal bool /* set to true to disable the signals from doing anything */
 
 /* 2 means that the trap handling routines
 * must do a showplayer() after a trap.  0

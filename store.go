@@ -174,7 +174,7 @@ func nogold() {
 
 func dndstore() {
 	dnditm = 0
-	nosignal = 1 /* disable signals */
+	nosignal = true /* disable signals */
 	clear()
 	dnd_2hed()
 	if outstanding_taxes > 0 {
@@ -192,7 +192,7 @@ func dndstore() {
 			i = ttgetch()
 		}
 		drawscreen()
-		nosignal = 0 /* enable signals */
+		nosignal = false /* enable signals */
 		return
 	}
 	dnd_hed()
@@ -216,7 +216,7 @@ func dndstore() {
 			dnd_hed()
 		} else if i == '\033' {
 			drawscreen()
-			nosignal = 0 /* enable signals */
+			nosignal = false /* enable signals */
 			return
 		} else if i == ' ' {
 			cl_dn(1, 4)
@@ -337,7 +337,7 @@ func sch_hed() {
 
 func oschool() {
 	var time_used int32
-	nosignal = 1 /* disable signals */
+	nosignal = true /* disable signals */
 	sch_hed()
 	for {
 		cursor(57, 18)
@@ -355,7 +355,7 @@ func oschool() {
 			sch_hed()
 			continue
 		} else if i == '\033' {
-			nosignal = 0
+			nosignal = false
 			drawscreen() /* enable signals */
 			return
 		}
@@ -458,7 +458,7 @@ func obank2() {
 }
 
 func banktitle(str string) {
-	nosignal = 1 /* disable signals */
+	nosignal = true /* disable signals */
 	clear()
 	lprcat(str)
 	if outstanding_taxes > 0 {
@@ -477,12 +477,12 @@ func banktitle(str string) {
 			i = ttgetch()
 		}
 		drawscreen()
-		nosignal = 0 /* enable signals */
+		nosignal = false /* enable signals */
 		return
 	}
 	lprcat("\n\n\tGemstone\t      Appraisal\t\tGemstone\t      Appraisal")
 	obanksub()
-	nosignal = 0 /* enable signals */
+	nosignal = false /* enable signals */
 	drawscreen()
 }
 
@@ -685,7 +685,7 @@ func otradhead() {
 
 func otradepost() {
 	dnditm, dndcount = 0, 0
-	nosignal = 1 /* disable signals */
+	nosignal = true /* disable signals */
 	resetscroll()
 	otradhead()
 	for {
@@ -702,7 +702,7 @@ func otradepost() {
 			setscroll()
 			recalc()
 			drawscreen()
-			nosignal = 0 /* enable signals */
+			nosignal = false /* enable signals */
 			return
 		}
 		isub := i - 'a'
@@ -791,7 +791,7 @@ func cnsitm() {
  *	for the Larn Revenue Service
  */
 func olrs() {
-	nosignal = 1 /* disable signals */
+	nosignal = true /* disable signals */
 	first := 1
 	clear()
 	resetscroll()
@@ -827,7 +827,7 @@ func olrs() {
 			}
 
 		case '\033':
-			nosignal = 0 /* enable signals */
+			nosignal = false /* enable signals */
 			setscroll()
 			drawscreen()
 			return
