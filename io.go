@@ -293,13 +293,25 @@ func resetbold() {
 }
 
 /* macro to setup the scrolling region for the terminal */
-// TODO
-func setscroll() { /* lprcat("\033[20;24r") */
+func setscroll() {
+	/* lprcat("\033[20;24r") */
+	if err := win.SetScrollRegion(20, 24); err != nil {
+		log.Printf("win.SetScrollRegion: %v", err)
+	}
+	if err := win.Scrollok(true); err != nil {
+		log.Printf("win.Scrollok: %v", err)
+	}
 }
 
 /* macro to clear the scrolling region for the terminal */
-// TODO
-func resetscroll() { /* lprcat("\033[;24r") */
+func resetscroll() {
+	/* lprcat("\033[;24r") */
+	if err := win.SetScrollRegion(0, 24); err != nil { // TODO: right?
+		log.Printf("win.SetScrollRegion: %v", err)
+	}
+	if err := win.Scrollok(false); err != nil {
+		log.Printf("win.Scrollok: %v", err)
+	}
 }
 
 /* macro to clear the screen and home the cursor */
@@ -598,7 +610,7 @@ func lwclose() {
  *			    	avoids calls to lprintf (time consuming)
  */
 func lprcat(str string) {
-	debugf("(%q)", str)
+	debugf("(%q) @ (%d, %d)", str, cursorX, cursorY)
 	// TODO: do this less clumsily.
 	win.Move(cursorX, cursorY) // TODO: needed?
 	win.Addstr(str)
