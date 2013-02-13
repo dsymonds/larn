@@ -9,8 +9,7 @@ code as far as gofmt is concerned. Some chunks have been stubbed out
 instead of ported (e.g. loading/saving).
 
 I have made sufficient changes to get it to build, linking against
-github.com/jabb/gocurse/curses, which is the only Go ncurses library
-I could get to build and work. Much is still stubbed out, though.
+github.com/dsymonds/gocurse/curses. Much is still stubbed out, though.
 
 Roadmap
 -------

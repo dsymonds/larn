@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jabb/gocurse/curses"
+	"github.com/dsymonds/gocurse/curses"
 )
 
 /*
@@ -131,7 +131,7 @@ func debugf(format string, args ...interface{}) {
 		args = append([]interface{}{path.Base(file), line, strings.TrimPrefix(f.Name(), "main.")}, args...)
 		break
 	}
-	fmt.Fprintf(os.Stderr, "%s:%d [%s] "+format+"\n", args...)
+	fmt.Fprintf(os.Stderr, "%s:%d\t[%s] "+format+"\n", args...)
 }
 
 const LINBUFSIZE = 128 /* size of the lgetw() and lgetl() buffer */
@@ -162,6 +162,9 @@ func clearvt100() {
 	resetscroll()
 	clear()
 	sncbr() /* system("stty -cbreak echo"); */
+	if err := curses.Endwin(); err != nil {
+		log.Printf("curses.Endwin: %v", err)
+	}
 }
 
 var win *curses.Window
@@ -185,6 +188,9 @@ func scbr() {
 	if err := curses.Cbreak(); err != nil {
 		log.Printf("curses.Cbreak: %v", err)
 	}
+	if err := curses.Noecho(); err != nil {
+		log.Printf("curses.Noecho: %v", err)
+	}
 }
 
 /*
@@ -196,6 +202,9 @@ func sncbr() {
 	debugf("")
 	if err := curses.Nocbreak(); err != nil {
 		log.Printf("curses.Nocbreak: %v", err)
+	}
+	if err := curses.Echo(); err != nil {
+		log.Printf("curses.Echo: %v", err)
 	}
 }
 
@@ -272,15 +281,15 @@ func lprc(ch byte) {
 /* macro to turn on bold display for the terminal */
 func setbold() {
 	if boldon {
-		win.Attron(curses.A_BOLD)
+		win.AttrOn(curses.A_BOLD)
 	} else {
-		win.Attron(curses.A_REVERSE)
+		win.AttrOn(curses.A_REVERSE)
 	}
 }
 
 /* macro to turn off bold display for the terminal */
 func resetbold() {
-	win.Attroff(curses.A_BOLD) /* TODO: A_REVERSE too? */
+	win.AttrOff(curses.A_BOLD) /* TODO: A_REVERSE too? */
 }
 
 /* macro to setup the scrolling region for the terminal */
@@ -591,7 +600,8 @@ func lwclose() {
 func lprcat(str string) {
 	debugf("(%q)", str)
 	// TODO: do this less clumsily.
-	win.Addstr(cursorX, cursorY, str, 0)
+	win.Move(cursorX, cursorY) // TODO: needed?
+	win.Addstr(str)
 	cursorX += len(str)
 	if strings.HasSuffix(str, "\n") {
 		cursorX, cursorY = 0, cursorY+1
@@ -759,9 +769,9 @@ func cl_dn(x, y int) {
  */
 func standout(str string) {
 	debugf("(%q)", str)
-	win.Attron(curses.A_STANDOUT) // TODO: or A_REVERSE?
+	win.AttrOn(curses.A_STANDOUT) // TODO: or A_REVERSE?
 	lprcat(str)
-	win.Attroff(curses.A_STANDOUT) // TODO: or A_REVERSE?
+	win.AttrOff(curses.A_STANDOUT) // TODO: or A_REVERSE?
 }
 
 /*
