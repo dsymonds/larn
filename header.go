@@ -390,34 +390,6 @@ func forget() { item[playerx][playery], know[playerx][playery] = 0, false }
 /* macro to wipe out a monster at a location */
 func disappear(x, y int) { mitem[x][y], know[x][y] = 0, false }
 
-// TODO: fix term codes?
-
-/* macro to turn on bold display for the terminal */
-func setbold() {
-	if boldon {
-		lprcat("\033[1m")
-	} else {
-		lprcat("\033[7m")
-	}
-}
-
-/* macro to turn off bold display for the terminal */
-func resetbold() { lprcat("\033[m") }
-
-/* macro to setup the scrolling region for the terminal */
-func setscroll() { lprcat("\033[20;24r") }
-
-/* macro to clear the scrolling region for the terminal */
-func resetscroll() { lprcat("\033[;24r") }
-
-/* macro to clear the screen and home the cursor */
-func clear()    { lprcat("\033[2J\033[f"); cbak[SPELLS] = -50 }
-func cltoeoln() { lprcat("\033[K") }
-
-/* macro to output one byte to the output buffer */
-// TODO: move this to io.go.
-func lprc(ch byte) { lpbuf = append(lpbuf, ch) }
-
 /* macro to seed the random number generator */
 func seedrand(x uint32) { randx = x }
 

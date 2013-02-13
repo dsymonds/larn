@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
+	"runtime"
+	"strings"
 	"time"
 
 	"github.com/jabb/gocurse/curses"
@@ -112,6 +115,25 @@ static char     saveeof, saveeol;
 #endif	// not TERMIO or TERMIOS
 */
 
+const debug = true
+
+func debugf(format string, args ...interface{}) {
+	if !debug {
+		return
+	}
+	// Walk back until we get something that doesn't look like a closure.
+	for i := 1; ; i++ {
+		pc, file, line, _ := runtime.Caller(i)
+		f := runtime.FuncForPC(pc)
+		if strings.Contains(f.Name(), ".func·") {
+			continue
+		}
+		args = append([]interface{}{path.Base(file), line, strings.TrimPrefix(f.Name(), "main.")}, args...)
+		break
+	}
+	fmt.Fprintf(os.Stderr, "%s:%d [%s] "+format+"\n", args...)
+}
+
 const LINBUFSIZE = 128 /* size of the lgetw() and lgetl() buffer */
 var io_out *os.File    /* output file number */
 var io_in *os.File     /* input file */
@@ -124,6 +146,7 @@ var lgetwbuf [LINBUFSIZE]int8 /* get line (word) buffer */
  *	Attributes off, clear screen, set scrolling region, set tty mode
  */
 func setupvt100() {
+	debugf("")
 	clear()
 	setscroll()
 	scbr() /* system("stty cbreak -echo"); */
@@ -135,6 +158,7 @@ func setupvt100() {
  *	Attributes off, clear screen, unset scrolling region, restore tty mode
  */
 func clearvt100() {
+	debugf("")
 	resetscroll()
 	clear()
 	sncbr() /* system("stty -cbreak echo"); */
@@ -142,20 +166,13 @@ func clearvt100() {
 
 var win *curses.Window
 
-// TODO: should this be in setupvt100? or init_term?
-func init() {
-	w, err := curses.Initscr()
-	if err != nil {
-		log.Fatalf("curses.Initscr: %v", err)
-	}
-	win = w
-}
-
 /*
  *	ttgetch() 	Routine to read in one character from the terminal
  */
 func ttgetch() int {
-	return win.Getch()
+	ch := win.Getch()
+	debugf("win.Getch() => %d", ch)
+	return ch
 }
 
 /*
@@ -164,8 +181,9 @@ func ttgetch() int {
  *	like: system("stty cbreak -echo")
  */
 func scbr() {
+	debugf("")
 	if err := curses.Cbreak(); err != nil {
-		log.Fatalf("curses.Cbreak: %v", err)
+		log.Printf("curses.Cbreak: %v", err)
 	}
 }
 
@@ -175,8 +193,9 @@ func scbr() {
  *	like: system("stty -cbreak echo")
  */
 func sncbr() {
+	debugf("")
 	if err := curses.Nocbreak(); err != nil {
-		log.Fatalf("curses.Nocbreak: %v", err)
+		log.Printf("curses.Nocbreak: %v", err)
 	}
 }
 
@@ -205,6 +224,7 @@ func newgame() {
  *	Returns nothing of value.
  */
 func lprintf(format string, args ...interface{}) {
+	debugf("format=%q, args=%#v", format, args)
 	buf := fmt.Sprintf(format, args...)
 
 	if len(lpbuf) >= cap(lpbuf) {
@@ -231,6 +251,7 @@ func lprintf(format string, args ...interface{}) {
  *	Returns nothing of value.
  */
 func lprint(x int32) {
+	debugf("(%d)", x)
 	if len(lpbuf) >= cap(lpbuf) {
 		lflush()
 	}
@@ -238,6 +259,50 @@ func lprint(x int32) {
 	binary.LittleEndian.PutUint32(b[:], uint32(x))
 	lpbuf = append(lpbuf, b[:]...)
 }
+
+/* macro to output one byte to the output buffer */
+func lprc(ch byte) {
+	if io_out == os.Stdout {
+		lprcat(string(ch))
+		return
+	}
+	lpbuf = append(lpbuf, ch)
+}
+
+/* macro to turn on bold display for the terminal */
+func setbold() {
+	if boldon {
+		win.Attron(curses.A_BOLD)
+	} else {
+		win.Attron(curses.A_REVERSE)
+	}
+}
+
+/* macro to turn off bold display for the terminal */
+func resetbold() {
+	win.Attroff(curses.A_BOLD) /* TODO: A_REVERSE too? */
+}
+
+/* macro to setup the scrolling region for the terminal */
+// TODO
+func setscroll() { /* lprcat("\033[20;24r") */
+}
+
+/* macro to clear the scrolling region for the terminal */
+// TODO
+func resetscroll() { /* lprcat("\033[;24r") */
+}
+
+/* macro to clear the screen and home the cursor */
+func clear() {
+	debugf("()")
+	win.Clear()
+	win.Move(0, 0)
+	win.Refresh()
+	cbak[SPELLS] = -50
+}
+
+func cltoeoln() { lprcat("\033[K") }
 
 /*
  *	lwrite(buf,len)		write a buffer to the output buffer
@@ -248,6 +313,7 @@ func lprint(x int32) {
  *	Returns nothing of value
  */
 func lwrite(s string) {
+	debugf("s=%q", s)
 	if len(s) > 399 { /* don't copy data if can just write it */
 		c[BYTESOUT] += len(s)
 
@@ -355,7 +421,8 @@ func lrfill(char *adr, int num) {
  *
  *	Returns pointer to a buffer that contains word.  If EOF, returns a NULL
  */
-func lgetw() string {
+func lgetw() (word string) {
+	defer func() { debugf("=> %q", word) }()
 	n, quote := LINBUFSIZE, 0
 	var cc int
 	lgp := ""
@@ -388,7 +455,8 @@ func lgetw() string {
  *
  * Returns pointer to a buffer that contains the line.  If EOF, returns NULL
  */
-func lgetl() string {
+func lgetl() (line string) {
+	//defer func() { debugf("=> %q", line) }()
 	i := LINBUFSIZE
 	str := ""
 	for {
@@ -418,6 +486,7 @@ func lgetl() string {
  *	Returns -1 if error, otherwise the file descriptor opened.
  */
 func lcreat(str string) int {
+	debugf("%q", str)
 	lflush()
 	// TODO: original C version shrinks the output buffer to BUFBIG, despite allocating more. why?
 	lpbuf = lpbuf[:0]
@@ -444,6 +513,7 @@ func lcreat(str string) int {
  *	Returns -1 if error, otherwise the file descriptor opened.
  */
 func lopen(str string) int {
+	debugf("%q", str)
 	if str == "" {
 		io_in = os.Stdin
 		return 0
@@ -467,8 +537,7 @@ func lopen(str string) int {
  *	Returns -1 if error, otherwise the file descriptor opened.
  */
 func lappend(str string) int {
-	//lpnt = lpbuf;
-	//lpend = lpbuf + BUFBIG;
+	debugf("%q", str)
 	if str == "" {
 		io_out = os.Stdout
 		return 1
@@ -490,6 +559,7 @@ func lappend(str string) int {
  *	Returns nothing of value.
  */
 func lrclose() {
+	debugf("()")
 	if io_in != os.Stdin {
 		if err := io_in.Close(); err != nil {
 			log.Printf("Closing input file %s: %v", io_in.Name(), err)
@@ -504,6 +574,7 @@ func lrclose() {
  *	Returns nothing of value.
  */
 func lwclose() {
+	debugf("()")
 	lflush()
 	if io_out != os.Stdout && io_out != os.Stderr {
 		if err := io_out.Close(); err != nil {
@@ -518,7 +589,14 @@ func lwclose() {
  *			    	avoids calls to lprintf (time consuming)
  */
 func lprcat(str string) {
-	// TODO
+	debugf("(%q)", str)
+	// TODO: do this less clumsily.
+	win.Addstr(cursorX, cursorY, str, 0)
+	cursorX += len(str)
+	if strings.HasSuffix(str, "\n") {
+		cursorX, cursorY = 0, cursorY+1
+	}
+	cursor(cursorX, cursorY)
 	/*
 		u_char  *str2;
 		if (lpnt >= lpend)
@@ -555,8 +633,12 @@ static char    *x_num[] = {
 ";80H"};
 */
 
+var cursorX, cursorY int
+
 func cursor(x, y int) {
+	//debugf("(%d, %d)", x, y)
 	win.Move(x, y)
+	cursorX, cursorY = x, y
 }
 
 /*
@@ -580,6 +662,17 @@ func cursors() {
  * init_term()		Terminal initialization -- setup termcap info
  */
 func init_term() {
+	debugf("()")
+	w, err := curses.Initscr()
+	if err != nil {
+		log.Fatalf("curses.Initscr: %v", err)
+	}
+	win = w
+	/*
+		if err := curses.Noecho(); err != nil {
+			log.Fatalf("curses.Noecho: %v", err)
+		}
+	*/
 	/*
 		setupterm(NULL, 0, NULL); // will exit if invalid term
 		if (!cursor_address) {
@@ -605,6 +698,7 @@ func init_term() {
  * cl_line(x,y)  Clear the whole line indicated by 'y' and leave cursor at [x,y]
  */
 func cl_line(x, y int) {
+	debugf("(%d, %d)", x, y)
 	cursor(1, y)
 	win.Clrtoeol()
 	cursor(x, y)
@@ -614,6 +708,7 @@ func cl_line(x, y int) {
  * cl_up(x,y) Clear screen from [x,1] to current position. Leave cursor at [x,y]
  */
 func cl_up(x, y int) {
+	debugf("(%d, %d)", x, y)
 	// TODO
 	/*
 		#ifdef VT100
@@ -635,6 +730,7 @@ func cl_up(x, y int) {
  * cl_dn(x,y) 	Clear screen from [1,y] to end of display. Leave cursor at [x,y]
  */
 func cl_dn(x, y int) {
+	debugf("(%d, %d)", x, y)
 	// TODO
 	/*
 		#ifdef VT100
@@ -662,10 +758,9 @@ func cl_dn(x, y int) {
  * standout(str)	Print the argument string in inverse video (standout mode).
  */
 func standout(str string) {
+	debugf("(%q)", str)
 	win.Attron(curses.A_STANDOUT) // TODO: or A_REVERSE?
-	// TODO
-	//while (*str)
-	//	*lpnt++ = *str++;
+	lprcat(str)
 	win.Attroff(curses.A_STANDOUT) // TODO: or A_REVERSE?
 }
 
@@ -686,6 +781,8 @@ func set_score_output() {
 //#ifndef VT100
 var scrline = 18 /* line # for wraparound instead of scrolling if no DL */
 func lflush() {
+	debugf("()")
+	win.Refresh()
 	/*
 		int    lpoint;
 		u_char  *str;
@@ -819,6 +916,7 @@ var vindex = 0
  * ttputch(ch)		Print one character in decoded output buffer.
  */
 func ttputch(ch int) int {
+	debugf("(%c)", ch)
 	// TODO
 	/*
 		outbuf[vindex++] = ch;

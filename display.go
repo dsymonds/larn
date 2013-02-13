@@ -253,6 +253,7 @@ var screen [MAXX][MAXY]byte /* template for the screen */
 var d_flag bool
 
 func drawscreen() {
+	debugf("()")
 	if d_xmin == 0 && d_xmax == MAXX && d_ymin == 0 && d_ymax == MAXY {
 		d_flag = true
 		clear() /* clear the screen */
@@ -279,9 +280,15 @@ func drawscreen() {
 	}
 
 	for i := d_ymin; i < d_ymax; i++ {
+		//log.Printf("d_xmin=%d, d_xmax=%d", d_xmin, d_xmax)
 		j := d_xmin
 		for screen[j][i] == ' ' && j < d_xmax {
+			//log.Printf("checked screen[%d][%d]...", j, i)
 			j++
+			// TODO: why is this necessary?
+			if j >= len(screen) {
+				break
+			}
 		}
 		/* was m=0 */
 		var m int
