@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	//"os/signal"
+	"os/signal"
 	"syscall"
 	"time"
 )
@@ -22,23 +22,23 @@ func s2choose() {
 }
 
 // cntlc handles a ^C.
-func cntlc(int) {
+func cntlc() {
+	debugf("()")
 	if nosignal {
 		return /* don't do anything if inhibited */
 	}
 	// TODO
-	/*
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, SIG_IGN);
-		quit();
-		if (predostuff == 1)
-			s2choose();
-		else
-			showplayer();
-		lflush();
-		signal(SIGQUIT, cntlc);
-		signal(SIGINT, cntlc);
-	*/
+	//signal(SIGQUIT, SIG_IGN);
+	//signal(SIGINT, SIG_IGN);
+	quit()
+	if predostuff == 1 {
+		s2choose()
+	} else {
+		showplayer()
+	}
+	lflush()
+	//signal(SIGQUIT, cntlc);
+	//signal(SIGINT, cntlc);
 }
 
 /*
@@ -87,6 +87,18 @@ func tstop(n int) {
  *	subroutine to issue the needed signal traps  called from main()
  */
 func sigsetup() {
+	debugf("()")
+	c := make(chan os.Signal, 16)
+	signal.Notify(c, syscall.SIGQUIT, syscall.SIGINT)
+	go func() {
+		for sig := range c {
+			switch sig {
+			case syscall.SIGQUIT, syscall.SIGINT:
+				cntlc()
+			}
+		}
+	}()
+
 	// TODO
 	/*
 		signal(SIGQUIT, cntlc);
