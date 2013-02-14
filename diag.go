@@ -14,7 +14,7 @@ import (
 func diag() int {
 	cursors()
 	lwclose()
-	if lcreat(diagfile) < 0 { /* open the diagnostic file	 */
+	if !lcreat(diagfile) { /* open the diagnostic file	 */
 		lcreat("")
 		lprcat("\ndiagnostic failure\n")
 		return -1
@@ -149,7 +149,7 @@ func savegame(fname string) int {
 		lflush()
 		savelevel()
 		ointerest()
-		if lcreat(fname) < 0 {
+		if !lcreat(fname) {
 			lcreat("")
 			lprintf("\nCan't open file <%s> to save game\n", fname)
 			nosignal = false
@@ -217,7 +217,7 @@ func restoregame(fname string) {
 		lprcat("\nRestoring . . .");
 		lflush();
 		if (lopen(fname) <= 0) {
-			lcreat((char *) 0);
+			lcreat("");
 			lprintf("\nCan't open file <%s>to restore game\n", fname);
 			nap(2000);
 			c[GOLD] = c[BANKACCOUNT] = 0;
@@ -300,7 +300,7 @@ func restoregame(fname string) {
 				lprc(' ');
 				lwclose();
 			}
-			lcreat((char *) 0);
+			lcreat("");
 		} else if (unlink(fname) < 0)
 			fcheat();	// can't unlink save file
 		// for the greedy cheater checker

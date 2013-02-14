@@ -123,7 +123,7 @@ func readboard() int {
 		lrfill((char *) sco, sizeof(sco))
 		lrfill((char *) winr, sizeof(winr))
 		lrclose()
-		lcreat((char *) 0)
+		lcreat("")
 		return (0)
 	*/
 }
@@ -141,14 +141,14 @@ func writeboard() bool {
 			setegid(egid)
 		}
 	*/
-	i := lcreat(scorefile)
+	ok := lcreat(scorefile)
 	// TODO
 	/*
 		if gid != egid {
 			setegid(gid)
 		}
 	*/
-	if i < 0 {
+	if !ok {
 		lprcat("Can't write scoreboard\n")
 		lflush()
 		return false
@@ -159,7 +159,7 @@ func writeboard() bool {
 		lwrite((char *) sco, sizeof(sco))
 		lwrite((char *) winr, sizeof(winr))
 		lwclose()
-		lcreat((char *) 0)
+		lcreat("")
 		return true
 	*/
 }
@@ -644,7 +644,7 @@ invalid:
 			}
 		*/
 		if lappend(logfile) < 0 { /* append to file */
-			if lcreat(logfile) < 0 { /* and can't create new log file */
+			if !lcreat(logfile) { /* and can't create new log file */
 				lcreat("")
 				lprcat("\nCan't open record file:  I can't post your score.\n")
 				sncbr()
@@ -779,7 +779,7 @@ func diedlog() {
 		struct stat     stbuf
 		time_t t
 
-		lcreat((char *) 0)
+		lcreat("")
 		if (lopen(logfile) < 0) {
 			lprintf("Can't locate log file <%s>\n", logfile)
 			return

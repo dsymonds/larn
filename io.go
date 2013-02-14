@@ -528,19 +528,18 @@ func lgetl() (line string) {
 
 /*
  *	lcreat(filename)			Create a new file for write
- *		char *filename;
  *
- *	lcreat((char*)0); means to the terminal
- *	Returns -1 if error, otherwise the file descriptor opened.
+ *	lcreat("") means to the terminal
+ *	Returns false if error.
  */
-func lcreat(str string) int {
+func lcreat(str string) bool {
 	debugf("%q", str)
 	lflush()
 	// TODO: original C version shrinks the output buffer to BUFBIG, despite allocating more. why?
 	lpbuf = lpbuf[:0]
 	if str == "" {
 		io_out = nil
-		return 1
+		return true
 	}
 	var err error
 	io_out, err = os.OpenFile(str, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
@@ -548,9 +547,9 @@ func lcreat(str string) int {
 		io_out = nil
 		log.Printf("Creating file %s: %v", str, err)
 		lflush() // TODO: needed?
-		return -1
+		return false
 	}
-	return int(io_out.Fd()) // TODO: really need to return the fd?
+	return true
 }
 
 /*

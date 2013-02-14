@@ -57,7 +57,7 @@ func tstop(n int) {
 	}
 	// TODO
 	/*
-			lcreat((char *) 0);
+			lcreat("");
 			clearvt100();
 			lflush();
 			signal(SIGTSTP, SIG_DFL);
