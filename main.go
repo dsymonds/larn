@@ -285,7 +285,7 @@ func qshowstr() {
 		lprintf(".)   %d gold pieces", c[GOLD])
 		srcount++
 	}
-	for k := 26; k >= 0; k-- {
+	for k := len(iven) - 1; k >= 0; k-- {
 		if iven[k] != 0 {
 			for i := 22; i < 84; i++ {
 				for j := 0; j <= k; j++ {
