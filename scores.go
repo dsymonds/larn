@@ -643,7 +643,7 @@ invalid:
 				setegid(egid)
 			}
 		*/
-		if lappend(logfile) < 0 { /* append to file */
+		if !lappend(logfile) { /* append to file */
 			if !lcreat(logfile) { /* and can't create new log file */
 				lcreat("")
 				lprcat("\nCan't open record file:  I can't post your score.\n")

@@ -294,7 +294,7 @@ func restoregame(fname string) {
 			fsorry();
 		lrclose();
 		if (strcmp(fname, ckpfile) == 0) {
-			if (lappend(fname) < 0)
+			if !lappend(fname) {
 				fcheat();
 			else {
 				lprc(' ');

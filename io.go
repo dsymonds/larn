@@ -578,26 +578,25 @@ func lopen(str string) int {
 
 /*
  *	lappend(filename)		Open for append to an existing file
- *		char *filename;
  *
- *	lappend(0) means to the terminal
- *	Returns -1 if error, otherwise the file descriptor opened.
+ *	lappend("") means to the terminal
+ *	Returns false if error.
  */
-func lappend(str string) int {
+func lappend(str string) bool {
 	debugf("%q", str)
 	if str == "" {
 		io_out = nil
-		return 1
+		return true
 	}
 	var err error
 	io_out, err = os.OpenFile(str, os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		log.Printf("Opening for append output file %s: %v", str, err)
 		io_out = nil
-		return -1
+		return false
 	}
 	//lseek(io_outfd, 0, SEEK_END);	/* seek to end of file */
-	return int(io_out.Fd()) // TODO: really need to return the fd?
+	return true
 }
 
 /*
