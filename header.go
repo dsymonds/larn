@@ -333,7 +333,7 @@ extern const char *objectname[];
 extern const char *potionhide[];
 extern const char *spelcode[], *spelname[], *spelmes[];
 extern char     spelweird[MAXMONST + 8][SPNUM];
-extern u_char   predostuff, restorflag;
+extern u_char   predostuff;
 extern u_char   screen[MAXX][MAXY], sex;
 extern const char *speldescript[];
 extern const char *scrollhide[];

@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
+	"time"
 )
 
 const copyright = "\nLarn is copyrighted 1986 by Noah Morgan.\n"
@@ -14,13 +16,18 @@ var userid int             /* the players login user id number */
 var gid, egid int          /* used for security */
 var nowelcome, nomove bool /* if (nomove) then don't count next iteration as a move */
 var viewflag int8
+var restorflag = false /* whether restore has been done	 */
 
 /*
  * if viewflag then we have done a 99 stay here and don't showcell in the
  * main loop
  */
 
-var restorflag byte = 0 /* 1 means restore has been done	 */
+var (
+	seed = flag.Uint("seed", 0, "if non-zero, the random seed to use")
+)
+
+/*
 const cmdhelp = `Cmd line format: larn [-slicnh] [-o<optsfile>] [-##] [++]
   -s   show the scoreboard
   -l   show the logfile (wizard id only)
@@ -32,6 +39,7 @@ const cmdhelp = `Cmd line format: larn [-slicnh] [-o<optsfile>] [-##] [++]
   ++   restore game from checkpoint file
   -o<optsfile>   specify .larnopts filename to be used instead of \"~/.larnopts\"
 `
+*/
 
 //#ifdef VT100
 //static char    *termtypes[] = {"vt100", "vt101", "vt102", "vt103", "vt125",
@@ -43,6 +51,8 @@ const cmdhelp = `Cmd line format: larn [-slicnh] [-o<optsfile>] [-##] [++]
 	************
 */
 func main() {
+	flag.Parse()
+
 	egid = os.Getegid()
 	gid = os.Getgid()
 	//setegid(gid) /* give up "games" if we have it */
@@ -82,7 +92,11 @@ func main() {
 	//	died(-285);	/* malloc() failure */
 
 	lcreat("")
-	newgame() /* set the initial clock  */
+	seed := uint32(*seed)
+	if seed == 0 {
+		seed = uint32(time.Now().Unix())
+	}
+	newgame(seed) /* set the initial clock  */
 	hard := -1
 
 	//#ifdef VT100
@@ -174,7 +188,7 @@ func main() {
 
 			if (argv[i][0] == '+') {
 				clear();
-				restorflag = 1;
+				restorflag = true
 				if (argv[i][1] == '+') {
 					hitflag = true
 					restoregame(ckpfile);	// restore checkpointed game
@@ -193,7 +207,7 @@ func main() {
 
 	if exists(savefilename) { /* restore game if need to */
 		clear()
-		restorflag = 1
+		restorflag = true
 		hitflag = true
 		restoregame(savefilename) /* restore last game	 */
 	}

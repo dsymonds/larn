@@ -124,7 +124,7 @@ func flushall() {
 func sethard(hard int) {
 	j := c[HARDGAME]
 	hashewon()
-	if restorflag == 0 { /* don't set c[HARDGAME] if restoring game */
+	if !restorflag { /* don't set c[HARDGAME] if restoring game */
 		if hard >= 0 {
 			c[HARDGAME] = hard
 		}

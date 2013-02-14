@@ -8,7 +8,6 @@ import (
 	"path"
 	"runtime"
 	"strings"
-	"time"
 
 	"github.com/dsymonds/gocurse/curses"
 )
@@ -211,11 +210,11 @@ func sncbr() {
 /*
  *	newgame() 	Subroutine to save the initial time and seed rnd()
  */
-func newgame() {
+func newgame(seed uint32) {
 	for i := 0; i < 100; i++ {
 		c[i] = 0
 	}
-	seedrand(uint32(time.Now().Unix()))
+	seedrand(seed)
 	lcreat("") /* open buffering for output to terminal */
 }
 
