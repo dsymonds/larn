@@ -326,7 +326,7 @@ extern char     diagfile[], helpfile[], ckpfile[], larnlevels[],
 extern u_char   item[MAXX][MAXY], iven[], know[MAXX][MAXY];
 extern const char *levelname[];
 extern char     logfile[], lastmonst[];
-extern u_char  *lpbuf, *lpend;
+extern u_char  *lpbuf;
 extern u_char  *lpnt, moved[MAXX][MAXY], mitem[MAXX][MAXY], monstlevel[];
 extern char     monstnamelist[], objnamelist[];
 extern const char *objectname[];

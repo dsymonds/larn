@@ -152,7 +152,6 @@ const LINBUFSIZE = 128 /* size of the lgetw() and lgetl() buffer */
 var io_out *os.File    /* output file number */
 var io_in *os.File     /* input file */
 //static struct sgttyb ttx;/* storage for the tty modes */
-var lgetwbuf [LINBUFSIZE]int8 /* get line (word) buffer */
 
 /*
  *	setupvt100() Subroutine to set up terminal in correct mode for game
@@ -642,15 +641,6 @@ func lprcat(str string) {
 	for _, ch := range str {
 		lprc(byte(ch))
 	}
-	/*
-		u_char  *str2;
-		if (lpnt >= lpend)
-			lflush();
-		str2 = lpnt;
-		while ((*str2++ = *str++) != '\0')
-			continue;
-		lpnt = str2 - 1;
-	*/
 }
 
 /*

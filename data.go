@@ -70,7 +70,7 @@ var skill = [...]int{
 }
 
 var lpbuf = make([]byte, 0, (5*BUFBIG)>>2) // lpbuf is the output buffer.
-//var lpbuf, lpnt, lpend *byte /* input/output pointers to the buffers */
+//var lpbuf, lpnt *byte /* input/output pointers to the buffers */
 
 var cell = make([]cel, (MAXLEVEL+MAXVLEVEL)*MAXX*MAXY) /* pointer to the dungeon storage	 */
 
