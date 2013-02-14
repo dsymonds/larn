@@ -162,7 +162,7 @@ func readopts() {
 
 		flag = 1;		// set to 0 if a name is specified
 
-		if (lopen(optsfile) < 0) {
+		if !lopen(optsfile) {
 			strcpy(logname, loginname);
 			return;		// user name if no character name
 		}

@@ -216,7 +216,7 @@ func restoregame(fname string) {
 		cursors();
 		lprcat("\nRestoring . . .");
 		lflush();
-		if (lopen(fname) <= 0) {
+		if !lopen(fname) {
 			lcreat("");
 			lprintf("\nCan't open file <%s>to restore game\n", fname);
 			nap(2000);

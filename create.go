@@ -227,7 +227,7 @@ func eat(xx, yy int) {
  *		-	random object
  */
 func cannedlevel(k int) bool {
-	if lopen(larnlevels) < 0 {
+	if !lopen(larnlevels) {
 		log.Print("Can't open the maze data file")
 		died(-282)
 		return false

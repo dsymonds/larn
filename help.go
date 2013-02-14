@@ -81,7 +81,7 @@ func retcont() {
  *	routine to open the help file and return the first character - '0'
  */
 func openhelp() int {
-	if lopen(helpfile) < 0 {
+	if !lopen(helpfile) {
 		lprintf("Can't open help file \"%s\" ", helpfile)
 		lflush()
 		time.Sleep(4 * time.Second)

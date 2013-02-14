@@ -554,16 +554,15 @@ func lcreat(str string) bool {
 
 /*
  *	lopen(filename)			Open a file for read
- *		char *filename;
  *
- *	lopen(0) means from the terminal
- *	Returns -1 if error, otherwise the file descriptor opened.
+ *	lopen("") means from the terminal
+ *	Returns false if error.
  */
-func lopen(str string) int {
+func lopen(str string) bool {
 	debugf("%q", str)
 	if str == "" {
 		io_in = os.Stdin
-		return 0
+		return true
 	}
 	var err error
 	io_in, err = os.Open(str)
@@ -571,9 +570,9 @@ func lopen(str string) int {
 		lwclose()
 		io_out = nil
 		lpbuf = lpbuf[:0]
-		return -1
+		return false
 	}
-	return int(io_in.Fd()) // TODO: really need to return the fd?
+	return true
 }
 
 /*

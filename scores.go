@@ -105,14 +105,14 @@ func readboard() int {
 			setegid(egid)
 		}
 	*/
-	i := lopen(scorefile)
+	ok := lopen(scorefile)
 	// TODO
 	/*
 		if gid != egid {
 			setegid(gid)
 		}
 	*/
-	if i < 0 {
+	if !ok {
 		lprcat("Can't read scoreboard\n")
 		lflush()
 		return -1
@@ -780,7 +780,7 @@ func diedlog() {
 		time_t t
 
 		lcreat("")
-		if (lopen(logfile) < 0) {
+		if !lopen(logfile) {
 			lprintf("Can't locate log file <%s>\n", logfile)
 			return
 		}
