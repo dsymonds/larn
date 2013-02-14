@@ -2,12 +2,14 @@ package main
 
 import (
 	"encoding/binary"
+	"flag"
 	"fmt"
 	"log"
 	"os"
 	"path"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/dsymonds/gocurse/curses"
 )
@@ -114,11 +116,24 @@ static char     saveeof, saveeol;
 #endif	// not TERMIO or TERMIOS
 */
 
-const debug = true
+const debugFilename = "larn-debug.log"
+
+var (
+	debug     = flag.Bool("debug", false, "whether to log debugging information to "+debugFilename)
+	debugFile *os.File
+)
 
 func debugf(format string, args ...interface{}) {
-	if !debug {
+	if !*debug {
 		return
+	}
+	if debugFile == nil {
+		var err error
+		debugFile, err = os.Create(debugFilename)
+		if err != nil {
+			log.Fatalf("os.Create(%q): %v", debugFilename, err)
+		}
+		fmt.Fprintf(debugFile, "-----[ Larn debug file opened %v ]-----\n", time.Now())
 	}
 	// Walk back until we get something that doesn't look like a closure.
 	for i := 1; ; i++ {
@@ -130,7 +145,7 @@ func debugf(format string, args ...interface{}) {
 		args = append([]interface{}{path.Base(file), line, strings.TrimPrefix(f.Name(), "main.")}, args...)
 		break
 	}
-	fmt.Fprintf(os.Stderr, "%s:%d\t[%s] "+format+"\n", args...)
+	fmt.Fprintf(debugFile, "%s:%d\t[%s] "+format+"\n", args...)
 }
 
 const LINBUFSIZE = 128 /* size of the lgetw() and lgetl() buffer */
