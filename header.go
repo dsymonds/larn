@@ -40,11 +40,11 @@ type _itm struct {
 
 /* this is the structure that holds the entire dungeon specifications	 */
 type cel struct {
-	hitp  int16 /* monster's hit points	 */
-	mitem int8  /* the monster ID			 */
-	item  int8  /* the object's ID			 */
-	iarg  int16 /* the object's argument	 */
-	know  int8  /* have we been here before */
+	hitp  int  /* monster's hit points	 */
+	mitem int  /* the monster ID			 */
+	item  int  /* the object's ID			 */
+	iarg  int  /* the object's argument	 */
+	know  bool /* have we been here before */
 }
 
 /* this is the structure for maintaining & moving the spheres of annihilation */
