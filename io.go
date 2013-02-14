@@ -271,7 +271,7 @@ func lprint(x int32) {
 
 /* macro to output one byte to the output buffer */
 func lprc(ch byte) {
-	if io_out != os.Stdout {
+	if io_out != nil {
 		lpbuf = append(lpbuf, ch)
 		return
 	}
@@ -525,13 +525,13 @@ func lcreat(str string) int {
 	// TODO: original C version shrinks the output buffer to BUFBIG, despite allocating more. why?
 	lpbuf = lpbuf[:0]
 	if str == "" {
-		io_out = os.Stdout
+		io_out = nil
 		return 1
 	}
 	var err error
 	io_out, err = os.OpenFile(str, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
-		io_out = os.Stdout
+		io_out = nil
 		log.Printf("Creating file %s: %v", str, err)
 		lflush() // TODO: needed?
 		return -1
@@ -556,7 +556,7 @@ func lopen(str string) int {
 	io_in, err = os.Open(str)
 	if err != nil {
 		lwclose()
-		io_out = os.Stdout
+		io_out = nil
 		lpbuf = lpbuf[:0]
 		return -1
 	}
@@ -573,14 +573,14 @@ func lopen(str string) int {
 func lappend(str string) int {
 	debugf("%q", str)
 	if str == "" {
-		io_out = os.Stdout
+		io_out = nil
 		return 1
 	}
 	var err error
 	io_out, err = os.OpenFile(str, os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		log.Printf("Opening for append output file %s: %v", str, err)
-		io_out = os.Stdout
+		io_out = nil
 		return -1
 	}
 	//lseek(io_outfd, 0, SEEK_END);	/* seek to end of file */
@@ -610,11 +610,11 @@ func lrclose() {
 func lwclose() {
 	debugf("()")
 	lflush()
-	if io_out != os.Stdout && io_out != os.Stderr {
+	if io_out != nil && io_out != os.Stderr {
 		if err := io_out.Close(); err != nil {
 			log.Printf("Closing output file %s: %v", io_out.Name(), err)
 		}
-		io_out = os.Stdout
+		io_out = nil
 	}
 }
 
