@@ -331,7 +331,7 @@ func resetscroll() {
 func clear() {
 	debugf("()")
 	win.Clear()
-	win.Move(0, 0)
+	cursor(0, 0)
 	win.Refresh()
 	cbak[SPELLS] = -50
 }
