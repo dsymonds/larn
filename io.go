@@ -271,11 +271,24 @@ func lprint(x int32) {
 
 /* macro to output one byte to the output buffer */
 func lprc(ch byte) {
-	if io_out == os.Stdout {
-		lprcat(string(ch))
+	if io_out != os.Stdout {
+		lpbuf = append(lpbuf, ch)
 		return
 	}
-	lpbuf = append(lpbuf, ch)
+	moved := false
+	switch {
+	case ch >= 32:
+		win.Addch(ch)
+		cursorX++
+		moved = true
+	case ch == '\n':
+		// TODO: account for delete_line and insert_line
+		cursorX, cursorY = 0, cursorY+1
+		moved = true
+	}
+	if moved {
+		cursor(cursorX, cursorY)
+	}
 }
 
 /* macro to turn on bold display for the terminal */
@@ -611,14 +624,10 @@ func lwclose() {
  */
 func lprcat(str string) {
 	debugf("(%q) @ (%d, %d)", str, cursorX, cursorY)
-	// TODO: do this less clumsily.
-	win.Move(cursorX, cursorY) // TODO: needed?
-	win.Addstr(str)
-	cursorX += len(str)
-	if strings.HasSuffix(str, "\n") {
-		cursorX, cursorY = 0, cursorY+1
+	// TODO: do this less clumsily?
+	for _, ch := range str {
+		lprc(byte(ch))
 	}
-	cursor(cursorX, cursorY)
 	/*
 		u_char  *str2;
 		if (lpnt >= lpend)
