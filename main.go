@@ -53,6 +53,14 @@ const cmdhelp = `Cmd line format: larn [-slicnh] [-o<optsfile>] [-##] [++]
 func main() {
 	flag.Parse()
 
+	// In case a panic occurs, be prepared to clean up the terminal.
+	defer func() {
+		if err := recover(); err != nil {
+			clearvt100()
+			panic(err) // re-panic
+		}
+	}()
+
 	egid = os.Getegid()
 	gid = os.Getgid()
 	//setegid(gid) /* give up "games" if we have it */
