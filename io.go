@@ -296,7 +296,7 @@ func lprc(ch byte) {
 		moved = true
 	case ch == '\n':
 		// TODO: account for delete_line and insert_line
-		cursorX, cursorY = 0, cursorY+1
+		cursorX, cursorY = 1, cursorY+1
 		moved = true
 	}
 	if moved {
@@ -321,7 +321,7 @@ func resetbold() {
 /* macro to setup the scrolling region for the terminal */
 func setscroll() {
 	/* lprcat("\033[20;24r") */
-	if err := win.SetScrollRegion(20, 24); err != nil {
+	if err := win.SetScrollRegion(20, 24); err != nil { // TODO: off-by-one?
 		log.Printf("win.SetScrollRegion: %v", err)
 	}
 	if err := win.Scrollok(true); err != nil {
@@ -332,7 +332,7 @@ func setscroll() {
 /* macro to clear the scrolling region for the terminal */
 func resetscroll() {
 	/* lprcat("\033[;24r") */
-	if err := win.SetScrollRegion(0, 24); err != nil { // TODO: right?
+	if err := win.SetScrollRegion(0, 24); err != nil { // TODO: right? // TODO: off-by-one?
 		log.Printf("win.SetScrollRegion: %v", err)
 	}
 	if err := win.Scrollok(false); err != nil {
@@ -344,12 +344,13 @@ func resetscroll() {
 func clear() {
 	debugf("()")
 	win.Clear()
-	cursor(0, 0)
+	cursor(1, 1)
 	win.Refresh()
 	cbak[SPELLS] = -50
 }
 
-func cltoeoln() { lprcat("\033[K") }
+func cltoeoln() { /* TODO: lprcat("\033[K") */
+}
 
 /*
  *	lwrite(buf,len)		write a buffer to the output buffer
@@ -672,7 +673,8 @@ var cursorX, cursorY int
 
 func cursor(x, y int) {
 	//debugf("(%d, %d)", x, y)
-	win.Move(x, y)
+	// curses is based on [0,0]. The rest of Larn is based on [1,1]
+	win.Move(x-1, y-1)
 	cursorX, cursorY = x, y
 }
 
@@ -744,6 +746,11 @@ func cl_line(x, y int) {
  */
 func cl_up(x, y int) {
 	debugf("(%d, %d)", x, y)
+	for i := 1; i <= y; i++ {
+		cursor(1, i)
+		win.Clrtoeol()
+	}
+	cursor(x, y)
 	// TODO
 	/*
 		#ifdef VT100
