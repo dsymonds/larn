@@ -190,7 +190,7 @@ func ttgetch() int {
 		x := replayKeys[0]
 		replayKeys = replayKeys[1:]
 		debugf("replaying %d", x)
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 		return int(x)
 	}
 
