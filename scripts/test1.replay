@@ -27,3 +27,39 @@ kLJLKllJLJllkkkuLJd
 LjijllKkkkd
 # move, kill jackal
 LLLJh
+# move past altar, kill jackal
+HKhhjjjnLKLjjjjHh
+# move, pick up scroll (f; enlightenment)
+jjt
+# move, ignore potion (dizzy), get ruby
+LJLJHHllKhihhhJHkkkuLKkt
+# move, get emerald
+nlllllKHkhhhhjjHHt
+# move to pick up gold, kill hobgoblin
+llJkkhhhhJLJHyy
+# move, and descend to L2
+hkkkkkkHHHd
+
+# kill jackal, move to pick up ruby
+jhhht
+# collect gold, potion (gold detection), kill hobgoblin
+bJLYKKlllnthhhjjLLll
+# move, kill orc, get belt, gold
+jjjjjjhhutbh
+# move, open door, read book (learn "str" spell)
+bjojLr
+# get emerald, gold, move through door
+LktkHLJHllllki
+# move, ignore potion, read scroll (t -= 7)
+KHKLiLr
+# move, kill giant ant
+Lllllll
+# move, read scroll (teleport) to get back to L1
+Lr
+
+# move, kill hobgoblin, get gold, potion, return to surface
+JLhhhhhhhlhhKllJLJLtjjjjllllJhhJ
+
+# move to trading post
+nnnnnnnnnnjjg
+# CRASH if "*"
