@@ -527,7 +527,7 @@ func showquaff() {
 
 func show1(idx int, str2 []string) {
 	lprintf("\n%c)   %s", idx+'a', objectname[iven[idx]])
-	if len(str2) != 0 && str2[ivenarg[idx]][0] != 0 {
+	if len(str2) != 0 && str2[ivenarg[idx]] != "" {
 		lprintf(" of%s", str2[ivenarg[idx]])
 	}
 }
