@@ -58,6 +58,8 @@ func loadReplay(filename string) {
 			switch b {
 			case 'n':
 				q('\n')
+			case '`':
+				q('\033') // escape
 			default:
 				q(b)
 			}
