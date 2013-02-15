@@ -1,10 +1,5 @@
 package main
 
-import (
-	"io"
-	"os"
-)
-
 /* Keystrokes (roughly) between checkpoints */
 const CHECKPOINT_INTERVAL = 400
 
@@ -59,12 +54,7 @@ func yylex() int {
 			}
 		*/
 
-		var buf [1]byte
-		if _, err := io.ReadFull(os.Stdin, buf[:]); err != nil {
-			lastok = -1
-			return lastok
-		}
-		cc = int(buf[0])
+		cc = ttgetch()
 
 		// TODO
 		/*

@@ -24,7 +24,8 @@ var restorflag = false /* whether restore has been done	 */
  */
 
 var (
-	seed = flag.Uint("seed", 0, "if non-zero, the random seed to use")
+	replay = flag.String("replay", "", "if non-empty, a replay file to use")
+	seed   = flag.Uint("seed", 0, "if non-zero, the random seed to use")
 )
 
 /*
@@ -55,6 +56,7 @@ func main() {
 
 	// In case a panic occurs, be prepared to clean up the terminal.
 	defer func() {
+		debugf("caught panic!")
 		if err := recover(); err != nil {
 			clearvt100()
 			panic(err) // re-panic
@@ -211,6 +213,10 @@ func main() {
 	userid = os.Geteuid() /* obtain the user's effective id number */
 	if userid < 0 {
 		log.Fatal("Can't obtain playerid")
+	}
+
+	if *replay != "" {
+		loadReplay(*replay)
 	}
 
 	if exists(savefilename) { /* restore game if need to */
