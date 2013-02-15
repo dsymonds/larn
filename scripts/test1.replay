@@ -63,5 +63,10 @@ JLhhhhhhhlhhKllJLJLtjjjjllllJhhJ
 # move to trading post, sell leather armor and dagger
 nnnnnnnnnnjjg
 * ayby\`
-# go to bank, sell stones
-yyyyhgs*
+# go to bank, sell stones, deposit 103 gold pieces
+yyyyhgs*d103\n\`
+# go to DND store, buy battle axe, splint mail, ring of strength
+yyyyyyyyyHgmeu\`
+# wield battle axe, wear splint mail
+w
+# "*" crashes!
