@@ -707,13 +707,17 @@ func otradepost() {
 		}
 		isub := i - 'a'
 		j := 0
-		if iven[isub] == OSCROLL {
+		oor := false
+		if isub < 0 || isub >= len(iven) {
+			oor = true
+		}
+		if !oor && iven[isub] == OSCROLL {
 			if scrollname[ivenarg[isub]] == "" {
 				j = 1
 				cnsitm()
 			} /* can't sell unidentified item */
 		}
-		if iven[isub] == OPOTION {
+		if !oor && iven[isub] == OPOTION {
 			if potionname[ivenarg[isub]] == "" {
 				j = 1
 				cnsitm()
@@ -724,7 +728,7 @@ func otradepost() {
 				clear()
 				qshowstr()
 				otradhead()
-			} else if iven[isub] == 0 {
+			} else if oor || iven[isub] == 0 {
 				lprintf("\nYou don't have item %c!", isub+'a')
 			} else {
 				for j = 0; j < MAXITM; j++ {
