@@ -1,0 +1,29 @@
+seed=4
+
+# get past welcome screen
+\n
+
+# move to dungeon entrange and go in
+kkkl
+g
+
+# kill kobold and hobgoblin
+klllllll
+# pick up gold and chest
+lhkkt
+# move down corridors, pick up scroll
+HJHKHJHKhhJt
+# move further, get gold
+jhhjjLHK
+# move, kill jackal
+JllkkLkkhhhhhhhb
+# move, read scroll from ground (t -= 7)
+bjLJhhhhkkhhkkHkkhyr
+# move to get gold and sapphire
+KlLjjjlllhkkkkkLJLKt
+# move, drink potion from ground (gold detection)
+kLJLKllJLJllkkkuLJd
+# move, ignore fortune cookie, drink potion from ground (sturdiness)
+LjijllKkkkd
+# move, kill jackal
+LLLJh
