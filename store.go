@@ -624,9 +624,9 @@ func obanksub() {
 			return
 		}
 		cursor(40, 17)
-		lprintf("%8ld", c[BANKACCOUNT])
+		lprintf("%8d", c[BANKACCOUNT])
 		cursor(49, 18)
-		lprintf("%8ld", c[GOLD])
+		lprintf("%8d", c[GOLD])
 	}
 }
 
