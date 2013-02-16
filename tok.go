@@ -194,7 +194,7 @@ func readopts() {
 			} else if (strcmp(i, "no-introduction") == 0)
 				nowelcome = true
 			else if (strcmp(i, "no-beep") == 0)
-				nobeep = 1;
+				nobeep = true
 			else if (strcmp(i, "process-name:") == 0) {
 				if ((i = lgetw()) == 0)
 					break;

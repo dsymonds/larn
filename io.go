@@ -1009,9 +1009,10 @@ tmcapcnv(char *sd, char *ss)
  *	beep()	Routine to emit a beep if enabled (see no-beep in .larnopts)
  */
 func beep() {
-	// TODO
-	/*
-		if (!nobeep)
-			*lpnt++ = '\7';
-	*/
+	if len(replayActions) > 0 {
+		return
+	}
+	if !nobeep {
+		curses.Beep()
+	}
 }

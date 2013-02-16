@@ -116,7 +116,7 @@ var lastpx, lastpy int /* 0 --- MAXX-1  or  0 --- MAXY-1					 */
 var oldx, oldy int
 var lasthx, lasthy int = 0, 0 /* location of monster last hit by player		 */
 
-var nobeep int16 = 0      /* true if program is not to beep  					 */
+var nobeep = false        /* true if program is not to beep  					 */
 var randx uint32 = 33601  /* the random number seed						 */
 var initialtime int32 = 0 /* time playing began 							 */
 var gltime int            /* the clock for the game						 */
