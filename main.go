@@ -400,8 +400,7 @@ func showwield() {
 	srcount = 0
 
 	count := 2
-	for j := 0; j <= 26; j++ { /* count how many items */
-		i := iven[j]
+	for _, i := range iven { /* count how many items */
 		if i != 0 {
 			switch i {
 			case ODIAMOND, ORUBY, OEMERALD, OSAPPHIRE, OBOOK, OCHEST, OLARNEYE, ONOTHEFT, OSPIRITSCARAB, OCUBEofUNDEAD, OPOTION, OSCROLL:
@@ -414,8 +413,8 @@ func showwield() {
 	t_setup(count)
 
 	for i := 22; i < 84; i++ {
-		for j := 0; j <= 26; j++ {
-			if i == iven[j] {
+		for j, it := range iven {
+			if i == it {
 				switch i {
 				case ODIAMOND, ORUBY, OEMERALD, OSAPPHIRE, OBOOK, OCHEST, OLARNEYE, ONOTHEFT, OSPIRITSCARAB, OCUBEofUNDEAD, OPOTION, OSCROLL:
 				default:
