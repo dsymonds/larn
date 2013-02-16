@@ -250,7 +250,6 @@ func newgame(seed uint32) {
  *	Returns nothing of value.
  */
 func lprintf(format string, args ...interface{}) {
-	debugf("format=%q, args=%#v", format, args)
 	buf := fmt.Sprintf(format, args...)
 
 	if len(lpbuf) >= cap(lpbuf) {
@@ -325,7 +324,7 @@ func resetbold() {
 /* macro to setup the scrolling region for the terminal */
 func setscroll() {
 	/* lprcat("\033[20;24r") */
-	if err := win.SetScrollRegion(20, 24); err != nil { // TODO: off-by-one?
+	if err := win.SetScrollRegion(20, 24); err != nil {
 		log.Printf("win.SetScrollRegion: %v", err)
 	}
 	if err := win.Scrollok(true); err != nil {
@@ -336,7 +335,7 @@ func setscroll() {
 /* macro to clear the scrolling region for the terminal */
 func resetscroll() {
 	/* lprcat("\033[;24r") */
-	if err := win.SetScrollRegion(0, 24); err != nil { // TODO: right? // TODO: off-by-one?
+	if err := win.SetScrollRegion(0, 24); err != nil {
 		log.Printf("win.SetScrollRegion: %v", err)
 	}
 	if err := win.Scrollok(false); err != nil {
@@ -353,7 +352,8 @@ func clear() {
 	cbak[SPELLS] = -50
 }
 
-func cltoeoln() { /* TODO: lprcat("\033[K") */
+func cltoeoln() {
+	win.Clrtoeol()
 }
 
 /*
@@ -752,21 +752,6 @@ func cl_up(x, y int) {
 		win.Clrtoeol()
 	}
 	cursor(x, y)
-	// TODO
-	/*
-		#ifdef VT100
-			cursor(x, y);
-			lprcat("\33[1J\33[2K");
-		#else	// VT100
-			int    i;
-			cursor(1, 1);
-			for (i = 1; i <= y; i++) {
-				*lpnt++ = CL_LINE;
-				*lpnt++ = '\n';
-			}
-			cursor(x, y);
-		#endif	// VT100
-	*/
 }
 
 /*
@@ -774,27 +759,12 @@ func cl_up(x, y int) {
  */
 func cl_dn(x, y int) {
 	debugf("(%d, %d)", x, y)
-	// TODO
-	/*
-		#ifdef VT100
-			cursor(x, y);
-			lprcat("\33[J\33[2K");
-		#else	// VT100
-			int    i;
-			cursor(1, y);
-			if (!clr_eos) {
-				*lpnt++ = CL_LINE;
-				for (i = y; i <= 24; i++) {
-					*lpnt++ = CL_LINE;
-					if (i != 24)
-						*lpnt++ = '\n';
-				}
-				cursor(x, y);
-			} else
-				*lpnt++ = CL_DOWN;
-			cursor(x, y);
-		#endif	// VT100
-	*/
+	// TODO: factor in clr_eos
+	for i := y; i <= 24; i++ {
+		cursor(1, i)
+		win.Clrtoeol()
+	}
+	cursor(x, y)
 }
 
 /*
