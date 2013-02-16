@@ -8,9 +8,32 @@ import (
 	"log"
 	"strconv"
 	"strings"
+	"time"
 )
 
-var replayKeys []byte
+type replayAction struct {
+	// Exactly one of these will be set.
+	key byte
+	f   func()
+}
+
+var (
+	replayActions []replayAction
+	replayDelay   = 50 * time.Millisecond // delay for key actions
+)
+
+func popReplay() (b byte, ok bool) {
+	for len(replayActions) > 0 {
+		a := replayActions[0]
+		replayActions = replayActions[1:]
+		if a.key != 0 {
+			time.Sleep(replayDelay)
+			return a.key, true
+		}
+		a.f()
+	}
+	return 0, false
+}
 
 func loadReplay(filename string) {
 	data, err := ioutil.ReadFile(filename)
@@ -20,32 +43,48 @@ func loadReplay(filename string) {
 	}
 	lr := newLineReader(bytes.NewReader(data))
 
-	// First line is settings.
-	line, _ := lr.Next()
-	for _, kv := range strings.Split(line, " ") {
-		kv = strings.TrimSpace(kv)
-		parts := strings.SplitN(kv, "=", 2)
-		switch k, v := parts[0], parts[1]; k {
-		case "seed":
-			x, err := strconv.ParseUint(v, 0, 32)
-			if err != nil {
-				log.Printf("Bad seed %q: %v", v, err)
-				continue
-			}
-			debugf("seed set to %d", x)
-			seedrand(uint32(x))
-		default:
-			log.Printf("Unknown replay setting %q; ignoring", k)
-		}
-	}
-
-	// All remaining lines are commands.
-	q := func(b byte) { replayKeys = append(replayKeys, b) }
+	q := func(key byte) { replayActions = append(replayActions, replayAction{key: key}) }
+	act := func(f func()) { replayActions = append(replayActions, replayAction{f: f}) }
 	for {
 		line, ok := lr.Next()
 		if !ok {
 			break
 		}
+
+		if strings.HasPrefix(line, "!") {
+			// Settings.
+			for _, kv := range strings.Split(line[1:], " ") {
+				kv = strings.TrimSpace(kv)
+				parts := strings.SplitN(kv, "=", 2)
+				switch k, v := parts[0], parts[1]; k {
+				case "delay":
+					d, err := time.ParseDuration(v)
+					if err != nil {
+						log.Printf("Bad delay %q: %v", v, err)
+						continue
+					}
+					act(func() {
+						replayDelay = d
+						debugf("replay delay set to %v", d)
+					})
+				case "seed":
+					x, err := strconv.ParseUint(v, 0, 32)
+					if err != nil {
+						log.Printf("Bad seed %q: %v", v, err)
+						continue
+					}
+					act(func() {
+						seedrand(uint32(x))
+						debugf("seed set to %d", x)
+					})
+				default:
+					log.Printf("Unknown replay setting %q; ignoring", k)
+				}
+			}
+			continue
+		}
+
+		// Keys.
 		for line != "" {
 			b := line[0]
 			line = line[1:]
@@ -65,7 +104,12 @@ func loadReplay(filename string) {
 			}
 		}
 	}
-	debugf("replay sequence: %#v", replayKeys)
+
+	// Do any initial actions right away.
+	for len(replayActions) > 0 && replayActions[0].f != nil {
+		replayActions[0].f()
+		replayActions = replayActions[1:]
+	}
 }
 
 type lineReader struct {

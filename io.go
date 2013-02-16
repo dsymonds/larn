@@ -186,12 +186,8 @@ var win *curses.Window
  *	ttgetch() 	Routine to read in one character from the terminal
  */
 func ttgetch() int {
-	if len(replayKeys) > 0 {
-		x := replayKeys[0]
-		replayKeys = replayKeys[1:]
-		debugf("replaying %d", x)
-		time.Sleep(50 * time.Millisecond)
-		return int(x)
+	if b, ok := popReplay(); ok {
+		return int(b)
 	}
 
 	ch := win.Getch()
