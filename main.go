@@ -364,8 +364,7 @@ func showwear() {
 	srcount = 0
 
 	count := 2
-	for j := 0; j <= 26; j++ { /* count number of items we will display */
-		i := iven[j]
+	for _, i := range iven { /* count number of items we will display */
 		if i != 0 {
 			switch i {
 			case OLEATHER, OPLATE, OCHAIN, ORING, OSTUDLEATHER, OSPLINT, OPLATEARMOR, OSSPLATE, OSHIELD:
@@ -377,8 +376,8 @@ func showwear() {
 	t_setup(count)
 
 	for i := 22; i < 84; i++ {
-		for j := 0; j <= 26; j++ {
-			if i == iven[j] {
+		for j, it := range iven {
+			if i == it {
 				switch i {
 				case OLEATHER, OPLATE, OCHAIN, ORING, OSTUDLEATHER, OSPLINT, OPLATEARMOR, OSSPLATE, OSHIELD:
 					show3(j)
