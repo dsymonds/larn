@@ -147,4 +147,41 @@ HJld
 khhhhhhhhkt
 # move, kill bugbear, move to L5
 lllllkkkkhhhhhhihhhhhhjHd
+
+# move, drink potion ("You feel great!"), kill yeti, troll, zombie
+kllllkklllllnd..lllllljulllllllllhtuynnnluuuuu
+# move, get ruby, read book (learn "inv"), get ring
+yyhyuLtHjjjj10ljjjjjbykkybjrJLLkktkJHHKybhhhb6jnHiuYK
+# move, kill yeti, centaur, ice lizard
+hbbbbbbbblhbNbH4khhhhhhhkjjjbb
+# move, kill centaur, move, read 2x scroll ("armor glows", "weapon glows"), get emerald
+JHkkkkklyyyyyybbbJHKHKLKhhrKrut
+# move, kill zombie, go to bank branch
+llnnlllllnnllnn7lng
+# sell all stones, deposit gold, leave, go down to L6
+s*d7000\n\`kkyd
+
+# kill wraith, get emerald, kill ziller, get diamond
+jkkjLJLtukklllulluyh6luykt
+# read book (learn "glo"), kill ice lizard, gelatinous cube
+yy7hbrJJHKHKLktbbNu8k10lJnjjjjjnnlllnn
+# return to L5
+kJHH16hKu
+
+# kill hell hound, return to L4
+hhHkkHKHJu
+
+# kill centaur, pry jewels off throne, get diamond, drink potion (greed), sit on throne
+jjjjjjpktnldHs
+# kill zombie, floating eye, zombie, bat, return to L3
+lllhhLlLyNLKuullu
+
+# kill nymph, zombie, giant ant, return to L2
+hyyhkyhjjjjbyykyHy4jhhhhjhhhhhjyhhhhhu
+
+# return to L1
+hhJLu
+
+# return to home level
 !delay=100ms
+LKHKHkk18hJHj
