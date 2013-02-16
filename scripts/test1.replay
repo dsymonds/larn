@@ -127,12 +127,24 @@ LKHKHkk18hJHj
 nnnkllnnnnnnJg
 cyrybyky\`
 # go to bank, sell gems, deposit some gold
-kkkkHgs*d12000\n\`
+kkkkHgs*d3000\n\`
 # go to DND store, buy plate armor, ring of protection 2x potion of instant healing
-K20hjgt  ee\`
+K20hjggt  ee\`
 # return to dungeon
 nLg
 
-#
-!delay=200ms
-# crashes: W*
+# wear armor, go to L2
+W* b
+KLkkkkHHd
+
+# move, kill snake, orc, jackal, return to L3
+HKLiLJjJHJhhyyyhhkyJlnb4hKkikkyyd
+
+# go to L4
+HJld
+
+# move, kill assassin bug, get diamond
+khhhhhhhhkt
+# move, kill bugbear, move to L5
+lllllkkkkhhhhhhihhhhhhjHd
+!delay=100ms
