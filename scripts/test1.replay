@@ -1,5 +1,5 @@
 !seed=4
-!delay=1ms
+!delay=0
 
 # get past welcome screen
 \n
@@ -61,7 +61,6 @@ Lr
 # move, kill hobgoblin, get gold, potion, return to surface
 JLhhhhhhhlhhKllJLJLtjjjjllllJhhJ
 
-!delay=100ms
 # move to trading post, sell leather armor and dagger
 nnnnnnnnnnjjg
 * ayby\`
@@ -70,5 +69,70 @@ yyyyhgs*d103\n\`
 # go to DND store, buy battle axe, splint mail, ring of strength
 yyyyyyyyyHgmeu\`
 # wield battle axe, wear splint mail
-w
-# "*" crashes!
+lwaWb
+# reenter dungeon
+nLg
+
+# move, kill hobgoblin, return to L2
+KLkkkkHhlHHd
+
+# move, read scroll (enlightenment)
+HKLiLhhhbjjr
+# move, read scroll (learn undead pro)
+hhhbnr
+# move, kill giant ant
+yULJjjj
+# move, read book (learn chm), kill troglodyte, drink potion (sturdiness)
+jjjbhrhhhlhhyKd
+# move, get gold, open a door
+JByyyyhNhhhhhhyhuKokokoyyhnlljiJ
+# move, kill hobgoblin, jackal, kobold, kobold, hobgoblin
+hhhhlhhhhhhhl12hhhhhyk
+# move to collect more stuff, kill jackal, get gold, scroll (g; missile)
+kkkuu8ljJLJHHt
+# more killing, collecting
+kku5lu5kulhhhl
+# move, get diamond, go down to L3
+5jHJ21lKiYktnld
+
+# move to get scroll (i; time warp), sapphire, ruby, gold, drink potion (monster detection)
+hhjt11lntuuKHtLjjnuKHHHhdH
+# move, drink potion (intelligence++), get gold, eat fortune cookie, kill gnome, descend to L4
+LJhhhhdhhKLkyyhbhbbbjllJhheHiHkyhhhjjkuuLhhblLd
+
+# move, kill zombie, ice lizard, get belt, kill rust monster, drink potion (greed)
+jjkkhhhhhhtllllluulllld
+# move, kill troglodyte, get dagger, diamond, scroll (q; enlightenment)
+uyykk6llltlllllthhhhhbJLJHtHLKHKK
+# move, get gold, open exploding chest, get gold, diamond (can't pick up), gold
+bhhhhbjbHHohLijbhhLjjH
+# move, kill zombie, hobgoblin
+hhkkkkkkjkkkyjkkhhJkk8hkkllllkkJHHyb
+# destroy leprechaun with spell, get gold, ruby
+rgkkhhhhhbt
+# move, kill rust monster, get gold, kill quasit, giant centipede, return to L3
+kkhhjhykuLKllJlllllljbb
+jj12lnuLkkkhyyyyuhJu
+
+# kill orc, giant ant, get chest, read scroll, escape up to L2
+jjjhhjjjHlljtjku5lJkkklhhbJhhhYrqHKhhhykku
+
+# get gold, drink potion (strength), kill snake, go up to L1
+bhjjjjbHdlllnnnlLu
+
+# get to home level
+LKHKHkk18hJHj
+
+# kill bat, go to trading post, sell chests, damaged split mail, belt
+nnnkllnnnnnnJg
+cyrybyky\`
+# go to bank, sell gems, deposit some gold
+kkkkHgs*d12000\n\`
+# go to DND store, buy plate armor, ring of protection 2x potion of instant healing
+K20hjgt  ee\`
+# return to dungeon
+nLg
+
+#
+!delay=200ms
+# crashes: W*
