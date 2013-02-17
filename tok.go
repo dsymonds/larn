@@ -56,24 +56,6 @@ func yylex() int {
 
 		cc = ttgetch()
 
-		// TODO
-		/*
-			if cc == 'Y' - 64 {	// control Y -- shell escape
-				resetscroll()
-				clear()// scrolling region, home, clear, no attributes
-				if ((ic = fork()) == 0) {	// child
-					execl("/bin/csh", "/bin/csh", NULL);
-					exit(1);
-				}
-				wait(0);
-				if (ic < 0) {	// error
-					write(2, "Can't fork off a shell!\n", 25);
-					sleep(2);
-				}
-				setscroll();
-				return (lastok = 'L' - 64);	// redisplay screen
-			}
-		*/
 		if cc <= '9' && cc >= '0' {
 			yrepcount = yrepcount*10 + cc - '0'
 		} else {
