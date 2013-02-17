@@ -178,6 +178,7 @@ func clearvt100() {
 	if err := curses.Endwin(); err != nil {
 		log.Printf("curses.Endwin: %v", err)
 	}
+	win = nil
 }
 
 var win *curses.Window
@@ -795,7 +796,9 @@ func set_score_output() {
 var scrline = 18 /* line # for wraparound instead of scrolling if no DL */
 func lflush() {
 	debugf("()")
-	win.Refresh()
+	if win != nil { // set to nil when exiting
+		win.Refresh()
+	}
 	/*
 		int    lpoint;
 		u_char  *str;
