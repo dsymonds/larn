@@ -468,8 +468,8 @@ func showeat() {
 	srcount = 0
 
 	count := 2
-	for j := 0; j <= 26; j++ {
-		switch iven[j] {
+	for _, it := range iven {
+		switch it {
 		case OCOOKIE:
 			count++
 		}
@@ -477,8 +477,8 @@ func showeat() {
 	t_setup(count)
 
 	for i := 22; i < 84; i++ {
-		for j := 0; j <= 26; j++ {
-			if i == iven[j] {
+		for j, it := range iven {
+			if i == it {
 				switch i {
 				case OCOOKIE:
 					show3(j)
