@@ -436,8 +436,8 @@ func showread() {
 	srcount = 0
 
 	count := 2
-	for j := 0; j <= 26; j++ {
-		switch iven[j] {
+	for _, it := range iven {
+		switch it {
 		case OBOOK, OSCROLL:
 			count++
 		}
@@ -445,8 +445,8 @@ func showread() {
 	t_setup(count)
 
 	for i := 22; i < 84; i++ {
-		for j := 0; j <= 26; j++ {
-			if i == iven[j] {
+		for j, it := range iven {
+			if i == it {
 				switch i {
 				case OBOOK, OSCROLL:
 					show3(j)
