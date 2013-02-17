@@ -4,20 +4,13 @@ This is a Go port of Larn, by David Symonds (dsymonds@golang.org).
 Progress
 --------
 I have transliterated each original C source file.
-I have done the minimal changes required to get it to be valid Go source
-code as far as gofmt is concerned. Some chunks have been stubbed out
-instead of ported (e.g. loading/saving).
-
-I have made sufficient changes to get it to build, linking against
-github.com/dsymonds/gocurse/curses. Much is still stubbed out, though.
+I have done the minimal changes required to get it to build.
+Some chunks have been stubbed out instead of ported (e.g. loading/saving),
+but a substantial enough part works that you can play it.
 
 Roadmap
 -------
-I will next be debugging, fixing and filling out the critical stubbed functions.
-
-After that, hopefully enough will work to be able to play; I shall then
-start turning the code into good Go code, and filling out any remaining
-stubbed functions.
+I will next be debugging, fixing and filling out the stubbed functions.
 
 Next, I will abstract enough of the code to turn it into a web based
 version, probably hosted on App Engine; you can be playing on one
