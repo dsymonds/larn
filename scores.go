@@ -99,19 +99,7 @@ var whydead = [...]string{
  * returns -1 if unable to read in the scoreboard, returns 0 if all is OK
  */
 func readboard() int {
-	// TODO
-	/*
-		if gid != egid {
-			setegid(egid)
-		}
-	*/
 	ok := lopen(scorefile)
-	// TODO
-	/*
-		if gid != egid {
-			setegid(gid)
-		}
-	*/
 	if !ok {
 		lprcat("Can't read scoreboard\n")
 		lflush()
@@ -135,19 +123,7 @@ func readboard() int {
  */
 func writeboard() bool {
 	set_score_output()
-	// TODO
-	/*
-		if gid != egid {
-			setegid(egid)
-		}
-	*/
 	ok := lcreat(scorefile)
-	// TODO
-	/*
-		if gid != egid {
-			setegid(gid)
-		}
-	*/
 	if !ok {
 		lprcat("Can't write scoreboard\n")
 		lflush()
@@ -178,21 +154,9 @@ func makeboard() bool {
 	if !writeboard() {
 		return false
 	}
-	// TODO
-	/*
-		if gid != egid {
-			setegid(egid)
-		}
-	*/
 	if err := os.Chmod(scorefile, 0660); err != nil {
 		log.Printf("Chmodding scoreboard %v: %v", scorefile, err)
 	}
-	// TODO
-	/*
-		if gid != egid {
-			setegid(gid)
-		}
-	*/
 	return true
 }
 
@@ -637,12 +601,6 @@ invalid:
 	set_score_output()
 	scorerror := true
 	if !wizard && c[GOLD] > 0 { /* wizards can't score		 */
-		// TODO
-		/*
-			if gid != egid {
-				setegid(egid)
-			}
-		*/
 		if !lappend(logfile) { /* append to file */
 			if !lcreat(logfile) { /* and can't create new log file */
 				lcreat("")
@@ -652,28 +610,10 @@ invalid:
 				lflush()
 				os.Exit(0)
 			}
-			// TODO
-			/*
-				if gid != egid {
-					setegid(egid)
-				}
-			*/
 			if err := os.Chmod(logfile, 0660); err != nil {
 				log.Printf("Chmodding log file %s: %v", logfile, err)
 			}
-			// TODO
-			/*
-				if gid != egid {
-					setegid(gid)
-				}
-			*/
 		}
-		// TODO
-		/*
-			if gid != egid {
-				setegid(gid)
-			}
-		*/
 		logg.who = loginname
 		logg.score = c[GOLD]
 		logg.diff = c[HARDGAME]

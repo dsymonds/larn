@@ -13,7 +13,6 @@ var srcount = 0            /* line counter for showstr()	 */
 var dropflag = 0           /* if 1 then don't lookforobject() next round */
 var rmst = 80              /* random monster creation counter		 */
 var userid int             /* the players login user id number */
-var gid, egid int          /* used for security */
 var nowelcome, nomove bool /* if (nomove) then don't count next iteration as a move */
 var viewflag int8
 var restorflag = false /* whether restore has been done	 */
@@ -63,9 +62,6 @@ func main() {
 		}
 	}()
 
-	egid = os.Getegid()
-	gid = os.Getgid()
-	//setegid(gid) /* give up "games" if we have it */
 	/*
 	 *	first task is to identify the player
 	 */

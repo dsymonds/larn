@@ -343,7 +343,6 @@ extern short    iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
                 lastpy;
 extern short    oldx, oldy, playerx, playery, level;
 extern int      enable_scroll, srcount, userid, wisid;
-extern gid_t    gid, egid;
 extern long     skill[]:
 extern time_t	initialtime;
 extern unsigned long randx;
