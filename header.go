@@ -50,9 +50,9 @@ type cel struct {
 /* this is the structure for maintaining & moving the spheres of annihilation */
 type sphere struct {
 	p         *sphere /* pointer to next structure */
-	x, y, lev int8    /* location of the sphere */
-	dir       int8    /* direction sphere is going in */
-	lifetime  int16   /* duration of the sphere */
+	x, y, lev int     /* location of the sphere */
+	dir       int     /* direction sphere is going in */
+	lifetime  int     /* duration of the sphere */
 }
 
 /* defines for the character attribute array	c[]	 */

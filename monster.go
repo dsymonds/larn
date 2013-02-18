@@ -1753,85 +1753,88 @@ func annihilate() int {
  * Returns the number of spheres currently in existence
  */
 func newsphere(x, y, dir, life int) int {
-	// TODO
+	sp := new(sphere)
+	if dir >= 9 {
+		dir = 0 // no movement if direction not found
+	}
+	if level == 0 {
+		vxy(&x, &y) // don't go out of bounds
+	} else {
+		if x < 1 {
+			x = 1
+		}
+		if x >= MAXX-1 {
+			x = MAXX - 2
+		}
+		if y < 1 {
+			y = 1
+		}
+		if y >= MAXY-1 {
+			y = MAXY - 2
+		}
+	}
+	m := mitem[x][y]
+	if m >= DEMONLORD+4 { // demons dispel spheres
+		know[x][y] = true
+		show1cell(x, y) // show the demon (ha ha)
+		cursors()
+		lprintf("\nThe %s dispels the sphere!", monster[m].name)
+		beep()
+		rmsphere(x, y) // remove any spheres that are here
+		return c[SPHCAST]
+	}
+	if m == DISENCHANTRESS { // disenchantress cancels spheres
+		cursors()
+		lprintf("\nThe %s causes cancellation of the sphere!", monster[m].name)
+		beep()
+		goto boom
+	}
+	if c[CANCELLATION] != 0 { // cancellation cancels spheres
+		cursors()
+		lprcat("\nAs the cancellation takes effect, you hear a great earth shaking blast!")
+		beep()
+		goto boom
+	}
+	if item[x][y] == OANNIHILATION { // collision of spheres detonates spheres
+		cursors()
+		lprcat("\nTwo spheres of annihilation collide! You hear a great earth shaking blast!")
+		beep()
+		rmsphere(x, y)
+		goto boom
+	}
+	if playerx == x && playery == y { // collision of sphere and player!
+		cursors()
+		lprcat("\nYou have been enveloped by the zone of nothingness!\n")
+		beep()
+		rmsphere(x, y) // remove any spheres that are here
+		nap(4000)
+		died(258)
+	}
+	item[x][y] = OANNIHILATION
+	mitem[x][y] = 0
+	know[x][y] = true
+	show1cell(x, y) // show the new sphere
+	sp.x = x
+	sp.y = y
+	sp.lev = level
+	sp.dir = dir
+	sp.lifetime = life
+	sp.p = nil
+	if spheres == nil {
+		// if first node in the sphere list
+		spheres = sp
+	} else {
+		// add sphere to beginning of linked list
+		sp.p = spheres
+		spheres = sp
+	}
+	c[SPHCAST]++ // one more sphere in the world
 	return c[SPHCAST]
-	/*
-			int             m;
-			struct sphere  *sp;
-			if (((sp = (struct sphere *) malloc(sizeof(struct sphere)))) == 0)
-				return (c[SPHCAST]);	// can't malloc, therefore failure
-			if (dir >= 9)
-				dir = 0;	// no movement if direction not found
-			if (level == 0)
-				vxy(&x, &y);	// don't go out of bounds
-			else {
-				if (x < 1)
-					x = 1;
-				if (x >= MAXX - 1)
-					x = MAXX - 2;
-				if (y < 1)
-					y = 1;
-				if (y >= MAXY - 1)
-					y = MAXY - 2;
-			}
-			if ((m = mitem[x][y]) >= DEMONLORD + 4) {	// demons dispel spheres
-				know[x][y] = true
-				show1cell(x, y);// show the demon (ha ha)
-				cursors();
-				lprintf("\nThe %s dispels the sphere!", monster[m].name);
-				beep();
-				rmsphere(x, y);	// remove any spheres that are here
-				free(sp);
-				return (c[SPHCAST]);
-			}
-			if (m == DISENCHANTRESS) {	// disenchantress cancels spheres
-				cursors();
-				lprintf("\nThe %s causes cancellation of the sphere!", monster[m].name);
-				beep();
-		boom:		sphboom(x, y);	// blow up stuff around sphere
-				rmsphere(x, y);	// remove any spheres that are here
-				free(sp);
-				return (c[SPHCAST]);
-			}
-			if (c[CANCELLATION]) {	// cancellation cancels spheres
-				cursors();
-				lprcat("\nAs the cancellation takes effect, you hear a great earth shaking blast!");
-				beep();
-				goto boom;
-			}
-			if (item[x][y] == OANNIHILATION) {	// collision of spheres detonates spheres
-				cursors();
-				lprcat("\nTwo spheres of annihilation collide! You hear a great earth shaking blast!");
-				beep();
-				rmsphere(x, y);
-				goto boom;
-			}
-			if (playerx == x && playery == y) {	// collision of sphere and player!
-				cursors();
-				lprcat("\nYou have been enveloped by the zone of nothingness!\n");
-				beep();
-				rmsphere(x, y);	// remove any spheres that are here
-				nap(4000);
-				died(258);
-			}
-			item[x][y] = OANNIHILATION;
-			mitem[x][y] = 0;
-			know[x][y] = true
-			show1cell(x, y);	// show the new sphere
-			sp->x = x;
-			sp->y = y;
-			sp->lev = level;
-			sp->dir = dir;
-			sp->lifetime = life;
-			sp->p = 0;
-			if (spheres == 0)
-				spheres = sp;	// if first node in the sphere list
-			else {			// add sphere to beginning of linked list
-				sp->p = spheres;
-				spheres = sp;
-			}
-			return (++c[SPHCAST]);	// one more sphere in the world
-	*/
+
+boom:
+	sphboom(x, y) // blow up stuff around sphere
+	rmsphere(x, y) // remove any spheres that are here
+	return c[SPHCAST]
 }
 
 /*
