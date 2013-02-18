@@ -311,42 +311,9 @@ const (
 
 const (
 	BUFBIG      = 4096 /* size of the output buffer */
-	MAXIBUF     = 4096 /* size of the input buffer */
 	LOGNAMESIZE = 40   /* max size of the players name */
 	PSNAMESIZE  = 40   /* max size of the process name */
 )
-
-/*
-extern char     VERSION, SUBVERSION;
-extern const char *class[];
-extern u_char   course[];
-extern char     diagfile[], helpfile[], ckpfile[], larnlevels[],
-		optsfile[1024], psname[], savefilename[],
-		scorefile[];
-extern u_char   item[MAXX][MAXY], iven[], know[MAXX][MAXY];
-extern const char *levelname[];
-extern char     logfile[], lastmonst[];
-extern u_char  *lpbuf;
-extern u_char  *lpnt, moved[MAXX][MAXY], mitem[MAXX][MAXY], monstlevel[];
-extern char     monstnamelist[], objnamelist[];
-extern const char *objectname[];
-extern const char *potionhide[];
-extern const char *spelcode[], *spelname[], *spelmes[];
-extern char     spelweird[MAXMONST + 8][SPNUM];
-extern u_char   predostuff;
-extern u_char   screen[MAXX][MAXY], sex;
-extern const char *speldescript[];
-extern const char *scrollhide[];
-extern u_char   stealth[MAXX][MAXY];
-extern short    diroffx[], diroffy[], hitp[MAXX][MAXY];
-extern short    iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
-                lastpy;
-extern short    oldx, oldy, playerx, playery, level;
-extern int      enable_scroll, srcount, userid, wisid;
-extern long     skill[]:
-extern time_t	initialtime;
-extern unsigned long randx;
-*/
 
 /*
 extern struct monst monster[];
