@@ -1845,31 +1845,26 @@ boom:
  * Returns the number of spheres currently in existence
  */
 func rmsphere(x, y int) int {
-	// TODO
-	/*
-		struct sphere *sp, *sp2 = 0;
-		for (sp = spheres; sp; sp2 = sp, sp = sp->p) {
-			if (level == sp->lev) {	// is sphere on this level?
-				if ((x == sp->x) && (y == sp->y)) {	// locate sphere at this location
-					item[x][y] = mitem[x][y] = 0;
-					know[x][y] = true
-					show1cell(x, y);	// show the now missing sphere
-					--c[SPHCAST];
-					if (sp == spheres) {
-						sp2 = sp;
-						spheres = sp->p;
-						free((char *) sp2);
-					} else {
-						if (sp2)
-							sp2->p = sp->p;
-						free((char *) sp);
+	for sp, sp2 := spheres, (*sphere)(nil); sp != nil; sp2, sp = sp, sp.p {
+		if level == sp.lev { // is sphere on this level?
+			if x == sp.x && y == sp.y { // locate sphere at this location
+				item[x][y], mitem[x][y] = 0, 0
+				know[x][y] = true
+				show1cell(x, y) // show the now missing sphere
+				c[SPHCAST]--
+				if sp == spheres {
+					sp2 = sp
+					spheres = sp.p
+				} else {
+					if sp2 != nil {
+						sp2.p = sp.p
 					}
-					break;
 				}
+				break
 			}
 		}
-	*/
-	return (c[SPHCAST]) /* return number of spheres in the world */
+	}
+	return c[SPHCAST] /* return number of spheres in the world */
 }
 
 /*
