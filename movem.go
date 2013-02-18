@@ -415,44 +415,45 @@ func mmove(aa, bb, cc, dd int) {
  */
 const SPHMAX = 20 /* maximum number of spheres movsphere can handle */
 func movsphere() {
-	// TODO
-	/*
-		int    x, y, dir, len;
-		struct sphere *sp, *sp2;
-		struct sphere   sph[SPHMAX];
+	var sph [SPHMAX]sphere
 
-		// first duplicate sphere list
-		for (sp = 0, x = 0, sp2 = spheres; sp2; sp2 = sp2->p)	// look through sphere list
-			if (sp2->lev == level) {	// only if this level
-				sph[x] = *sp2;
-				sph[x++].p = 0;	// copy the struct
-				if (x > 1)
-					sph[x - 2].p = &sph[x - 1];	// link pointers
+	// first duplicate sphere list
+	x := 0
+	for sp2 := spheres; sp2 != nil; sp2 = sp2.p { // look through sphere list
+		if sp2.lev == level { // only if this level
+			sph[x] = *sp2
+			sph[x].p = nil // copy the struct
+			x++
+			if x > 1 {
+				sph[x-2].p = &sph[x-1] // link pointers
 			}
-		if (x)
-			sp = sph;	// if any spheres, point to them
-		else
-			return;		// no spheres
-
-		for (sp = sph; sp; sp = sp->p) {	// look through sphere list
-			x = sp->x;
-			y = sp->y;
-			if (item[x][y] != OANNIHILATION)
-				continue;	// not really there
-			if (--(sp->lifetime) < 0) {	// has sphere run out of gas?
-				rmsphere(x, y);	// delete sphere
-				continue;
-			}
-			switch (rnd((int) max(7, c[INTELLIGENCE] >> 1))) {	// time to move the sphere
-			case 1:
-			case 2:	// change direction to a random one
-				sp->dir = rnd(8);
-			default:	// move in normal direction
-				dir = sp->dir;
-				len = sp->lifetime;
-				rmsphere(x, y);
-				newsphere(x + diroffx[dir], y + diroffy[dir], dir, len);
-			};
 		}
-	*/
+	}
+	if x == 0 {
+		// no spheres
+		return
+	}
+
+	for sp := &sph[0]; sp != nil; sp = sp.p { // look through sphere list
+		x := sp.x
+		y := sp.y
+		if item[x][y] != OANNIHILATION {
+			continue // not really there
+		}
+		sp.lifetime--
+		if sp.lifetime < 0 { // has sphere run out of gas?
+			rmsphere(x, y) // delete sphere
+			continue
+		}
+		switch rnd(max(7, c[INTELLIGENCE]>>1)) { // time to move the sphere
+		case 1:
+		case 2: // change direction to a random one
+			sp.dir = rnd(8)
+		default: // move in normal direction
+			dir := sp.dir
+			len := sp.lifetime
+			rmsphere(x, y)
+			newsphere(x+diroffx[dir], y+diroffy[dir], dir, len)
+		}
+	}
 }
