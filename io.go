@@ -649,9 +649,38 @@ func lwclose() {
 func lprcat(str string) {
 	debugf("(%q) @ (%d, %d)", str, cursorX, cursorY)
 	// TODO: implement lprcat/lprc more efficiently?
+
+	// Lazy way to support certain terminal escape codes.
+	for {
+		i := strings.Index(str, "\033")
+		if i < 0 {
+			break
+		}
+		lprcat(str[:i])
+		str = str[i:]
+		any := false
+		for seq, f := range termCodes {
+			if strings.HasPrefix(str[1:], seq) {
+				f()
+				any = true
+				str = str[1+len(seq):]
+				break
+			}
+		}
+		if !any {
+			break
+		}
+	}
+
 	for _, ch := range str {
 		lprc(byte(ch))
 	}
+}
+
+var termCodes = map[string]func(){
+	"[m":  func() { win.AttrOff(curses.A_BOLD | curses.A_REVERSE | curses.A_STANDOUT | curses.A_UNDERLINE) },
+	"[4m": func() { win.AttrOn(curses.A_UNDERLINE) },
+	"[7m": func() { win.AttrOn(curses.A_REVERSE) },
 }
 
 /*
@@ -660,24 +689,6 @@ func lprcat(str string) {
  *	x and y are the cursor coordinates, and lpbuff is the output buffer where
  *	escape sequence will be placed.
  */
-/*
-static char    *y_num[] = {
-"\33[", "\33[", "\33[2", "\33[3", "\33[4", "\33[5", "\33[6",
-"\33[7", "\33[8", "\33[9", "\33[10", "\33[11", "\33[12", "\33[13", "\33[14",
-"\33[15", "\33[16", "\33[17", "\33[18", "\33[19", "\33[20", "\33[21", "\33[22",
-"\33[23", "\33[24"};
-
-static char    *x_num[] = {
-"H", "H", ";2H", ";3H", ";4H", ";5H", ";6H", ";7H", ";8H", ";9H",
-";10H", ";11H", ";12H", ";13H", ";14H", ";15H", ";16H", ";17H", ";18H", ";19H",
-";20H", ";21H", ";22H", ";23H", ";24H", ";25H", ";26H", ";27H", ";28H", ";29H",
-";30H", ";31H", ";32H", ";33H", ";34H", ";35H", ";36H", ";37H", ";38H", ";39H",
-";40H", ";41H", ";42H", ";43H", ";44H", ";45H", ";46H", ";47H", ";48H", ";49H",
-";50H", ";51H", ";52H", ";53H", ";54H", ";55H", ";56H", ";57H", ";58H", ";59H",
-";60H", ";61H", ";62H", ";63H", ";64H", ";65H", ";66H", ";67H", ";68H", ";69H",
-";70H", ";71H", ";72H", ";73H", ";74H", ";75H", ";76H", ";77H", ";78H", ";79H",
-";80H"};
-*/
 
 var cursorX, cursorY int
 
