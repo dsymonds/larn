@@ -301,6 +301,9 @@ func lprc(ch byte) {
 	case ch == '\n':
 		// TODO: account for delete_line and insert_line
 		cursorX, cursorY = 1, cursorY+1
+		if cursorY >= 19 { // TODO: only if setscroll has been called?
+			defer win.Clrtoeol()
+		}
 		moved = true
 	}
 	if moved {
