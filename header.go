@@ -315,13 +315,6 @@ const (
 	PSNAMESIZE  = 40   /* max size of the process name */
 )
 
-/*
-extern struct monst monster[];
-extern struct sphere *spheres;
-extern struct _itm itm[];
-extern int      rmst, lasttime;
-*/
-
 func hardcond(a, b int) int {
 	if c[HARDGAME] != 0 {
 		return a
