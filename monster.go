@@ -102,9 +102,9 @@ import (
  */
 
 type isave struct { /* used for altar reality */
-	typ int8  /* 0=item,  1=monster */
-	id  int8  /* item number or monster number */
-	arg int16 /* the type of item or hitpoints of monster */
+	typ bool /* false=item,  true=monster */
+	id  int  /* item number or monster number */
+	arg int  /* the type of item or hitpoints of monster */
 }
 
 /*
@@ -578,66 +578,74 @@ func speldamage(x int) {
 		return
 
 	case 36: /* alter reality */
-	// TODO
-	/*
-		{
-			struct isave   *save;	// pointer to item save structure
-			int             sc;
-			sc = 0;	// # items saved
-			save = (struct isave *) malloc(sizeof(struct isave) * MAXX * MAXY * 2);
-			for (j = 0; j < MAXY; j++)
-				for (i = 0; i < MAXX; i++) {	// save all items and monsters
-					xl = item[i][j];
-					if (xl && xl != OWALL && xl != OANNIHILATION) {
-						save[sc].typ = 0;
-						save[sc].id = item[i][j];
-						save[sc++].arg = iarg[i][j];
-					}
-					if (mitem[i][j]) {
-						save[sc].typ = 1;
-						save[sc].id = mitem[i][j];
-						save[sc++].arg = hitp[i][j];
-					}
-					item[i][j] = OWALL;
-					mitem[i][j] = 0;
-					if (wizard)
-						know[i][j] = true
-					else
-						know[i][j] = false
+		sc := 0 // # items saved
+		save := make([]isave, MAXX*MAXY*2)
+		for j := 0; j < MAXY; j++ {
+			for i := 0; i < MAXX; i++ { // save all items and monsters
+				xl := item[i][j]
+				if xl != 0 && xl != OWALL && xl != OANNIHILATION {
+					save[sc].typ = false
+					save[sc].id = item[i][j]
+					save[sc].arg = iarg[i][j]
+					sc++
 				}
-			eat(1, 1);
-			if (level == 1)
-				item[33][MAXY - 1] = 0;
-			for (j = rnd(MAXY - 2), i = 1; i < MAXX - 1; i++)
-				item[i][j] = 0;
-			while (sc > 0) {	// put objects back in level
-				--sc;
-				if (save[sc].typ == 0) {
-					int             trys;
-					for (trys = 100, i = j = 1; --trys > 0 && item[i][j]; i = rnd(MAXX - 1), j = rnd(MAXY - 1));
-					if (trys) {
-						item[i][j] = save[sc].id;
-						iarg[i][j] = save[sc].arg;
-					}
-				} else {	// put monsters back in
-					int             trys;
-					for (trys = 100, i = j = 1; --trys > 0 && (item[i][j] == OWALL || mitem[i][j]); i = rnd(MAXX - 1), j = rnd(MAXY - 1));
-					if (trys) {
-						mitem[i][j] = save[sc].id;
-						hitp[i][j] = save[sc].arg;
-					}
+				if mitem[i][j] != 0 {
+					save[sc].typ = true
+					save[sc].id = mitem[i][j]
+					save[sc].arg = hitp[i][j]
+					sc++
+				}
+				item[i][j] = OWALL
+				mitem[i][j] = 0
+				if wizard {
+					know[i][j] = true
+				} else {
+					know[i][j] = false
 				}
 			}
-			loseint();
-			draws(0, MAXX, 0, MAXY);
-			if !wizard {
-				spelknow[36] = false
-			}
-			free((char *) save);
-			positionplayer();
-			return;
 		}
-	*/
+		eat(1, 1)
+		if level == 1 {
+			item[33][MAXY-1] = 0
+		}
+		for j, i := rnd(MAXY-2), 1; i < MAXX-1; i++ {
+			item[i][j] = 0
+		}
+		for sc > 0 { // put objects back in level
+			sc--
+			if !save[sc].typ {
+				trys := 100
+				i, j := 1, 1
+				for trys > 1 && item[i][j] != 0 {
+					trys--
+					i = rnd(MAXX - 1)
+					j = rnd(MAXY - 1)
+				}
+				if trys > 1 {
+					item[i][j] = save[sc].id
+					iarg[i][j] = save[sc].arg
+				}
+			} else { // put monsters back in
+				trys := 100
+				i, j := 1, 1
+				for trys > 1 && (item[i][j] == OWALL || mitem[i][j] != 0) {
+					trys--
+					i = rnd(MAXX - 1)
+					j = rnd(MAXY - 1)
+				}
+				if trys > 1 {
+					mitem[i][j] = save[sc].id
+					hitp[i][j] = save[sc].arg
+				}
+			}
+		}
+		loseint()
+		draws(0, MAXX, 0, MAXY)
+		if !wizard {
+			spelknow[36] = false
+		}
+		positionplayer()
+		return
 
 	case 37: /* permanence */
 		adjusttime(-99999)
