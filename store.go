@@ -180,7 +180,7 @@ func dndstore() {
 	if outstanding_taxes > 0 {
 		lprcat("\n\nThe Larn Revenue Service has ordered us to not do business with tax evaders.\n")
 		beep()
-		lprintf("They have also told us that you owe %ld gp in back taxes, and as we must\n", outstanding_taxes)
+		lprintf("They have also told us that you owe %d gp in back taxes, and as we must\n", outstanding_taxes)
 		lprcat("comply with the law, we cannot serve you at this time.  Soo Sorry.\n")
 		cursors()
 		lprcat("\nPress ")
@@ -653,7 +653,7 @@ func appraise(gemstone int) {
 							amt = 50000;
 					} else
 						amt = (255 & ivenarg[j]) * 100;
-					lprintf("\nI can see this is an excellent stone, It is worth %ld", (long) amt);
+					lprintf("\nI can see this is an excellent stone, It is worth %d", (long) amt);
 					lprcat("\nWould you like to sell it to us? ");
 					yrepcount = 0;
 					if (getyn() == 'y') {

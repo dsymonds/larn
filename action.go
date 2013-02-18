@@ -97,7 +97,7 @@ func act_drink_fountain() {
 func act_wash_fountain() {
 	if rnd(100) < 11 {
 		x := rnd((level << 2) + 2)
-		lprintf("\nOh no!  The water was foul!  You suffer %ld hit points!", x)
+		lprintf("\nOh no!  The water was foul!  You suffer %d hit points!", x)
 		lastnum = 273
 		losehp(x)
 		bottomline()

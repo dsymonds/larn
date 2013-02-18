@@ -331,7 +331,7 @@ func speldamage(x int) {
 	case 3: /* sleep		 */
 		i := rnd(3) + 1
 		direct(x, fullhit(i),
-			"  While the %s slept, you smashed it %ld times", i)
+			"  While the %s slept, you smashed it %d times", i)
 		return
 
 	case 4: /* charm monster	 */
@@ -347,7 +347,7 @@ func speldamage(x int) {
 	case 6: /* web 			*/
 		i := rnd(3) + 2
 		direct(x, fullhit(i),
-			"  While the %s is entangled, you hit %ld times", i)
+			"  While the %s is entangled, you hit %d times", i)
 		return
 
 	case 7:
