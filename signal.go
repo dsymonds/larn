@@ -4,9 +4,43 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"syscall"
+	"sync"
 	"time"
 )
+
+// Simulation of signal(3) and friends.
+var sigsim = struct {
+	sync.Mutex
+	handlers map[os.Signal]func(os.Signal)
+
+	c chan os.Signal
+}{
+	handlers: make(map[os.Signal]func(os.Signal)),
+	c:        make(chan os.Signal, 20),
+}
+
+func sigwatcher() {
+	for sig := range sigsim.c {
+		debugf("got signal %v", sig)
+		sigsim.Lock()
+		h := sigsim.handlers[sig]
+		sigsim.Unlock()
+		if h != nil {
+			h(sig)
+		}
+	}
+}
+
+func simsignal(sig os.Signal, handler func(os.Signal)) {
+	sigsim.Lock()
+	if _, ok := sigsim.handlers[sig]; !ok {
+		signal.Notify(sigsim.c, sig)
+	}
+	sigsim.handlers[sig] = handler
+	sigsim.Unlock()
+}
+
+func sigignore(os.Signal) {}
 
 func bit(a uint) int { return 1 << (a - 1) }
 
@@ -22,14 +56,12 @@ func s2choose() {
 }
 
 // cntlc handles a ^C.
-func cntlc() {
+func cntlc(_ os.Signal) {
 	debugf("()")
 	if nosignal {
 		return /* don't do anything if inhibited */
 	}
-	// TODO
-	//signal(SIGQUIT, SIG_IGN);
-	//signal(SIGINT, SIG_IGN);
+	simsignal(os.Interrupt, sigignore)
 	quit()
 	if predostuff == 1 {
 		s2choose()
@@ -37,50 +69,7 @@ func cntlc() {
 		showplayer()
 	}
 	lflush()
-	//signal(SIGQUIT, cntlc);
-	//signal(SIGINT, cntlc);
-}
-
-/*
- *	subroutine to save the game if a hangup signal
- */
-func sgam(_ int) {
-	savegame(savefilename)
-	wizard = true
-	died(-257) /* hangup signal */
-}
-
-// tstop handles ^Y.
-func tstop(n int) {
-	if nosignal {
-		return /* nothing if inhibited */
-	}
-	// TODO
-	/*
-			lcreat("");
-			clearvt100();
-			lflush();
-			signal(SIGTSTP, SIG_DFL);
-		#ifdef SIGVTALRM
-	*/
-	/*
-	 * looks like BSD4.2 or higher - must clr mask for signal to take
-	 * effect
-	 */
-	/*
-			sigsetmask(sigblock(0) & ~bit(SIGTSTP));
-		#endif
-			kill(getpid(), SIGTSTP);
-
-			setupvt100();
-			signal(SIGTSTP, tstop);
-			if (predostuff == 1)
-				s2choose();
-			else
-				drawscreen();
-			showplayer();
-			lflush();
-	*/
+	simsignal(os.Interrupt, cntlc)
 }
 
 /*
@@ -88,49 +77,17 @@ func tstop(n int) {
  */
 func sigsetup() {
 	debugf("()")
-	c := make(chan os.Signal, 16)
-	signal.Notify(c, syscall.SIGQUIT, syscall.SIGINT)
-	go func() {
-		for sig := range c {
-			switch sig {
-			case syscall.SIGQUIT, syscall.SIGINT:
-				cntlc()
-			}
-		}
-	}()
-
-	// TODO
-	/*
-		signal(SIGQUIT, cntlc);
-		signal(SIGINT, cntlc);
-		signal(SIGKILL, SIG_IGN);
-		signal(SIGHUP, sgam);
-		signal(SIGILL, sigpanic);
-		signal(SIGTRAP, sigpanic);
-		signal(SIGIOT, sigpanic);
-		signal(SIGEMT, sigpanic);
-		signal(SIGFPE, sigpanic);
-		signal(SIGBUS, sigpanic);
-		signal(SIGSEGV, sigpanic);
-		signal(SIGSYS, sigpanic);
-		signal(SIGPIPE, sigpanic);
-		signal(SIGTERM, sigpanic);
-		signal(SIGTSTP, tstop);
-		signal(SIGSTOP, tstop);
-	*/
+	go sigwatcher()
+	simsignal(os.Interrupt, cntlc)
 }
 
 /*
  *	routine to process a fatal error signal
  */
-func sigpanic(sig int) {
-	// TODO
-	//signal(sig, SIG_DFL);
-	fmt.Fprintf(os.Stderr, "\nLarn - Panic! Signal %d received [%v]", sig, syscall.Signal(sig))
+func sigpanic(sig os.Signal) {
+	fmt.Fprintf(os.Stderr, "\nLarn - Panic! Signal %d received [%v]", sig, sig)
 	time.Sleep(2 * time.Second)
 	sncbr()
 	savegame(savefilename)
-	// TODO
-	//kill(getpid(), sig);	/* this will terminate us */
 	os.Exit(1)
 }
