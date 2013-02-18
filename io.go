@@ -305,6 +305,11 @@ func lprc(ch byte) {
 			defer win.Clrtoeol()
 		}
 		moved = true
+	case ch == '\t':
+		n := 8 - (cursorX-1)%8
+		win.Addstr(strings.Repeat(" ", n))
+		cursorX += n
+		moved = true
 	}
 	if moved {
 		cursor(cursorX, cursorY)
