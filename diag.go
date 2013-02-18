@@ -142,7 +142,7 @@ func savegame(fname string) int {
 	//struct sphere *sp;
 	//struct stat     statbuf;
 
-	// TODO
+	// TODO: implement savegame
 	return -1
 	/*
 		nosignal = true
@@ -208,7 +208,7 @@ func savegame(fname string) int {
 }
 
 func restoregame(fname string) {
-	// TODO
+	// TODO: implement restoregame
 	/*
 		int    i, k;
 		struct sphere *sp, *sp2;

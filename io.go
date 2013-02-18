@@ -442,7 +442,7 @@ func larn_lrint() int32 {
  *	Reads "number" bytes into the buffer pointed to by "address".
  *	Returns nothing of value
  */
-// TODO
+// TODO: implement lrfill?
 /*
 func lrfill(char *adr, int num) {
 	u_char  *pnt;
@@ -643,7 +643,7 @@ func lwclose() {
  */
 func lprcat(str string) {
 	debugf("(%q) @ (%d, %d)", str, cursorX, cursorY)
-	// TODO: do this less clumsily?
+	// TODO: implement lprcat/lprc more efficiently?
 	for _, ch := range str {
 		lprc(byte(ch))
 	}
@@ -698,7 +698,6 @@ func cursors() {
  * obvious meanings.
  */
 
-// TODO
 //static char    *outbuf = 0;     /* translated output buffer */
 /*
  * init_term()		Terminal initialization -- setup termcap info
@@ -936,7 +935,7 @@ var vindex = 0
  */
 func ttputch(ch int) int {
 	debugf("(%c)", ch)
-	// TODO
+	// TODO: implement ttputch?
 	/*
 		outbuf[vindex++] = ch;
 		if (vindex >= BUFBIG)
@@ -953,63 +952,6 @@ func flush_buf() {
 	//	write(io_outfd, outbuf, vindex);
 	//vindex = 0;
 }
-
-/*
- *	char *tmcapcnv(sd,ss)  Routine to convert VT100 escapes to termcap
- *	format
- *	Processes only the \33[#m sequence (converts . files for termcap use
- */
-// TODO
-/*
-char *
-tmcapcnv(char *sd, char *ss)
-{
-	int    tmstate = 0;	// 0=normal, 1=\33 2=[ 3=#
-	char            tmdigit = 0;	// the # in \33[#m
-	while (*ss) {
-		switch (tmstate) {
-		case 0:
-			if (*ss == '\33') {
-				tmstate++;
-				break;
-			}
-	ign:		*sd++ = *ss;
-	ign2:		tmstate = 0;
-			break;
-		case 1:
-			if (*ss != '[')
-				goto ign;
-			tmstate++;
-			break;
-		case 2:
-			if (isdigit((u_char)*ss)) {
-				tmdigit = *ss - '0';
-				tmstate++;
-				break;
-			}
-			if (*ss == 'm') {
-				*sd++ = ST_END;
-				goto ign2;
-			}
-			goto ign;
-		case 3:
-			if (*ss == 'm') {
-				if (tmdigit)
-					*sd++ = ST_START;
-				else
-					*sd++ = ST_END;
-				goto ign2;
-			}
-		default:
-			goto ign;
-		};
-		ss++;
-	}
-	*sd = 0;		// NULL terminator
-	return (sd);
-}
-//#endif	// VT100
-*/
 
 /*
  *	beep()	Routine to emit a beep if enabled (see no-beep in .larnopts)

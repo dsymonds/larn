@@ -41,7 +41,7 @@ func yylex() int {
 			}
 		}
 		var cc int
-		// TODO
+		// TODO: need input buffer flushing at all?
 		//var ic int
 		/*
 			for {		// if keyboard input buffer is too big, flush some of it
@@ -73,7 +73,7 @@ func yylex() int {
  *	flushall()		Function to flush all type-ahead in the input buffer
  */
 func flushall() {
-	// TODO
+	// TODO: implement flushall?
 	/*
 		char            cc;
 		int             ic;
@@ -126,7 +126,7 @@ func sethard(hard int) {
 	function to read and process the larn options file
 */
 func readopts() {
-	// TODO
+	// TODO: implement readopts
 	/*
 		const char  *i;
 		int    j, k;

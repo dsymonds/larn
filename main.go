@@ -92,11 +92,6 @@ func main() {
 	optsfile = ptr + "/.larnopts"
 	/* the .larnopts filename */
 
-	// TODO
-	//lpbuf = malloc((5 * BUFBIG) >> 2);	/* output buffer */
-	//if (lpbuf == 0)
-	//	died(-285);	/* malloc() failure */
-
 	lcreat("")
 	seed := uint32(*seed)
 	if seed == 0 {
@@ -134,7 +129,7 @@ func main() {
 	/*
 	 *	now process the command line arguments
 	 */
-	// TODO: replace with Go's flag parser?
+	// TODO: replace with Go's flag parser
 	/*
 		for i := 1; i < argc; i++ {
 			if argv[i][0] == '-' {

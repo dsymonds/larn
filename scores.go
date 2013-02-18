@@ -105,7 +105,7 @@ func readboard() int {
 		lflush()
 		return -1
 	}
-	// TODO
+	// TODO: implement readboard
 	return -1
 	/*
 		lrfill((char *) sco, sizeof(sco))
@@ -129,7 +129,7 @@ func writeboard() bool {
 		lflush()
 		return false
 	}
-	// TODO
+	// TODO: implement writeboard
 	return false
 	/*
 		lwrite((char *) sco, sizeof(sco))
@@ -712,7 +712,7 @@ func diedsub(x int) {
  * diedlog() 	Subroutine to read a log file and print it out in ascii format
  */
 func diedlog() {
-	// TODO
+	// TODO: implement diedlog
 	/*
 		char  *p
 		static char  q[] = "?"
