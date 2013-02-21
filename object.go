@@ -272,7 +272,7 @@ func lookforobject() {
 			newcavelevel(1)
 			playerx = 33
 			playery = MAXY - 2
-			item[33][MAXY-1], know[33][MAXY-1], mitem[33][MAXY-1] = 0, false, 0
+			know[33][MAXY-1], mitem[33][MAXY-1] = true, 0
 			draws(0, MAXX, 0, MAXY)
 			bot_linex()
 			return

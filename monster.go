@@ -606,7 +606,7 @@ func speldamage(x int) {
 		}
 		eat(1, 1)
 		if level == 1 {
-			item[33][MAXY-1] = 0
+			item[33][MAXY-1] = OENTRANCE
 		}
 		for j, i := rnd(MAXY-2), 1; i < MAXX-1; i++ {
 			item[i][j] = 0

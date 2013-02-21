@@ -114,7 +114,7 @@ func makemaze(k int) {
 	}
 	eat(1, 1)
 	if k == 1 {
-		item[33][MAXY-1] = 0 /* exit from dungeon */
+		item[33][MAXY-1] = OENTRANCE /* exit from dungeon */
 	}
 
 	/* now for open spaces -- not on level 10	 */
