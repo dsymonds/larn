@@ -8,180 +8,47 @@
 kkkl
 g
 
-# kill kobold and hobgoblin
-klllllll
 # pick up gold and chest
-lhkkt
+kkt
+# move, kill kobold
+HJkkj
 # move down corridors, pick up scroll
-HJHKHJHKhhJt
+HKHJHKhhJt
 # move further, get gold
 jhhjjLHK
+# move, kill hobgoblin
+JllkkLkkhhhhhhhbnnn
+# move, kill bat, get gold
+jkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkK
+# move, kill kobold, read scroll from ground (t -= 2)
+HKjjlhyr
+# move to get gold, kill gnome, get sapphire
+KlLjjjlllkyKkjkLJLKt
+# move, kill gnome, drink potion from ground (gold detection)
+kLJLKllJLJllkkkulllllLJd
+# move, ignore fortune cookie, kill jackal, drink potion from ground (sturdiness), kill gnome
+LjijlluKkdllll
 # move, kill jackal
-JllkkLkkhhhhhhhb
-# move, read scroll from ground (t -= 7)
-bjLJhhhhkkhhkkHkkhyr
-# move to get gold and sapphire
-KlLjjjlllhkkkkkLJLKt
-# move, drink potion from ground (gold detection)
-kLJLKllJLJllkkkuLJd
-# move, ignore fortune cookie, drink potion from ground (sturdiness)
-LjijllKkkkd
-# move, kill jackal
-LLLJh
+LLLLLJH
 # move past altar, kill jackal
-HKhhjjjnLKLjjjjHh
-# move, pick up scroll (f; enlightenment)
-jjt
-# move, ignore potion (dizzy), get ruby
-LJLJHHllKhihhhJHkkkuLKkt
-# move, get emerald
-nlllllKHkhhhhjjHHt
-# move to pick up gold, kill hobgoblin
-llJkkhhhhJLJHyy
+KhhjjjnLKLjjjj
+# move, kill hobgoblin, pick up scroll (f; enlightenment)
+hhlnnh8hjjt
+# move, kill gnome, ignore potion (dizzy), get ruby
+LJLlLLJHHllKhihhhJHkkkuLKkt
+# move, kill 2x bat, get emerald
+nllllllllhhhhlllKHk10hbbt
+## move to pick up gold, kill kobold
+lllJbjkyHhhhh
 # move, and descend to L2
-hkkkkkkHHHd
+HHHd
 
-# kill jackal, move to pick up ruby
-jhhht
-# collect gold, potion (gold detection), kill hobgoblin
-bJLYKKlllnthhhjjLLll
-# move, kill orc, get belt, gold
-jjjjjjhhutbh
-# move, open door, read book (learn "str" spell)
-bjojLr
-# get emerald, gold, move through door
-LktkHLJHllllki
-# move, ignore potion, read scroll (t -= 7)
-KHKLiLr
-# move, kill giant ant
-Lllllll
-# move, read scroll (teleport) to get back to L1
-Lr
-
-# move, kill hobgoblin, get gold, potion, return to surface
-JLhhhhhhhlhhKllJLJLtjjjjllllJhhJ
-
-# move to trading post, sell leather armor and dagger
-nnnnnnnnnnjjg
-* ayby\`
-# go to bank, sell stones, deposit 103 gold pieces
-yyyyhgs*d103\n\`
-# go to DND store, buy battle axe, splint mail, ring of strength
-yyyyyyyyyHgmeu\`
-# wield battle axe, wear splint mail
-lwaWb
-# reenter dungeon
-nLg
-
-# move, kill hobgoblin, return to L2
-KLkkkkHhlHHd
-
-# move, read scroll (enlightenment)
-HKLiLhhhbjjr
-# move, read scroll (learn undead pro)
-hhhbnr
-# move, kill giant ant
-yULJjjj
-# move, read book (learn chm), kill troglodyte, drink potion (sturdiness)
-jjjbhrhhhlhhyKd
-# move, get gold, open a door
-JByyyyhNhhhhhhyhuKokokoyyhnlljiJ
-# move, kill hobgoblin, jackal, kobold, kobold, hobgoblin
-hhhhlhhhhhhhl12hhhhhyk
-# move to collect more stuff, kill jackal, get gold, scroll (g; missile)
-kkkuu8ljJLJHHt
-# more killing, collecting
-kku5lu5kulhhhl
-# move, get diamond, go down to L3
-5jHJ21lKiYktnld
-
-# move to get scroll (i; time warp), sapphire, ruby, gold, drink potion (monster detection)
-hhjt11lntuuKHtLjjnuKHHHhdH
-# move, drink potion (intelligence++), get gold, eat fortune cookie, kill gnome, descend to L4
-LJhhhhdhhKLkyyhbhbbbjllJhheHiHkyhhhjjkuuLhhblLd
-
-# move, kill zombie, ice lizard, get belt, kill rust monster, drink potion (greed)
-jjkkhhhhhhtllllluulllld
-# move, kill troglodyte, get dagger, diamond, scroll (q; enlightenment)
-uyykk6llltlllllthhhhhbJLJHtHLKHKK
-# move, get gold, open exploding chest, get gold, diamond (can't pick up), gold
-bhhhhbjbHHohLijbhhLjjH
-# move, kill zombie, hobgoblin
-hhkkkkkkjkkkyjkkhhJkk8hkkllllkkJHHyb
-# destroy leprechaun with spell, get gold, ruby
-rgkkhhhhhbt
-# move, kill rust monster, get gold, kill quasit, giant centipede, return to L3
-kkhhjhykuLKllJlllllljbb
-jj12lnuLkkkhyyyyuhJu
-
-# kill orc, giant ant, get chest, read scroll, escape up to L2
-jjjhhjjjHlljtjku5lJkkklhhbJhhhYrqHKhhhykku
-
-# get gold, drink potion (strength), kill snake, go up to L1
-bhjjjjbHdlllnnnlLu
-
-# get to home level
-LKHKHkk18hJHj
-
-# kill bat, go to trading post, sell chests, damaged split mail, belt
-nnnkllnnnnnnJg
-cyrybyky\`
-# go to bank, sell gems, deposit some gold
-kkkkHgs*d3000\n\`
-# go to DND store, buy plate armor, ring of protection 2x potion of instant healing
-K20hjggt  ee\`
-# return to dungeon
-nLg
-
-# wear armor, go to L2
-W* b
-KLkkkkHHd
-
-# move, kill snake, orc, jackal, return to L3
-HKLiLJjJHJhhyyyhhkyJlnb4hKkikkyyd
-
-# go to L4
-HJld
-
-# move, kill assassin bug, get diamond
-khhhhhhhhkt
-# move, kill bugbear, move to L5
-lllllkkkkhhhhhhihhhhhhjHd
-
-# move, drink potion ("You feel great!"), kill yeti, troll, zombie
-kllllkklllllnd..lllllljulllllllllhtuynnnluuuuu
-# move, get ruby, read book (learn "inv"), get ring
-yyhyuLtHjjjj10ljjjjjbykkybjrJLLkktkJHHKybhhhb6jnHiuYK
-# move, kill yeti, centaur, ice lizard
-hbbbbbbbblhbNbH4khhhhhhhkjjjbb
-# move, kill centaur, move, read 2x scroll ("armor glows", "weapon glows"), get emerald
-JHkkkkklyyyyyybbbJHKHKLKhhrKrut
-# move, kill zombie, go to bank branch
-llnnlllllnnllnn7lng
-# sell all stones, deposit gold, leave, go down to L6
-s*d7000\n\`kkyd
-
-# kill wraith, get emerald, kill ziller, get diamond
-jkkjLJLtukklllulluyh6luykt
-# read book (learn "glo"), kill ice lizard, gelatinous cube
-yy7hbrJJHKHKLktbbNu8k10lJnjjjjjnnlllnn
-# return to L5
-kJHH16hKu
-
-# kill hell hound, return to L4
-hhHkkHKHJu
-
-# kill centaur, pry jewels off throne, get diamond, drink potion (greed), sit on throne
-jjjjjjpktnldHs
-# kill zombie, floating eye, zombie, bat, return to L3
-lllhhLlLyNLKuullu
-
-# kill nymph, zombie, giant ant, return to L2
-hyyhkyhjjjjbyykyHy4jhhhhjhhhhhjyhhhhhu
-
-# return to L1
-hhJLu
-
-# return to home level
 !delay=100ms
-LKHKHkk18hJHj
+# move, read scroll (i; enlightenment)
+jhhr
+# move to get gold, drink potion (raise level)
+yKyhd
+# move, open door, drink potion (gold detection)
+nnnJoBHKd
+# move past altar, read book ("pro" spell)
+JpjnLr
