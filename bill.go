@@ -12,10 +12,10 @@ var mail = [...]struct {
 	body          *template.Template
 }{
 	{
-		from:    "the LRS (Larn Revenue Service)",
-		subject: "undeclared income",
+		from:    "LRS (Larn Revenue Service)",
+		subject: "Undeclared Income",
 		body: template.Must(template.New("body").Parse(
-			"\n   We have heard you survived the caverns of Larn.  Let me be the" +
+			"We have heard you survived the caverns of Larn.  Let me be the" +
 				"\nfirst to congratulate you on your success.  It was quite a feat." +
 				"\nIt was also very profitable for you..." +
 				"\n\n   The Dungeon Master has informed us that you brought" +
@@ -28,9 +28,9 @@ var mail = [...]struct {
 	},
 	{
 		from:    "His Majesty King Wilfred of Larndom",
-		subject: "a noble deed",
+		subject: "A Noble Deed",
 		body: template.Must(template.New("body").Parse(
-			"\n   I have heard of your magnificent feat, and I, King Wilfred," +
+			"I have heard of your magnificent feat, and I, King Wilfred," +
 				"\nforthwith declare today to be a national holiday.  Furthermore," +
 				"\nhence three days, ye be invited to the castle to receive the" +
 				"\nhonour of Knight of the realm.  Upon thy name shall it be written..." +
@@ -41,19 +41,19 @@ var mail = [...]struct {
 		from:    "Count Endelford",
 		subject: "You Bastard!",
 		body: template.Must(template.New("body").Parse(
-			"\n   I have heard (from sources) of your journey.  Congratulations!" +
+			"I have heard (from sources) of your journey.  Congratulations!" +
 				"\nYou Bastard!  With several attempts I have yet to endure the" +
 				" caves,\nand you, a nobody, makes the journey!  From this time" +
-				" onward, bewarned\nupon our meeting you shall pay the price!")),
+				" onward, be warned\nupon our meeting you shall pay the price!")),
 	},
 	{
 		from:    "Mainair, Duke of Larnty",
 		subject: "High Praise",
 		body: template.Must(template.New("body").Parse(
-			"\n   With certainty, a hero I declare to be amongst us!  A nod of" +
+			"With certainty, a hero I declare to be amongst us!  A nod of" +
 				"\nfavour I send to thee.  Me thinks Count Endelford this day of" +
 				"\nright breath'eth fire as of dragon of whom ye are slayer.  I" +
-				"\nyearn to behold his anger and jealously.  Should ye choose to" +
+				"\nyearn to behold his anger and jealousy.  Should ye choose to" +
 				"\nunleash some of thy wealth upon those who be unfortunate, I," +
 				"\nDuke Mainair, shall equal thy gift also.")),
 	},
@@ -61,8 +61,8 @@ var mail = [...]struct {
 		from:    "St. Mary's Children's Home",
 		subject: "these poor children",
 		body: template.Must(template.New("body").Parse(
-			"\n   News of your great conquests has spread to all of Larndom." +
-				"\nMight I have a moment of a great adventurers's time?  We here at" +
+			"News of your great conquests has spread to all of Larndom." +
+				"\nMight I have a moment of a great adventurer's time?  We here at" +
 				"\nSt. Mary's Children's Home are very poor, and many children are" +
 				"\nstarving.  Disease is widespread and very often fatal without" +
 				"\ngood food.  Could you possibly find it in your heart to help us" +
