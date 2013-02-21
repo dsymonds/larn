@@ -133,40 +133,43 @@ func act_desecrate_altar() {
  * a donation.
  */
 func act_donation_pray() {
-	lprcat("\n\n")
-	cursor(1, 24)
-	cltoeoln()
-	cursor(1, 23)
-	cltoeoln()
-	lprcat("how much do you donate? ")
-	amt := readnum(c[GOLD])
-	if amt < 0 || c[GOLD] < amt {
-		lprcat("\nYou don't have that much!")
+	for {
+		lprcat("\n\n")
+		cursor(1, 24)
+		cltoeoln()
+		cursor(1, 23)
+		cltoeoln()
+		lprcat("how much do you donate? ")
+		amt := readnum(c[GOLD])
+		if amt < 0 || c[GOLD] < amt {
+			// Loop around to prevent the player from escaping the altar for free.
+			lprcat("\nYou don't have that much!")
+			continue
+		}
+		min := c[GOLD] / 10
+		c[GOLD] -= amt
+		bottomline()
+		if amt < min || amt < rnd(50) {
+			// Player gave less than 10% of their gold; summon a monster.
+			createmonster(makemonst(level + 1))
+			c[AGGRAVATE] += 200
+		} else if rnd(101) > 50 {
+			ohear()
+		} else if rnd(43) == 5 {
+			if c[WEAR] != 0 {
+				lprcat("\nYou feel your armor vibrate for a moment")
+			}
+			enchantarmor()
+		} else if rnd(43) == 8 {
+			if c[WIELD] != 0 {
+				lprcat("\nYou feel your weapon vibrate for a moment")
+			}
+			enchweapon()
+		} else {
+			lprcat("\nThank You.")
+		}
 		return
 	}
-	c[GOLD] -= amt
-	if amt < c[GOLD]/10 || amt < rnd(50) {
-		createmonster(makemonst(level + 1))
-		c[AGGRAVATE] += 200
-	} else if rnd(101) > 50 {
-		ohear()
-		return
-	} else if rnd(43) == 5 {
-		if c[WEAR] != 0 {
-			lprcat("\nYou feel your armor vibrate for a moment")
-		}
-		enchantarmor()
-		return
-	} else if rnd(43) == 8 {
-		if c[WIELD] != 0 {
-			lprcat("\nYou feel your weapon vibrate for a moment")
-		}
-		enchweapon()
-		return
-	} else {
-		lprcat("\nThank You.")
-	}
-	bottomline()
 }
 
 /*
