@@ -1,7 +1,6 @@
 process-name: "Winnie-the-Pooh"
 enable-checkpointing
 bold-objects
-male
 play-day-play
 no-introduction
 name: "King of the Realm"

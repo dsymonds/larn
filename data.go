@@ -99,7 +99,6 @@ var predostuff byte
 
 var loginname string     /* players login name */
 var logname string       /* players name storage for scoring				 */
-var sex byte = 1         /* default is a man  0=woman						 */
 var boldon = true        /* 1=bold objects  0=inverse objects				 */
 var ckpflag bool         /* 1 if want checkpointing of game, 0 otherwise	 */
 var cheat bool           /* whether the player has fudged save file			 */

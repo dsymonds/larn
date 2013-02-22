@@ -151,8 +151,6 @@ func readopts() {
 				ckpflag = true
 			else if (strcmp(i, "inverse-objects") == 0)
 				boldon = false
-			else if (strcmp(i, "female") == 0)
-				sex = 0;	// male or female
 			else if (strcmp(i, "monster:") == 0) {	// name favorite monster
 				if ((i = lgetw()) == 0)
 					break;
@@ -166,8 +164,6 @@ func readopts() {
 							break;
 						}
 				}
-			} else if (strcmp(i, "male") == 0)
-				sex = 1;
 			else if (strcmp(i, "name:") == 0) {	// defining players name
 				if ((i = lgetw()) == 0)
 					break;
