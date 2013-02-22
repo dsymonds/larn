@@ -661,11 +661,22 @@ func quaffpotion(pot int) {
 	potionname[pot] = potionhide[pot]
 	switch pot {
 	case 9:
-		lprcat("\nYou feel greedy . . .")
-		nap(2000)
+		lprcat("\nYou sense the presence of objects!")
+		nap(1000)
+		if c[BLINDCOUNT] != 0 {
+			return
+		}
 		for i := 0; i < MAXY; i++ {
 			for j := 0; j < MAXX; j++ {
-				if item[j][i] == OGOLDPILE || item[j][i] == OMAXGOLD {
+				switch item[j][i] {
+				case OPLATE, OCHAIN, OLEATHER, ORING, OSTUDLEATHER,
+					OSPLINT, OPLATEARMOR, OSSPLATE, OSHIELD, OSWORDofSLASHING,
+					OHAMMER, OSWORD, O2SWORD, OSPEAR, ODAGGER,
+					OBATTLEAXE, OLONGSWORD, OFLAIL, OLANCE, ORINGOFEXTRA,
+					OREGENRING, OPROTRING, OENERGYRING, ODEXRING, OSTRRING,
+					OCLEVERRING, ODAMRING, OBELT, OSCROLL, OPOTION,
+					OBOOK, OCHEST, OAMULET, OORBOFDRAGON, OSPIRITSCARAB,
+					OCUBEofUNDEAD, ONOTHEFT, OCOOKIE:
 					know[j][i] = true
 					show1cell(j, i)
 				}

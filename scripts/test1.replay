@@ -24,7 +24,7 @@ jkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkK
 HKjjlhyr
 # move to get gold, kill gnome, get sapphire
 KlLjjjlllkyKkjkLJLKt
-# move, kill gnome, drink potion from ground (gold detection)
+# move, kill gnome, drink potion from ground (object detection)
 kLJLKllJLJllkkkulllllLJd
 # move, ignore fortune cookie, kill jackal, drink potion from ground (sturdiness), kill gnome
 LjijlluKkdllll
@@ -48,7 +48,7 @@ HHHd
 jhhr
 # move to get gold, drink potion (raise level)
 yKyhd
-# move, open door, drink potion (gold detection)
+# move, open door, drink potion (object detection)
 nnnJoBHKd
 # move past altar, read book ("pro" spell)
 JpjnLr

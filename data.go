@@ -332,7 +332,7 @@ var potionhide = [...]string{
 	" raise charisma",
 	" dizziness",
 	" learning",
-	" gold detection",
+	" object detection",
 	" monster detection",
 	" forgetfulness",
 	" water",
@@ -595,7 +595,7 @@ var scprob = [...]int{0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
  *	0 - sleep				1 - healing					2 - raise level
  *	3 - increase ability	4 - gain wisdom				5 - gain strength
  *	6 - charismatic character	7 - dizziness			8 - learning
- *	9 - gold detection		10 - monster detection		11 - forgetfulness
+ *	9 - object detection		10 - monster detection		11 - forgetfulness
  *	12 - water				13 - blindness				14 - confusion
  *	15 - heroism			16 - sturdiness				17 - giant strength
  *	18 - fire resistance	19 - treasure finding		20 - instant healing
