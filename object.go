@@ -71,10 +71,6 @@ func lookforobject() {
 		lprintf("\n\nThere is %s here!", objectname[i])
 		odeadthrone()
 
-	case OORB:
-		lprcat("\n\nYou have found the Orb!!!!!")
-		oorb()
-
 	case OPIT:
 		lprcat("\n\nYou're standing at the top of a pit.")
 		opit()
@@ -1081,9 +1077,6 @@ func read_scroll(typ int) {
 		c[LIFEPROT]++
 		break /* life protection */
 	}
-}
-
-func oorb() {
 }
 
 func opit() {

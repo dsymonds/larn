@@ -141,9 +141,9 @@ const (
 /* defines for the objects in the game		 */
 
 const (
-	OALTAR        = 1
-	OTHRONE       = 2
-	OORB          = 3
+	OALTAR  = 1
+	OTHRONE = 2
+	//OORB          = 3 // unused
 	OPIT          = 4
 	OSTAIRSUP     = 5
 	OELEVATORUP   = 6
