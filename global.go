@@ -544,9 +544,9 @@ func pocketfull() bool {
 	function to return true if a monster is next to the player else returns false
 */
 func nearbymonst() bool {
-	for tmp := playerx - 1; tmp < playerx+2; tmp++ {
-		for tmp2 := playery - 1; tmp2 < playery+2; tmp2++ {
-			if mitem[tmp][tmp2] != 0 {
+	for x := max(playerx-1, 0); x < min(playerx+2, MAXX-1); x++ {
+		for y := max(playery-1, 0); y < min(playery+2, MAXY-1); y++ {
+			if mitem[x][y] != 0 {
 				return true /* if monster nearby */
 			}
 		}
