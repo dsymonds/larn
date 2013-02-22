@@ -749,7 +749,7 @@ func parse() {
 			yrepcount = 0
 			cursors()
 			nomove = true
-			if !WIZID || userid != wisid {
+			if !WIZID {
 				lprcat("Sorry, you are not empowered to be a wizard.\n")
 				scbr() /* system("stty -echo cbreak"); */
 				lflush()

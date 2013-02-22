@@ -28,5 +28,3 @@ const password = "pvnert(x)" /* the wizards password <=32 */
 var psname = "larn"          /* the process name */
 
 const WIZID = true // whether to allow wizard operations
-
-var wisid = 0 /* the user id of the only person who can be wizard */
