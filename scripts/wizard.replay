@@ -1,0 +1,43 @@
+!seed=3
+!delay=0
+\n
+_pvnert(x)
+
+# get and wear stainless plate armor
+nnnnnnJtWc
+# go to DND store, buy ring of extra regeneration, 2x potion of healing, potion of see invisible
+kHg all g\`
+# enter V1
+6uLc
+
+# move around, kill monsters, etc., move to V2
+hiHhbbHjjLlllllll8jnllhy4hbhyykkkkrkd
+
+# Use mle to blast through a wall, move to V3
+yhhcmlekcmlekcmlekllKykd
+
+# move around, kill stuff in the way (incl. picking up scroll of pulverization)
+KHkkullLLlllJHdHJjnlLllrLolilLt
+# more moving, cast "per"
+!delay=50ms
+LLlLi4lkokiyiyukkkkkkkkrcper
+KHjojojojjjjjjjnnjjjjlnLuouououououoliln
+# get scarab of negate spirit, get to room outside of the demon prince
+nlllllluuuktuouokhyyhhhhihhhj
+# kill demon prince, get potion of cure dianthroritis
+hohohohohohohoho
+llhhhhhhhhhhhi
+!delay=250ms
+yhht...
+!delay=50ms
+# return to V2
+nllilllnulllu
+
+# return to V1
+JHHlKH5jllhHHHHHHHHHHHHlllnu
+
+# return to home level (incl. teleport)
+jyJLLeLiZLllc
+
+# go home, win game
+bHg

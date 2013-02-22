@@ -419,7 +419,7 @@ func newscore(score int, whoo string, whyded int, winner bool) {
 				sco[i].score = 0
 			}
 		}
-		taxes := score * TAXRATE
+		taxes := int(float64(score) * TAXRATE)
 		score += 100000 * c[HARDGAME] /* bonus for winning */
 		/*
 		 * if he has a slot on the winning scoreboard update it if

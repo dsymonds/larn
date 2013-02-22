@@ -12,7 +12,7 @@ const SPNUM = 38        /* maximum number of spells in existence	 */
 const MAXSCROLL = 28    /* maximum number of scrolls that are possible	 */
 const MAXPOTION = 35    /* maximum number of potions that are possible	 */
 const TIMELIMIT = 30000 /* the maximum number of moves before the game is called */
-const TAXRATE = 1 / 20  /* the tax rate for the LRS */
+const TAXRATE = 0.05    /* the tax rate for the LRS */
 const MAXOBJ = 93       /* the maximum number of objects   n < MAXOBJ */
 
 /* this is the structure definition of the monster data	 */

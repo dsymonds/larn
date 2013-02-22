@@ -93,7 +93,7 @@ var mail = [...]struct {
 func mailbill() {
 	data := map[string]int{
 		"Gold": c[GOLD],
-		"Tax":  c[GOLD] * TAXRATE,
+		"Tax":  int(float64(c[GOLD]) * TAXRATE),
 	}
 	for _, m := range mail {
 		var buf bytes.Buffer
