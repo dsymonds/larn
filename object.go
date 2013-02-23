@@ -1242,7 +1242,7 @@ func ohome() {
 					died(269)
 				} else {
 					lprcat("\nThe doctor is now administering the potion, and in a few moments\n")
-					lprcat("Your daughter should be well on her way to recovery.\n")
+					lprcat("your daughter should be well on her way to recovery.\n")
 					nap(6000)
 					lprcat("\nThe potion is")
 					nap(3000)
