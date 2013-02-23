@@ -1158,11 +1158,21 @@ func hitmonster(x, y int) {
 	lprcat(lastmonst)
 	if flag { /* if the monster was hit */
 		if monst == RUSTMONSTER || monst == DISENCHANTRESS || monst == CUBE {
-			if c[WIELD] > 0 {
+			if c[WIELD] >= 0 {
 				if ivenarg[c[WIELD]] > -10 {
 					lprintf("\nYour weapon is dulled by the %s", lastmonst)
 					beep()
 					ivenarg[c[WIELD]]--
+
+					// Rings should be dulled too.
+					switch iven[c[WIELD]] {
+					case ODEXRING:
+						c[DEXTERITY]--
+					case OSTRRING:
+						c[STREXTRA]--
+					case OCLEVERRING:
+						c[INTELLIGENCE]--
+					}
 				}
 			}
 		}
