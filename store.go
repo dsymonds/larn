@@ -532,6 +532,10 @@ func obanksub() {
 			cursor((k%2)*40+33, (k>>1)+4)
 			lprintf("%5d", gemvalue[i])
 			k++
+		default:
+			// Don't allow player to sell non-existent gems
+			gemvalue[i] = 0
+			gemorder[i] = 0
 		}
 	}
 	cursor(31, 17)
