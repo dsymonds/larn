@@ -125,7 +125,7 @@ var enable_scroll = 0     /* constant for enabled/disabled scrolling regn */
 var spheres *sphere /* pointer to linked list for spheres of annihilation */
 var levelname = [...]string{" H", " 1", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", "10", "V1", "V2", "V3"}
 
-const objnamelist = " ATOP%^F&^+M=%^$$f*OD#~][[)))(((||||||||{?!BC}o:@.<<<<EVV))([[]]](^ [H*** ^^ S tsTLc............................................"
+const objnamelist = " ATOP<_F&^+M=>_$$f*OD#~][[)))(((||||||||{?!BC}o:;.@@@@EVV))([[]]](^ [H*** ^^ S tsTLc............................................"
 
 var monstnamelist = []byte(" BGHJKOScjtAELNQRZabhiCTYdegmvzFWflorXV pqsyUkMwDDPxnDDuD        ...............................................................")
 
