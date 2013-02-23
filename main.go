@@ -885,6 +885,12 @@ func parse() {
 				lprcat("\nYou do not owe any taxes.")
 			}
 			return
+
+		case '/':
+			specify_object()
+			nomove = true
+			yrepcount = 0
+			return
 		}
 	}
 }

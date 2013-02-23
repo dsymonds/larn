@@ -34,8 +34,8 @@ n  move southeast	   N  run southeast		w  wield a weapon
 ^  identify a trap	   g  give present pack weight	P  give tax status
 d  drop an item	           i  inventory your pockets	Q  quit the game
 v  print program version   S  save the game		D  list all items found
-?  this help screen	   A  create diagnostic file    e  eat something
-				(wizards only)
+?  this help screen	   /  identify object           e  eat something
+
 larn ++   restore checkpointed game
 larn -s   list the scoreboard
 larn -i   list scores with inventories

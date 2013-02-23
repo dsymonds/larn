@@ -257,3 +257,77 @@ func fntchange(how int) {
 	}
 	cursors()
 }
+
+func specify_object() {
+	cursors()
+	specify_obj_nocurs()
+	/* TODO
+	cursors()
+	lprcat("\n\nIdentify unknown object by cursor [yn]?")
+	switch ttgetch() {
+	case 'y', 'Y':
+		specify_obj_cursor()
+	case 'n', 'N':
+		specify_obj_nocurs()
+	}
+	*/
+}
+
+/* perform the actions of identifying the object/monster associated with a
+   character typed by the user.  assumes cursors().
+*/
+func specify_obj_nocurs() {
+	lprcat("\nType object character:")
+	i := ttgetch()
+	switch i {
+	case '\033', '\n':
+		return
+		/*
+		   case '@':
+		       lprintf("\n@: %s", logname)
+		       return
+		*/
+	case ' ':
+		lprintf("\n : An as-yet-unseen place in the dungeon, or the floor")
+		return
+	}
+
+	/*
+		if i == floorc {
+			lprc('\n')
+			lprc(floorc)
+			lprintf(": the floor of the dungeon")
+			return
+		}
+	*/
+
+	flag := false
+	for j := 0; j < MAXMONST+8; j++ {
+		if i == int(monstnamelist[j]) {
+			lprintf("\n%c: %s", i, monster[j].name)
+			flag = true
+		}
+	}
+	/* check for spurious object character */
+	if i != '_' {
+		for j, name := range objnamelist {
+			if i == int(name) {
+				lprc('\n')
+				if boldon {
+					setbold()
+					lprc(byte(i))
+					resetbold()
+				} else {
+					lprc(byte(i))
+				}
+				lprintf(": %s", objectname[j])
+				flag = true
+			}
+		}
+	}
+	if !flag {
+		lprintf("\n%c: unknown monster/object", i)
+	}
+}
+
+// TODO: port specify_obj_cursor/move_cursor
