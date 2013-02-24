@@ -1,31 +1,31 @@
 package main
 
 import (
-	"time"
+	"bytes"
+	"io/ioutil"
 )
 
 /*
  *	help function to display the help info
  *
- *	format of the .larn.help file
+ *	format of the larn.help file
  *
  *	1st character of file:	# of pages of help available (ascii digit)
  *	page (23 lines) for the introductory message (not counted in above)
  *	pages of help text (23 lines per page)
  */
 func help() {
-	j := openhelp()
+	j, lines := loadhelp()
 	if j < 0 {
 		return /* open the help file and get # pages */
 	}
-	for i := 0; i < 23; i++ {
-		lgetl() /* skip over intro message */
-	}
+	lines = lines[23:] // skip over intro message
 	for ; j > 0; j-- {
 		clear()
-		for i := 0; i < 23; i++ {
-			lprcat(lgetl()) /* print out each line that we read in */
+		for _, line := range lines[:23] {
+			lprcat(line + "\n")
 		}
+		lines = lines[23:]
 		if j > 1 {
 			lprcat("    ---- Press ")
 			standout("return")
@@ -37,14 +37,12 @@ func help() {
 				i = ttgetch()
 			}
 			if i == '\n' || i == '\033' {
-				lrclose()
 				setscroll()
 				drawscreen()
 				return
 			}
 		}
 	}
-	lrclose()
 	retcont()
 	drawscreen()
 }
@@ -53,14 +51,14 @@ func help() {
  *	function to display the welcome message and background
  */
 func welcome() {
-	if openhelp() < 0 {
-		return /* open the help file */
+	j, lines := loadhelp()
+	if j < 0 {
+		return
 	}
 	clear()
-	for i := 0; i < 23; i++ {
-		lprcat(lgetl()) /* print out each line that we read in */
+	for _, line := range lines[:23] {
+		lprcat(line + "\n")
 	}
-	lrclose()
 	retcont() /* press return to continue */
 }
 
@@ -77,18 +75,24 @@ func retcont() {
 	setscroll()
 }
 
-/*
- *	routine to open the help file and return the first character - '0'
- */
-func openhelp() int {
-	if !lopen(helpfile) {
-		lprintf("Can't open help file \"%s\" ", helpfile)
+// loadhelp loads the help file, and returns the number of pages
+// and all the lines of the file.
+func loadhelp() (int, []string) {
+	raw, err := ioutil.ReadFile(helpfile)
+	if err != nil {
+		lprintf("Can't open help file %q: %v", helpfile, err)
 		lflush()
-		time.Sleep(4 * time.Second)
+		nap(4000)
 		drawscreen()
 		setscroll()
-		return -1
+		return -1, nil
 	}
 	resetscroll()
-	return lgetc() - '0'
+	pages := int(raw[0] - '0')
+	raw = raw[1:]
+	var lines []string
+	for _, l := range bytes.Split(raw, []byte("\n")) {
+		lines = append(lines, string(l))
+	}
+	return pages, lines
 }
