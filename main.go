@@ -812,7 +812,7 @@ func parse() {
 				item[MAXX-1][i-MAXX-MAXY] = i
 				iarg[MAXX-1][i-MAXX-MAXY] = 0
 			}
-			c[GOLD] += 25000
+			c[GOLD] += 250000
 			drawscreen()
 			return
 
