@@ -1,12 +1,13 @@
 Larn is a roguelike game written by Noah Morgan in 1986.
 This is a Go port of Larn, by David Symonds (dsymonds@golang.org).
 
-Progress
---------
+Status
+------
 I have transliterated each original C source file.
-I have done the minimal changes required to get it to build.
 Some chunks have been stubbed out instead of ported (e.g. loading/saving),
 but a substantial enough part works that you can play it.
+I used Larn 12.0 as the basis, but have ported many of the fixes from Larn 12.3.
+I am calling this "Larn 12.5".
 
 Roadmap
 -------

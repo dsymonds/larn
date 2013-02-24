@@ -86,7 +86,7 @@ var lastmonst string                    /* this has the name of the current mons
 var beenhere [MAXLEVEL + MAXVLEVEL]bool /* true if have been on this level */
 
 const VERSION = 12 /* this is the present version # of the program	 */
-const SUBVERSION = 0
+const SUBVERSION = 5
 
 var nosignal bool /* set to true to disable the signals from doing anything */
 
