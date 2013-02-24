@@ -733,7 +733,7 @@ func parse() {
 						break
 					}
 					switch item[i][j] {
-					case OTRAPDOOR, ODARTRAP, OTRAPARROW, OTELEPORTER:
+					case OTRAPDOOR, ODARTRAP, OTRAPARROW, OTELEPORTER, OPIT:
 						lprcat("\nIt's ")
 						lprcat(objectname[item[i][j]])
 						flag++
