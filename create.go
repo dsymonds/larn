@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"io/ioutil"
 	"log"
 )
 
@@ -227,21 +229,24 @@ func eat(xx, yy int) {
  *		-	random object
  */
 func cannedlevel(k int) bool {
-	if !lopen(larnlevels) {
-		log.Print("Can't open the maze data file")
+	raw, err := ioutil.ReadFile(larnlevels)
+	if err != nil {
+		log.Printf("Can't open the maze data file: %v", err)
 		died(-282)
 		return false
 	}
-	i := lgetc()
+	i := int(raw[0])
+	raw = raw[1:]
 	if i <= '0' {
 		died(-282)
 		return false
 	}
+	br := bytes.NewBuffer(raw)
 	for i = 18 * rund(i-'0'); i > 0; i-- {
-		lgetl() /* advance to desired maze */
+		br.ReadString('\n') // advance to desired maze
 	}
 	for i := 0; i < MAXY; i++ {
-		row := lgetl()
+		row, _ := br.ReadString('\n')
 		for j := 0; j < MAXX; j++ {
 			it, mit, arg, marg := 0, 0, 0, 0
 			ch := row[0]
@@ -287,7 +292,6 @@ func cannedlevel(k int) bool {
 			}
 		}
 	}
-	lrclose()
 	return true
 }
 
