@@ -176,7 +176,7 @@ func clearvt100() {
 	clear()
 	sncbr() /* system("stty -cbreak echo"); */
 	if err := curses.Endwin(); err != nil {
-		log.Printf("curses.Endwin: %v", err)
+		debugf("curses.Endwin: %v", err)
 	}
 	win = nil
 }
@@ -204,10 +204,10 @@ func ttgetch() int {
 func scbr() {
 	debugf("")
 	if err := curses.Cbreak(); err != nil {
-		log.Printf("curses.Cbreak: %v", err)
+		debugf("curses.Cbreak: %v", err)
 	}
 	if err := curses.Noecho(); err != nil {
-		log.Printf("curses.Noecho: %v", err)
+		debugf("curses.Noecho: %v", err)
 	}
 }
 
@@ -219,10 +219,10 @@ func scbr() {
 func sncbr() {
 	debugf("")
 	if err := curses.Nocbreak(); err != nil {
-		log.Printf("curses.Nocbreak: %v", err)
+		debugf("curses.Nocbreak: %v", err)
 	}
 	if err := curses.Echo(); err != nil {
-		log.Printf("curses.Echo: %v", err)
+		debugf("curses.Echo: %v", err)
 	}
 }
 
@@ -334,10 +334,10 @@ func resetbold() {
 func setscroll() {
 	/* lprcat("\033[20;24r") */
 	if err := win.SetScrollRegion(20, 24); err != nil {
-		log.Printf("win.SetScrollRegion: %v", err)
+		debugf("win.SetScrollRegion: %v", err)
 	}
 	if err := win.Scrollok(true); err != nil {
-		log.Printf("win.Scrollok: %v", err)
+		debugf("win.Scrollok: %v", err)
 	}
 }
 
@@ -345,10 +345,10 @@ func setscroll() {
 func resetscroll() {
 	/* lprcat("\033[;24r") */
 	if err := win.SetScrollRegion(0, 24); err != nil {
-		log.Printf("win.SetScrollRegion: %v", err)
+		debugf("win.SetScrollRegion: %v", err)
 	}
 	if err := win.Scrollok(false); err != nil {
-		log.Printf("win.Scrollok: %v", err)
+		debugf("win.Scrollok: %v", err)
 	}
 }
 
@@ -384,7 +384,7 @@ func lwrite(s string) {
 		//#else	/* VT100 */
 		lflush()
 		if _, err := io_out.WriteString(s); err != nil {
-			log.Printf("Writing to output file %s: %v", io_out.Name(), err)
+			debugf("Writing to output file %s: %v", io_out.Name(), err)
 		}
 		//#endif	/* VT100 */
 	} else {
@@ -411,7 +411,7 @@ func lgetc() int {
 	var buf [1]byte
 	_, err := io_in.Read(buf[:])
 	if err != nil {
-		log.Printf("Reading from input file %s: %v", io_in.Name(), err)
+		debugf("Reading from input file %s: %v", io_in.Name(), err)
 		return 0
 	}
 	return int(buf[0])
@@ -558,7 +558,7 @@ func lcreat(str string) bool {
 	io_out, err = os.OpenFile(str, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
 		io_out = nil
-		log.Printf("Creating file %s: %v", str, err)
+		debugf("Creating file %s: %v", str, err)
 		lflush() // TODO: needed?
 		return false
 	}
@@ -603,7 +603,7 @@ func lappend(str string) bool {
 	var err error
 	io_out, err = os.OpenFile(str, os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
-		log.Printf("Opening for append output file %s: %v", str, err)
+		debugf("Opening for append output file %s: %v", str, err)
 		io_out = nil
 		return false
 	}
@@ -620,7 +620,7 @@ func lrclose() {
 	debugf("()")
 	if io_in != os.Stdin {
 		if err := io_in.Close(); err != nil {
-			log.Printf("Closing input file %s: %v", io_in.Name(), err)
+			debugf("Closing input file %s: %v", io_in.Name(), err)
 		}
 		io_in = os.Stdin
 	}
@@ -636,7 +636,7 @@ func lwclose() {
 	lflush()
 	if io_out != nil && io_out != os.Stderr {
 		if err := io_out.Close(); err != nil {
-			log.Printf("Closing output file %s: %v", io_out.Name(), err)
+			debugf("Closing output file %s: %v", io_out.Name(), err)
 		}
 		io_out = nil
 	}
