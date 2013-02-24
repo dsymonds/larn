@@ -43,7 +43,6 @@ lllJbjkyHhhhh
 # move, and descend to L2
 HHHd
 
-!delay=100ms
 # move, read scroll (i; enlightenment)
 jhhr
 # move to get gold, drink potion (raise level)
@@ -52,3 +51,36 @@ yKyhd
 nnnJoBHKd
 # move past altar, read book ("pro" spell)
 JpjnLr
+# go to the altar, pray, give money, kill stuff
+Hkpm82\n
+# move more, kill more, switch to wearing ring mail
+nLolololLlhtLLi3luuuhtTWj
+llkklyyHHHkkkkkkkkKLllllllllhhhjoJ
+# open doors, kill, get stuff
+lolololololololoultlllo
+ulw.dnltutnHibHihhoHKhohhhhhtJlololololohlli
+# ignore throne, return to L1
+nnkyhihkUlliLu
+
+# return to H
+hhKlNjjnlllJhbJ
+
+# go to trading post, sell a bunch of stuff
+10njjgaybycyjyny\`
+# go to bank, sell gems
+yyyyhgs*\`
+# go to DND store, buy stuff, equip self, return to L1
+9yHgne\`nwaWbLg
+
+# return to L2
+KL4kHb4hud
+
+# get scroll (c; teleport), potion (g; sleep)
+bbiBhbin6lukkkKLKLLllLllLJtjJtJhhubhhhKtKKhHLJLKhh
+48hjjjjjkJHJLiLiLilllllllllllll
+# get more stuff, descend to L3
+kktKHtHJjjjlllllltutKhhshld
+
+# kill bat
+!delay=100ms
+hhhhh
