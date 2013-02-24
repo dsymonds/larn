@@ -2,8 +2,8 @@ package main
 
 import (
 	"bytes"
-	"io/ioutil"
-	"log"
+
+	"github.com/dsymonds/larn/datfiles"
 )
 
 /*
@@ -229,12 +229,7 @@ func eat(xx, yy int) {
  *		-	random object
  */
 func cannedlevel(k int) bool {
-	raw, err := ioutil.ReadFile(larnlevels)
-	if err != nil {
-		log.Printf("Can't open the maze data file: %v", err)
-		died(-282)
-		return false
-	}
+	raw := datfiles.Mazes
 	i := int(raw[0])
 	raw = raw[1:]
 	if i <= '0' {

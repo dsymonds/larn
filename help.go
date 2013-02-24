@@ -2,7 +2,8 @@ package main
 
 import (
 	"bytes"
-	"io/ioutil"
+
+	"github.com/dsymonds/larn/datfiles"
 )
 
 /*
@@ -78,15 +79,7 @@ func retcont() {
 // loadhelp loads the help file, and returns the number of pages
 // and all the lines of the file.
 func loadhelp() (int, []string) {
-	raw, err := ioutil.ReadFile(helpfile)
-	if err != nil {
-		lprintf("Can't open help file %q: %v", helpfile, err)
-		lflush()
-		nap(4000)
-		drawscreen()
-		setscroll()
-		return -1, nil
-	}
+	raw := datfiles.Help
 	resetscroll()
 	pages := int(raw[0] - '0')
 	raw = raw[1:]
