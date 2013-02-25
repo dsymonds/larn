@@ -130,14 +130,13 @@ func writeboard() bool {
 		return false
 	}
 	// TODO: implement writeboard
-	return false
 	/*
 		lwrite((char *) sco, sizeof(sco))
 		lwrite((char *) winr, sizeof(winr))
-		lwclose()
-		lcreat("")
-		return true
 	*/
+	lwclose()
+	lcreat("")
+	return true
 }
 
 /*
