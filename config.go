@@ -10,7 +10,7 @@ import (
  */
 
 /* the game save filename */
-var savefilename string
+var savefilename = filepath.Join(os.Getenv("HOME"), ".larn.save")
 
 /* the logging file */
 var logfile = "./llog12.5"
@@ -19,7 +19,7 @@ var logfile = "./llog12.5"
 var scorefile = filepath.Join(os.Getenv("HOME"), ".larn-score12.5")
 
 /* the .larnopts filename */
-var optsfile = "/.larnopts"
+var optsfile = filepath.Join(os.Getenv("HOME"), ".larnopts")
 
 var diagfile = "Diagfile"    /* the diagnostic filename */
 var ckpfile = "Larn12.5.ckp" /* the checkpoint filename */

@@ -45,10 +45,6 @@ const cmdhelp = `Cmd line format: larn [-slicnh] [-o<optsfile>] [-##] [++]
 `
 */
 
-//#ifdef VT100
-//static char    *termtypes[] = {"vt100", "vt101", "vt102", "vt103", "vt125",
-//	"vt131", "vt140", "vt180", "vt220", "vt240", "vt241", "vt320", "vt340", "vt341"};
-//#endif	/* VT100 */
 /*
 	************
 	MAIN PROGRAM
@@ -74,26 +70,14 @@ func main() {
 	defer clearvt100()
 
 	/* try to get login name */
-	// TODO: C version tried getlogin and getpwuid first
-	ptr := os.Getenv("USER")
-	if ptr == "" {
-		ptr = os.Getenv("LOGNAME")
+	loginname = os.Getenv("USER")
+	if loginname == "" {
+		loginname = os.Getenv("LOGNAME")
 	}
-	if ptr == "" {
+	if loginname == "" {
 		log.Fatal("Can't find your logname.  Who Are You?")
 	}
-	/*
-	 *	second task is to prepare the pathnames the player will need
-	 */
-	loginname = ptr /* save loginname of the user for logging purposes */
-	logname = ptr   /* this will be overwritten with the players name */
-	ptr = os.Getenv("HOME")
-	if ptr == "" {
-		ptr = "."
-	}
-	savefilename = ptr
-	savefilename = "/Larn.sav"    /* save file name in home directory */
-	optsfile = ptr + "/.larnopts" /* the .larnopts filename */
+	logname = loginname
 
 	lcreat("")
 	seed := uint32(*seed)
@@ -102,25 +86,6 @@ func main() {
 	}
 	newgame(seed) /* set the initial clock  */
 	hard := -1
-
-	//#ifdef VT100
-	/*
-	 *	check terminal type to avoid users who have not vt100 type terminals
-	 */
-	/*
-		ttype = getenv("TERM");
-		for (j = 1, i = 0; i < sizeof(termtypes) / sizeof(char *); i++)
-			if (strcmp(ttype, termtypes[i]) == 0) {
-				j = 0;
-				break;
-			}
-		if (j) {
-			lprcat("Sorry, Larn needs a VT100 family terminal for all its features.\n");
-			lflush();
-			exit(1);
-		}
-	*/
-	//#endif	/* VT100 */
 
 	/*
 	 *	now make scoreboard if it is not there (don't clear)
@@ -237,8 +202,6 @@ func main() {
 	}
 	drawscreen()   /* show the initial dungeon					 */
 	predostuff = 2 /* tell the trap functions that they must do a showplayer() from here on */
-
-	//nice(1);		/* games should be run niced */
 
 	yrepcount, hit2flag = 0, false
 	for {
