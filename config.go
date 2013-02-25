@@ -8,23 +8,16 @@ package main
 var savefilename string
 
 /* the logging file */
-var logfile = "./llog12.0"
-
-/* the help text file */
-var helpfile = "datfiles/larn.help"
+var logfile = "./llog12.5"
 
 /* the score file */
-var scorefile = "./lscore12.0"
-
-/* the maze data file */
-var larnlevels = "datfiles/larnmaze"
+var scorefile = "./lscore12.5"
 
 /* the .larnopts filename */
 var optsfile = "/.larnopts"
 
 var diagfile = "Diagfile"    /* the diagnostic filename */
-var ckpfile = "Larn12.0.ckp" /* the checkpoint filename */
+var ckpfile = "Larn12.5.ckp" /* the checkpoint filename */
 const password = "pvnert(x)" /* the wizards password <=32 */
-var psname = "larn"          /* the process name */
 
 const WIZID = true // whether to allow wizard operations

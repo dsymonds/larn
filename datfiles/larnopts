@@ -1,4 +1,3 @@
-process-name: "Winnie-the-Pooh"
 enable-checkpointing
 bold-objects
 play-day-play

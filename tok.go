@@ -173,10 +173,6 @@ func readopts() {
 				nowelcome = true
 			else if (strcmp(i, "no-beep") == 0)
 				nobeep = true
-			else if (strcmp(i, "process-name:") == 0) {
-				if ((i = lgetw()) == 0)
-					break;
-				strlcpy(psname, i, PSNAMESIZE);
 			} else if (strcmp(i, "play-day-play") == 0) {
 				// bypass time restrictions: ignored
 			} else if (strcmp(i, "savefile:") == 0) {	// defining savefilename
