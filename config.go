@@ -1,5 +1,10 @@
 package main
 
+import (
+	"os"
+	"path/filepath"
+)
+
 /*
  * All these strings will be appended to in main() to be complete filenames
  */
@@ -11,7 +16,7 @@ var savefilename string
 var logfile = "./llog12.5"
 
 /* the score file */
-var scorefile = "./lscore12.5"
+var scorefile = filepath.Join(os.Getenv("HOME"), ".larn-score12.5")
 
 /* the .larnopts filename */
 var optsfile = "/.larnopts"

@@ -23,6 +23,10 @@ var restorflag = false /* whether restore has been done	 */
  */
 
 var (
+	sFlag = flag.Bool("s", false, "show the scoreboard")
+	iFlag = flag.Bool("i", false, "show scoreboard with inventories of dead characters")
+	cFlag = flag.Bool("c", false, "create new scoreboard")
+
 	replay = flag.String("replay", "", "if non-empty, a replay file to use")
 	seed   = flag.Uint("seed", 0, "if non-zero, the random seed to use")
 )
@@ -65,10 +69,10 @@ func main() {
 	/*
 	 *	first task is to identify the player
 	 */
-	//#ifndef VT100
-	init_term() /* setup the terminal (find out what type)
-	 * for termcap */
-	//#endif	/* VT100 */
+
+	init_term()
+	defer clearvt100()
+
 	/* try to get login name */
 	// TODO: C version tried getlogin and getpwuid first
 	ptr := os.Getenv("USER")
@@ -88,9 +92,8 @@ func main() {
 		ptr = "."
 	}
 	savefilename = ptr
-	savefilename = "/Larn.sav" /* save file name in home directory */
-	optsfile = ptr + "/.larnopts"
-	/* the .larnopts filename */
+	savefilename = "/Larn.sav"    /* save file name in home directory */
+	optsfile = ptr + "/.larnopts" /* the .larnopts filename */
 
 	lcreat("")
 	seed := uint32(*seed)
@@ -129,31 +132,36 @@ func main() {
 	/*
 	 *	now process the command line arguments
 	 */
-	// TODO: replace with Go's flag parser
+	if *sFlag {
+		showscores()
+		retcont()
+		return
+	}
+	if *iFlag {
+		showallscores()
+		retcont()
+		return
+	}
+	if *cFlag {
+		// anyone with password can create scoreboard
+		lprcat("Preparing to initialize the scoreboard.\n")
+		if getpassword() { // make new scoreboard
+			makeboard()
+			lprc('\n')
+			showscores()
+		}
+		retcont()
+		return
+	}
+	// TODO: replace with Go flags
 	/*
 		for i := 1; i < argc; i++ {
 			if argv[i][0] == '-' {
 				switch argv[i][1] {
-				case 's':
-					showscores();
-					exit(0);	// show scoreboard
-
 				case 'l':	// show log file
 					diedlog();
 					exit(0);
 
-				case 'i':
-					showallscores();
-					exit(0);	// show all scoreboard
-
-				case 'c':	// anyone with password can create scoreboard
-					lprcat("Preparing to initialize the scoreboard.\n");
-					if getpassword() {	// make new scoreboard
-						makeboard();
-						lprc('\n');
-						showscores();
-					}
-					exit(0);
 
 				case 'n':	// no welcome msg
 					nowelcome = true

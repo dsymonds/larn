@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"encoding/gob"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -32,25 +35,27 @@ import (
 
 /* This is the structure for the scoreboard 		 */
 type scofmt struct {
-	score   int        /* the score of the player 							 */
-	suid    int        /* the user id number of the player 				 */
-	what    int        /* the number of the monster that killed player 	 */
-	level   int        /* the level player was on when he died 			 */
-	hardlev int        /* the level of difficulty player played at 		 */
-	order   int        /* the relative ordering place of this entry 		 */
-	who     string     /* the name of the character 						 */
-	sciv    [26][2]int /* this is the inventory list of the character 		 */
+	Score int /* the score of the player 							 */
+	// TODO: remove Suid
+	Suid    int        /* the user id number of the player 				 */
+	What    int        /* the number of the monster that killed player 	 */
+	Level   int        /* the level player was on when he died 			 */
+	HardLev int        /* the level of difficulty player played at 		 */
+	Order   int        /* the relative ordering place of this entry 		 */
+	Who     string     /* the name of the character 						 */
+	Sciv    [26][2]int /* this is the inventory list of the character 		 */
 }
 
 /* This is the structure for the winning scoreboard */
 type wscofmt struct {
-	score    int    /* the score of the player 							 */
-	timeused int    /* the time used in mobuls to win the game 			 */
-	taxes    int    /* taxes he owes to LRS 							 */
-	suid     int    /* the user id number of the player 				 */
-	hardlev  int    /* the level of difficulty player played at 		 */
-	order    int    /* the relative ordering place of this entry 		 */
-	who      string /* the name of the character 						 */
+	Score    int /* the score of the player 							 */
+	TimeUsed int /* the time used in mobuls to win the game 			 */
+	Taxes    int /* taxes he owes to LRS 							 */
+	// TODO: remove Suid
+	Suid    int    /* the user id number of the player 				 */
+	HardLev int    /* the level of difficulty player played at 		 */
+	Order   int    /* the relative ordering place of this entry 		 */
+	Who     string /* the name of the character 						 */
 }
 
 /* 102 bytes struct for the log file 				 */
@@ -72,6 +77,12 @@ type log_fmt struct {
 	lev            int    /* player level 									 */
 	who            string /* player name 										 */
 	what           string /* what happened to player 							 */
+}
+
+// scoreboard is the data structure read/written to scorefile.
+type scoreboard struct {
+	Sco  []scofmt
+	Winr []wscofmt
 }
 
 var sco [SCORESIZE]scofmt   /* the structure for the scoreboard  */
@@ -96,24 +107,24 @@ var whydead = [...]string{
 /*
  * readboard() 	Function to read in the scoreboard into a static buffer
  *
- * returns -1 if unable to read in the scoreboard, returns 0 if all is OK
+ * returns false if unable to read in the scoreboard, returns true if all is OK
  */
-func readboard() int {
-	ok := lopen(scorefile)
-	if !ok {
-		lprcat("Can't read scoreboard\n")
+func readboard() bool {
+	b, err := ioutil.ReadFile(scorefile)
+	if err != nil {
+		lprintf("Can't read scoreboard: %v\n", err)
 		lflush()
-		return -1
+		return false
 	}
-	// TODO: implement readboard
-	return -1
-	/*
-		lrfill((char *) sco, sizeof(sco))
-		lrfill((char *) winr, sizeof(winr))
-		lrclose()
-		lcreat("")
-		return (0)
-	*/
+	var sb scoreboard
+	if err := gob.NewDecoder(bytes.NewReader(b)).Decode(&sb); err != nil {
+		lprintf("Can't decode scoreboard: %v\n", err)
+		lflush()
+		return false
+	}
+	copy(sco[:], sb.Sco)
+	copy(winr[:], sb.Winr)
+	return true
 }
 
 /*
@@ -123,19 +134,22 @@ func readboard() int {
  */
 func writeboard() bool {
 	set_score_output()
-	ok := lcreat(scorefile)
-	if !ok {
-		lprcat("Can't write scoreboard\n")
+
+	sb := scoreboard{
+		Sco:  sco[:],
+		Winr: winr[:],
+	}
+	var buf bytes.Buffer
+	if err := gob.NewEncoder(&buf).Encode(sb); err != nil {
+		lprintf("Can't encode scoreboard: %v\n", err)
 		lflush()
 		return false
 	}
-	// TODO: implement writeboard
-	/*
-		lwrite((char *) sco, sizeof(sco))
-		lwrite((char *) winr, sizeof(winr))
-	*/
-	lwclose()
-	lcreat("")
+	if err := ioutil.WriteFile(scorefile, buf.Bytes(), 0640); err != nil {
+		lprintf("Can't write scoreboard: %v\n", err)
+		lflush()
+		return false
+	}
 	return true
 }
 
@@ -147,8 +161,8 @@ func writeboard() bool {
 func makeboard() bool {
 	set_score_output()
 	for i := 0; i < SCORESIZE; i++ {
-		winr[i].taxes, winr[i].score, sco[i].score = 0, 0, 0
-		winr[i].order, sco[i].order = i, i
+		winr[i].Taxes, winr[i].Score, sco[i].Score = 0, 0, 0
+		winr[i].Order, sco[i].Order = i, i
 	}
 	if !writeboard() {
 		return false
@@ -169,14 +183,14 @@ func makeboard() bool {
  */
 func hashewon() int {
 	c[HARDGAME] = 0
-	if readboard() < 0 {
+	if !readboard() {
 		return 0 /* can't find scoreboard */
 	}
 	for i := 0; i < SCORESIZE; i++ { /* search through winners scoreboard */
-		if winr[i].suid == userid {
-			if winr[i].score > 0 {
-				c[HARDGAME] = winr[i].hardlev + 1
-				outstanding_taxes = winr[i].taxes
+		if winr[i].Suid == userid {
+			if winr[i].Score > 0 {
+				c[HARDGAME] = winr[i].HardLev + 1
+				outstanding_taxes = winr[i].Taxes
 				return 1
 			}
 		}
@@ -194,17 +208,17 @@ func paytaxes(x int) int {
 	if x < 0 {
 		return 0
 	}
-	if readboard() < 0 {
+	if !readboard() {
 		return 0
 	}
 	for i := 0; i < SCORESIZE; i++ {
-		if winr[i].suid == userid { /* look for players winning entry */
-			if winr[i].score > 0 { /* search for a winning entry for the player */
-				amt := winr[i].taxes
+		if winr[i].Suid == userid { /* look for players winning entry */
+			if winr[i].Score > 0 { /* search for a winning entry for the player */
+				amt := winr[i].Taxes
 				if x < amt {
 					amt = x /* don't overpay taxes (Ughhhhh) */
 				}
-				winr[i].taxes -= amt
+				winr[i].Taxes -= amt
 				outstanding_taxes -= amt
 				set_score_output()
 				if !writeboard() {
@@ -225,7 +239,7 @@ func paytaxes(x int) int {
 func winshou() int {
 	j, count := 0, 0
 	for i := 0; i < SCORESIZE; i++ { /* is there anyone on * the scoreboard? */
-		if winr[i].score != 0 {
+		if winr[i].Score != 0 {
 			j++
 			break
 		}
@@ -236,11 +250,11 @@ func winshou() int {
 		for i := 0; i < SCORESIZE; i++ { /* this loop is needed to print out the */
 			for j = 0; j < SCORESIZE; j++ { /* winners in order */
 				p := &winr[j] /* pointer to the scoreboard entry */
-				if p.order == i {
-					if p.score != 0 {
+				if p.Order == i {
+					if p.Score != 0 {
 						count++
 						lprintf("%10d     %2d      %5d Mobuls   %s \n",
-							p.score, p.hardlev, p.timeused, p.who)
+							p.Score, p.HardLev, p.TimeUsed, p.Who)
 					}
 					break
 				}
@@ -260,7 +274,7 @@ func winshou() int {
 func shou(x int) int {
 	j, count := 0, 0
 	for i := 0; i < SCORESIZE; i++ { /* is the scoreboard empty? */
-		if sco[i].score != 0 {
+		if sco[i].Score != 0 {
 			j++
 			break
 		}
@@ -269,23 +283,23 @@ func shou(x int) int {
 		lprcat("\n   Score   Difficulty   Larn Visitor Log\n")
 		for i := 0; i < SCORESIZE; i++ { /* be sure to print them out in order */
 			for j = 0; j < SCORESIZE; j++ {
-				if sco[j].order == i {
-					if sco[j].score != 0 {
+				if sco[j].Order == i {
+					if sco[j].Score != 0 {
 						count++
 						lprintf("%10d     %2d       %s ",
-							sco[j].score, sco[j].hardlev, sco[j].who)
-						if sco[j].what < 256 {
-							lprintf("killed by a %s", monster[sco[j].what].name)
+							sco[j].Score, sco[j].HardLev, sco[j].Who)
+						if sco[j].What < 256 {
+							lprintf("killed by a %s", monster[sco[j].What].name)
 						} else {
-							lprintf("%s", whydead[sco[j].what-256])
+							lprintf("%s", whydead[sco[j].What-256])
 						}
 						if x != 263 {
-							lprintf(" on %s", levelname[sco[j].level])
+							lprintf(" on %s", levelname[sco[j].Level])
 						}
 						if x != 0 {
 							for n := 0; n < 26; n++ {
-								iven[n] = sco[j].sciv[n][0]
-								ivenarg[n] = sco[j].sciv[n][1]
+								iven[n] = sco[j].Sciv[n][0]
+								ivenarg[n] = sco[j].Sciv[n][1]
 							}
 							for k := 1; k < 99; k++ {
 								for n := 0; n < 26; n++ {
@@ -318,7 +332,7 @@ const esb = "The scoreboard is empty.\n"
 func showscores() {
 	lflush()
 	lcreat("")
-	if readboard() < 0 {
+	if !readboard() {
 		return
 	}
 	i := winshou()
@@ -339,7 +353,7 @@ func showscores() {
 func showallscores() {
 	lflush()
 	lcreat("")
-	if readboard() < 0 {
+	if !readboard() {
 		return
 	}
 	c[WEAR], c[WIELD], c[SHIELD] = -1, -1, -1 /* not wielding or wearing anything */
@@ -366,30 +380,30 @@ func showallscores() {
  */
 func sortboard() bool {
 	for i := 0; i < SCORESIZE; i++ {
-		sco[i].order, winr[i].order = -1, -1
+		sco[i].Order, winr[i].Order = -1, -1
 	}
 	j, pos := 0, 0
 	for pos < SCORESIZE {
 		jdat := 0
 		for i := 0; i < SCORESIZE; i++ {
-			if sco[i].order < 0 && sco[i].score >= jdat {
+			if sco[i].Order < 0 && sco[i].Score >= jdat {
 				j = i
-				jdat = sco[i].score
+				jdat = sco[i].Score
 			}
 		}
-		sco[j].order = pos
+		sco[j].Order = pos
 		pos++
 	}
 	pos = 0
 	for pos < SCORESIZE {
 		jdat := 0
 		for i := 0; i < SCORESIZE; i++ {
-			if winr[i].order < 0 && winr[i].score >= jdat {
+			if winr[i].Order < 0 && winr[i].Score >= jdat {
 				j = i
-				jdat = winr[i].score
+				jdat = winr[i].Score
 			}
 		}
-		winr[j].order = pos
+		winr[j].Order = pos
 		pos++
 	}
 	return true
@@ -405,7 +419,7 @@ func sortboard() bool {
  * ex.		newscore(1000, "player 1", 32, 0);
  */
 func newscore(score int, whoo string, whyded int, winner bool) {
-	if readboard() < 0 {
+	if !readboard() {
 		return /* do the scoreboard	 */
 	}
 	/* if a winner then delete all non-winning scores */
@@ -414,8 +428,8 @@ func newscore(score int, whoo string, whyded int, winner bool) {
 	}
 	if winner {
 		for i := 0; i < SCORESIZE; i++ {
-			if sco[i].suid == userid {
-				sco[i].score = 0
+			if sco[i].Suid == userid {
+				sco[i].Score = 0
 			}
 		}
 		taxes := int(float64(score) * TAXRATE)
@@ -425,7 +439,7 @@ func newscore(score int, whoo string, whyded int, winner bool) {
 		 * greater score
 		 */
 		for i := 0; i < SCORESIZE; i++ {
-			if winr[i].suid == userid {
+			if winr[i].Suid == userid {
 				new1sub(score, i, whoo, taxes)
 				return
 			}
@@ -435,7 +449,7 @@ func newscore(score int, whoo string, whyded int, winner bool) {
 		 * greater score
 		 */
 		for i := 0; i < SCORESIZE; i++ {
-			if winr[i].order == SCORESIZE-1 {
+			if winr[i].Order == SCORESIZE-1 {
 				new1sub(score, i, whoo, taxes)
 				return
 			}
@@ -446,7 +460,7 @@ func newscore(score int, whoo string, whyded int, winner bool) {
 		 * score
 		 */
 		for i := 0; i < SCORESIZE; i++ {
-			if sco[i].suid == userid {
+			if sco[i].Suid == userid {
 				new2sub(score, i, whoo, whyded)
 				return
 			}
@@ -456,7 +470,7 @@ func newscore(score int, whoo string, whyded int, winner bool) {
 		 * greater score
 		 */
 		for i := 0; i < SCORESIZE; i++ {
-			if sco[i].order == SCORESIZE-1 {
+			if sco[i].Order == SCORESIZE-1 {
 				new2sub(score, i, whoo, whyded)
 				return
 			}
@@ -476,13 +490,13 @@ func newscore(score int, whoo string, whyded int, winner bool) {
  */
 func new1sub(score, i int, whoo string, taxes int) {
 	p := &winr[i]
-	p.taxes += taxes
-	if score >= p.score || c[HARDGAME] > p.hardlev {
-		p.who = whoo
-		p.score = score
-		p.hardlev = c[HARDGAME]
-		p.suid = userid
-		p.timeused = gltime / 100
+	p.Taxes += taxes
+	if score >= p.Score || c[HARDGAME] > p.HardLev {
+		p.Who = whoo
+		p.Score = score
+		p.HardLev = c[HARDGAME]
+		p.Suid = userid
+		p.TimeUsed = gltime / 100
 	}
 }
 
@@ -497,16 +511,16 @@ func new1sub(score, i int, whoo string, taxes int) {
  */
 func new2sub(score, i int, whoo string, whyded int) {
 	p := &sco[i]
-	if score >= p.score || c[HARDGAME] > p.hardlev {
-		p.who = whoo
-		p.score = score
-		p.what = whyded
-		p.hardlev = c[HARDGAME]
-		p.suid = userid
-		p.level = level
+	if score >= p.Score || c[HARDGAME] > p.HardLev {
+		p.Who = whoo
+		p.Score = score
+		p.What = whyded
+		p.HardLev = c[HARDGAME]
+		p.Suid = userid
+		p.Level = level
 		for j := 0; j < 26; j++ {
-			p.sciv[j][0] = iven[j]
-			p.sciv[j][1] = ivenarg[j]
+			p.Sciv[j][0] = iven[j]
+			p.Sciv[j][1] = ivenarg[j]
 		}
 	}
 }
