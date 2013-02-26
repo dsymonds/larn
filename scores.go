@@ -35,27 +35,25 @@ import (
 
 /* This is the structure for the scoreboard 		 */
 type scofmt struct {
-	Score int /* the score of the player 							 */
-	// TODO: remove Suid
-	Suid    int        /* the user id number of the player 				 */
-	What    int        /* the number of the monster that killed player 	 */
-	Level   int        /* the level player was on when he died 			 */
-	HardLev int        /* the level of difficulty player played at 		 */
-	Order   int        /* the relative ordering place of this entry 		 */
-	Who     string     /* the name of the character 						 */
-	Sciv    [26][2]int /* this is the inventory list of the character 		 */
+	Score    int        /* the score of the player 							 */
+	Username string     /* the user name of the player 				 */
+	What     int        /* the number of the monster that killed player 	 */
+	Level    int        /* the level player was on when he died 			 */
+	HardLev  int        /* the level of difficulty player played at 		 */
+	Order    int        /* the relative ordering place of this entry 		 */
+	Who      string     /* the name of the character 						 */
+	Sciv     [26][2]int /* this is the inventory list of the character 		 */
 }
 
 /* This is the structure for the winning scoreboard */
 type wscofmt struct {
-	Score    int /* the score of the player 							 */
-	TimeUsed int /* the time used in mobuls to win the game 			 */
-	Taxes    int /* taxes he owes to LRS 							 */
-	// TODO: remove Suid
-	Suid    int    /* the user id number of the player 				 */
-	HardLev int    /* the level of difficulty player played at 		 */
-	Order   int    /* the relative ordering place of this entry 		 */
-	Who     string /* the name of the character 						 */
+	Score    int    /* the score of the player 							 */
+	TimeUsed int    /* the time used in mobuls to win the game 			 */
+	Taxes    int    /* taxes he owes to LRS 							 */
+	Username string /* the user name of the player 				 */
+	HardLev  int    /* the level of difficulty player played at 		 */
+	Order    int    /* the relative ordering place of this entry 		 */
+	Who      string /* the name of the character 						 */
 }
 
 /* 102 bytes struct for the log file 				 */
@@ -187,7 +185,7 @@ func hashewon() int {
 		return 0 /* can't find scoreboard */
 	}
 	for i := 0; i < SCORESIZE; i++ { /* search through winners scoreboard */
-		if winr[i].Suid == userid {
+		if winr[i].Username == loginname {
 			if winr[i].Score > 0 {
 				c[HARDGAME] = winr[i].HardLev + 1
 				outstanding_taxes = winr[i].Taxes
@@ -212,7 +210,7 @@ func paytaxes(x int) int {
 		return 0
 	}
 	for i := 0; i < SCORESIZE; i++ {
-		if winr[i].Suid == userid { /* look for players winning entry */
+		if winr[i].Username == loginname { /* look for players winning entry */
 			if winr[i].Score > 0 { /* search for a winning entry for the player */
 				amt := winr[i].Taxes
 				if x < amt {
@@ -428,7 +426,7 @@ func newscore(score int, whoo string, whyded int, winner bool) {
 	}
 	if winner {
 		for i := 0; i < SCORESIZE; i++ {
-			if sco[i].Suid == userid {
+			if sco[i].Username == loginname {
 				sco[i].Score = 0
 			}
 		}
@@ -439,7 +437,7 @@ func newscore(score int, whoo string, whyded int, winner bool) {
 		 * greater score
 		 */
 		for i := 0; i < SCORESIZE; i++ {
-			if winr[i].Suid == userid {
+			if winr[i].Username == loginname {
 				new1sub(score, i, whoo, taxes)
 				return
 			}
@@ -460,7 +458,7 @@ func newscore(score int, whoo string, whyded int, winner bool) {
 		 * score
 		 */
 		for i := 0; i < SCORESIZE; i++ {
-			if sco[i].Suid == userid {
+			if sco[i].Username == loginname {
 				new2sub(score, i, whoo, whyded)
 				return
 			}
@@ -495,7 +493,7 @@ func new1sub(score, i int, whoo string, taxes int) {
 		p.Who = whoo
 		p.Score = score
 		p.HardLev = c[HARDGAME]
-		p.Suid = userid
+		p.Username = loginname
 		p.TimeUsed = gltime / 100
 	}
 }
@@ -516,7 +514,7 @@ func new2sub(score, i int, whoo string, whyded int) {
 		p.Score = score
 		p.What = whyded
 		p.HardLev = c[HARDGAME]
-		p.Suid = userid
+		p.Username = loginname
 		p.Level = level
 		for j := 0; j < 26; j++ {
 			p.Sciv[j][0] = iven[j]

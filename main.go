@@ -12,7 +12,6 @@ const copyright = "\nLarn is copyrighted 1986 by Noah Morgan.\n"
 var srcount = 0            /* line counter for showstr()	 */
 var dropflag = 0           /* if 1 then don't lookforobject() next round */
 var rmst = 80              /* random monster creation counter		 */
-var userid int             /* the players login user id number */
 var nowelcome, nomove bool /* if (nomove) then don't count next iteration as a move */
 var viewflag int8
 var restorflag = false /* whether restore has been done	 */
@@ -173,11 +172,6 @@ func main() {
 	*/
 
 	readopts() /* read the options file if there is one */
-
-	userid = os.Geteuid() /* obtain the user's effective id number */
-	if userid < 0 {
-		log.Fatal("Can't obtain playerid")
-	}
 
 	if *replay != "" {
 		loadReplay(*replay)
