@@ -56,8 +56,7 @@ type wscofmt struct {
 	Who      string /* the name of the character 						 */
 }
 
-/* 102 bytes struct for the log file 				 */
-// TODO: it isn't 102 bytes any more
+/* struct for the log file 				 */
 type log_fmt struct {
 	score          int /* the players score 								 */
 	diedtime       int /* time when game was over 							 */

@@ -129,7 +129,6 @@ const objnamelist = " ATOP<_F&^+M=>_$$f*OD#~][[)))(((||||||||{?!BC}o:;.@@@@EVV))
 
 var monstnamelist = []byte(" BGHJKOScjtAELNQRZabhiCTYdegmvzFWflorXV pqsyUkMwDDPxnDDuD        ...............................................................")
 
-// TODO: should this be a specific size? same above.
 var objectname = [...]string{"",
 	"a holy altar", "a handsome jewel encrusted throne", "the orb", "a pit",
 	"a staircase leading upwards", "an elevator going up", "a bubbling fountain",
