@@ -2,12 +2,14 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
+	"runtime"
 	"time"
 )
 
-const copyright = "\nLarn is copyrighted 1986 by Noah Morgan.\n"
+var larnBuildID = "unknown"
 
 var srcount = 0            /* line counter for showstr()	 */
 var dropflag = 0           /* if 1 then don't lookforobject() next round */
@@ -26,8 +28,9 @@ var (
 	iFlag = flag.Bool("i", false, "show scoreboard with inventories of dead characters")
 	cFlag = flag.Bool("c", false, "create new scoreboard")
 
-	replay = flag.String("replay", "", "if non-empty, a replay file to use")
-	seed   = flag.Uint("seed", 0, "if non-zero, the random seed to use")
+	replay  = flag.String("replay", "", "if non-empty, a replay file to use")
+	seed    = flag.Uint("seed", 0, "if non-zero, the random seed to use")
+	version = flag.Bool("version", false, "print version and build information, and exit")
 )
 
 /*
@@ -51,6 +54,12 @@ const cmdhelp = `Cmd line format: larn [-slicnh] [-o<optsfile>] [-##] [++]
 */
 func main() {
 	flag.Parse()
+
+	if *version {
+		fmt.Printf("Larn %d.%d (build: %s)\n", VERSION, SUBVERSION, larnBuildID)
+		fmt.Printf("Built with %s %s for %s/%s\n", runtime.Compiler, runtime.Version(), runtime.GOOS, runtime.GOARCH)
+		return
+	}
 
 	// In case a panic occurs, be prepared to clean up the terminal.
 	defer func() {
@@ -817,7 +826,7 @@ func parse() {
 			if cheat {
 				lprcat(" Cheater")
 			}
-			lprcat(copyright)
+			lprcat("\nby David Symonds, based on work by Noah Morgan.\n")
 			return
 
 		case 'Q':
