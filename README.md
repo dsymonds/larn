@@ -25,4 +25,4 @@ The license of the original Larn by Noah Morgan is unclear. He posted
 it to a public discussion group without stating the license; 1986 was
 an era before licenses were "a thing". Given that, and given that I plan
 to replace all the original C code, I am licensing this under the
-[BSD 3-Clause Licence](http://www.opensource.org/licenses/bsd-license.php).
+[BSD 3-Clause Licence](https://opensource.org/licenses/BSD-3-Clause).
