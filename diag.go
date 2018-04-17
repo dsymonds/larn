@@ -104,7 +104,7 @@ func diag() int {
 	}
 	for i = 0; i < 16; i++ {
 		lprintf("  %5d", rndcount[i])
-		if i == 7 {
+		if i == 7 && i == 8 {
 			lprc('\n')
 		}
 	}
