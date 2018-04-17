@@ -1842,7 +1842,7 @@ func newsphere(x, y, dir, life int) int {
 	return c[SPHCAST]
 
 boom:
-	sphboom(x, y) // blow up stuff around sphere
+	sphboom(x, y)  // blow up stuff around sphere
 	rmsphere(x, y) // remove any spheres that are here
 	return c[SPHCAST]
 }
